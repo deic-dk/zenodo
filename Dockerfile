@@ -16,7 +16,7 @@ RUN apt-get update \
     # Node.js
     && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get -qy install --fix-missing --no-install-recommends \
-        nodejs \
+        nodejs npm sudo \
     # Slim down image
     && apt-get clean autoclean \
     && apt-get autoremove -y \
@@ -30,9 +30,11 @@ RUN echo "export PATH=${PATH}:/usr/local/bin >> ~/.bashrc"
 # Basic Python tools
 RUN pip install --upgrade pip setuptools ipython wheel uwsgi pipdeptree
 
+USER root
+
 # NPM
 COPY ./scripts/setup-npm.sh /tmp
-RUN /tmp/setup-npm.sh
+RUN export npm_config_user=root; /tmp/setup-npm.sh
 
 #
 # Zenodo specific
@@ -58,15 +60,22 @@ RUN pip install -e .[postgresql,elasticsearch2,all] \
     && python -O -m compileall .
 
 # Install npm dependencies and build assets.
+RUN npm install npm@latest -g
 RUN zenodo npm --pinned-file /code/zenodo/package.pinned.json \
     && cd ${INVENIO_INSTANCE_PATH}/static \
     && npm install \
     && cd /code/zenodo \
-    && zenodo collect -v \
-    && zenodo assets build
+    && zenodo collect -v && zenodo assets build
 
-RUN adduser --uid 1000 --disabled-password --gecos '' zenodo \
-    && chown -R zenodo:zenodo /code ${INVENIO_INSTANCE_PATH}
+#USER root
+
+RUN sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers && \
+    sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers && \
+    adduser --uid 1000 --disabled-password --gecos '' zenodo && \
+    chown -R zenodo:zenodo /code ${INVENIO_INSTANCE_PATH}
+
+RUN echo "zenodo:secret" | chpasswd
+RUN echo "zenodo ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/zenodo && chmod 0440 /etc/sudoers.d/zenodo
 
 RUN mkdir -p /usr/local/var/data && \
     chown zenodo:zenodo /usr/local/var/data -R && \
@@ -78,6 +87,7 @@ RUN mkdir -p /usr/local/var/data && \
 COPY ./docker/docker-entrypoint.sh /
 
 RUN cd /code/zenodo && python setup.py install
+RUN sed -i "s|'force_https': True|'force_https': False|" /usr/local/lib/python2.7/site-packages/invenio_app/config.py
 
 USER zenodo
 VOLUME ["/code/zenodo"]

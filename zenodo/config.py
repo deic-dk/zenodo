@@ -169,7 +169,8 @@ I18N_LANGUAGES = []
 #: Default broker (RabbitMQ on locahost).
 CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
 #: Default Celery result backend.
-CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
+#CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
+CELERY_RESULT_BACKEND = "redis://cache:6379/1"
 #: Accepted content types for Celery.
 CELERY_ACCEPT_CONTENT = ['json', 'msgpack', 'yaml']
 #: Custom task routing
@@ -299,7 +300,8 @@ CELERY_BEAT_SCHEDULE = {
 #: Cache key prefix
 CACHE_KEY_PREFIX = "cache::"
 #: Host
-CACHE_REDIS_HOST = "localhost"
+#CACHE_REDIS_HOST = "localhost"
+CACHE_REDIS_HOST = "cache"
 #: Port
 CACHE_REDIS_PORT = 6379
 #: DB
