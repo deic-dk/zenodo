@@ -48,7 +48,7 @@ services:
       file: docker-services.yml
       service: app
     restart: "no"
-    command: tail -f /var/log/*
+    command: tail -f /var/log/*log
     user: zenodo
     volumes:
       - "/usr/local/var/instance/static"
