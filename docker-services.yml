@@ -16,7 +16,7 @@ services:
       - "INVENIO_SESSION_COOKIE_SECURE=True"
       - "INVENIO_SQLALCHEMY_DATABASE_URI=postgresql://zenodo:zenodo@db/zenodo"
       - "INVENIO_WSGI_PROXIES=2"
-      - "FLASK_DEBUG=${FLASK_DEBUG:-off}"
+      - "FLASK_DEBUG=${FLASK_DEBUG:-on}"
   lb:
     build: ./docker/haproxy/
     image: zenodo-lb:latest
