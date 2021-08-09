@@ -20,7 +20,7 @@ services:
     extends:
       file: docker-services.yml
       service: app
-    command: uwsgi /code/zenodo/docker/uwsgi/uwsgi.ini
+    command: bash -c "export FLASK_DEBUG=0; uwsgi /code/zenodo/docker/uwsgi/uwsgi.ini"
     ports:
       - "5000:5000"
     links:
