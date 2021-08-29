@@ -8,11 +8,14 @@ ARG TERM=linux
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Install dependencies
+RUN bash -c "debconf-set-selections <<< \"postfix postfix/mailname string sciencedata.dk\""
+RUN bash -c "debconf-set-selections <<< \"postfix postfix/main_mailer_type string 'Internet Site'\""
+
 RUN apt-get update \
     && apt-get -qy upgrade --fix-missing --no-install-recommends \
     && apt-get -qy install --fix-missing --no-install-recommends \
         apt-utils curl libcairo2-dev fonts-dejavu libfreetype6-dev \
-        uwsgi-plugin-python \
+        uwsgi-plugin-python vim rsyslog postfix\
     # Node.js
     && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get -qy install --fix-missing --no-install-recommends \
