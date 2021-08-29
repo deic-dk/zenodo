@@ -90,13 +90,31 @@ def _(x):
 
 
 #: System sender email address
-ZENODO_SYSTEM_SENDER_EMAIL = 'system@zenodo.org'
+ZENODO_SYSTEM_SENDER_EMAIL = 'cloud@deic.dk'
 #: Email address of admins
-ZENODO_ADMIN_EMAIL = 'admin@zenodo.org'
+ZENODO_ADMIN_EMAIL = 'cloud@deic.dk'
 
 #: Email address for support.
-SUPPORT_EMAIL = "info@zenodo.org"
-MAIL_SUPPRESS_SEND = True
+SUPPORT_EMAIL = "cloud@deic.dk"
+MAIL_SUPPRESS_SEND = False
+
+#SECURITY_CONFIRM_URL = '/confirm'
+#SERVER_NAME = 'localhost:5001'
+#PREFERRED_URL_SCHEME = 'https'
+
+FIXTURES_FILES_LOCATION = '/usr/local/var/instance/data'
+FIXTURES_ARCHIVE_LOCATION = '/usr/local/var/instance/archive'
+
+MAIL_SERVER = '127.0.0.1'
+MAIL_PORT = 25
+MAIL_USERNAME = 'zenodo'
+MAIL_PASSWORD = ''
+MAIL_USE_TLS = False
+MAIL_USE_SSL = False
+MAIL_DEFAULT_SENDER = 'cloud@deic.dk'
+
+#with open('/tmp/test.txt', 'w') as f:
+#    f.write(current_app.config['FIXTURES_FILES_LOCATION'])
 
 # Application
 # ===========
@@ -904,7 +922,6 @@ FILES_REST_CHECKSUM_VERIFICATION_URI_PREFIXES = [
 ]
 #: URL template for generating URLs outside the application/request context
 FILES_REST_ENDPOINT = '{scheme}://{host}/api/files/{bucket}/{key}'
-
 
 #: Records REST API endpoints.
 RECORDS_API = '/api/records/{pid_value}'
