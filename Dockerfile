@@ -87,11 +87,12 @@ RUN mkdir -p /usr/local/var/data && \
     mkdir -p /var/log/zenodo && \
     chown zenodo:zenodo /var/log/zenodo -R
 
-COPY ./docker/docker-entrypoint.sh /
+#COPY ./docker/docker-entrypoint.sh /
 
 RUN sed -i "s|'force_https': True|'force_https': False|" /usr/local/lib/python2.7/site-packages/invenio_app/config.py
 
 USER zenodo
 VOLUME ["/code/zenodo"]
-ENTRYPOINT ["/docker-entrypoint.sh"]
+#ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/code/zenodo/docker/docker-entrypoint.sh"]
 CMD ["zenodo", "run", "-h", "0.0.0.0"]

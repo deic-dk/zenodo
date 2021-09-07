@@ -34,8 +34,8 @@ build all docker images and boot them up using ``docker-compose``:
     $ git clone https://github.com/zenodo/zenodo.git
     $ cd ~/src/zenodo
     $ git checkout master
-    $ docker-compose -f docker-compose.full.yml build
-    $ docker-compose -f docker-compose.full.yml up -d
+    $ docker-compose -f docker-compose.yml build
+    $ docker-compose -f docker-compose.yml up -d
 
 
 .. note::
@@ -51,7 +51,7 @@ and some data fixtures:
 .. code-block:: console
 
     $ cd ~/src/zenodo
-    $ docker-compose -f docker-compose.full.yml run --rm web bash /code/zenodo/scripts/init.sh
+    $ docker-compose -f docker-compose.yml run --rm web bash /code/zenodo/scripts/init.sh
 
 Now visit the following URL in your browser:
 

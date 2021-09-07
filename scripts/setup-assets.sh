@@ -34,7 +34,7 @@ then
     echo "Node is not installed"
 elif [[ ! $node_version = *v7* ]] && [[ ! $node_version = *v6* ]]
 then
-    echo >&2 "Sorry, you are using node version $node_version, which is incompatible. Please install node 7.4.0"; exit 1;
+    echo >&2 "Sorry, you are using node version $node_version, which is incompatible. Please install node 7.4.0"; #exit 1;
 fi
 
 # Checking binaries
@@ -44,6 +44,8 @@ then
 fi
 
 zenodo npm --pinned-file ${SOURCE}
+# /var/instance/static is nfs-mounted and the user zenodo is not known on the nfs-server
+sudo chmod go+rw ${VIRTUAL_ENV}/var/instance/static
 cd ${VIRTUAL_ENV}/var/instance/static
 rm -rf gen .webassets-cache
 npm install
