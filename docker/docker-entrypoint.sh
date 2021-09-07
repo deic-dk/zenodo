@@ -9,8 +9,8 @@ fi
 
 env > /tmp/env
 # These apparently also need a restart after the system has booted...
-service rsyslog start
-service postfix start
+sudo service rsyslog start
+sudo service postfix start
 
 # https://docs.docker.com/engine/reference/builder/#entrypoint
 exec $@
