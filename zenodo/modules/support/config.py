@@ -50,7 +50,7 @@ This is an automated confirmation of your request, please do not reply to this\
  email.
 
 Zenodo Support
-https://zenodo.org
+https://zenodo.sciencedata.dk
 """
 
 #: Support confirmation email title.
@@ -83,7 +83,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'Otherwise, state that to the best of your knowledge the DOI has '
             'not been used anywhere.</li>'
             '<li>Specify the record(s) you want to update <u>by the Zenodo'
-            ' URL</u>, e.g.: "https://zenodo.org/record/8428".<br />'
+            ' URL</u>, e.g.: "https://zenodo.sciencedata.dk/record/8428".<br />'
             "<u>Providing only the record's title, publication date or a "
             "screenshot with search result is not explicit enough</u>.</li>"
             '<li>If you want to delete or update a file, specify it '
@@ -98,7 +98,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'since our support staff will have to reply back with a request '
             'for missing information.'
         ),
-        'recipients': ['info@zenodo.org'],
+        'recipients': ['cloud@deic.dk'],
     },
     {
         'key': 'upload-quota',
@@ -119,7 +119,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'journal or conference.</li>'
             '</ol>'
         ),
-        'recipients': ['info@zenodo.org'],
+        'recipients': ['cloud@deic.dk'],
     },
     {
         'key': 'record-inactivation',
@@ -129,39 +129,40 @@ SUPPORT_ISSUE_CATEGORIES = [
             'owner or a third party. Please specify the record(s) in question '
             'by the URL(s), and reason for the inactivation.'
         ),
-        'recipients': ['info@zenodo.org'],
+        'recipients': ['cloud@deic.dk'],
     },
-    {
-        'key': 'openaire',
-        'title': 'OpenAIRE',
-        'description': (
-            'All questions related to OpenAIRE reporting and grants. '
-            'Before sending a request, make sure your problem was not '
-            'already resolved, see OpenAIRE '
-            '<a href="https://www.openaire.eu/faqs">FAQ</a>. '
-            'For questions unrelated to Zenodo, you should contact OpenAIRE '
-            '<a href="https://www.openaire.eu/support/helpdesk">'
-            'helpdesk</a> directly.'
-        ),
-        'recipients': ['info@zenodo.org'],
-    },
+#    {
+#        'key': 'openaire',
+#        'title': 'OpenAIRE',
+#        'description': (
+#            'All questions related to OpenAIRE reporting and grants. '
+#            'Before sending a request, make sure your problem was not '
+#            'already resolved, see OpenAIRE '
+#            '<a href="https://www.openaire.eu/faqs">FAQ</a>. '
+#            'For questions unrelated to Zenodo, you should contact OpenAIRE '
+#            '<a href="https://www.openaire.eu/support/helpdesk">'
+#            'helpdesk</a> directly.'
+#        ),
+#        'recipients': ['info@zenodo.org'],
+#    },
     {
         'key': 'partnership',
         'title': 'Partnership, outreach and media',
         'description': (
             'All questions related to possible partnerships, outreach, '
             'invited talks and other official inquiries by media.'
-            'If you are a journal, organization or conference organizer '
-            'interested in using Zenodo as archive for your papers, software '
+            'If you are a research institution, research group,'
+            'journal, organization or conference organizer '
+            'interested in using zenodo.sciencedata.dk as archive for your papers, software '
             'or data, please provide details for your usecase.'
             ),
-        'recipients': ['info@zenodo.org'],
+        'recipients': ['cloud@deic.dk'],
     },
     {
         'key': 'tech-support',
         'title': 'Security issue, bug or spam report',
         'description': (
-            'Report a technical issue or a spam content on Zenodo.'
+            'Report a technical issue or a spam content on zenodo.sciencedata.dk.'
             'Please provide details on how to reproduce the bug. '
             'Upload any screenshots or files which are relevant to the issue '
             'or to means of reproducing it. Include error messages and '
@@ -172,22 +173,22 @@ SUPPORT_ISSUE_CATEGORIES = [
             '<strong>Do not disclose your password or REST API access tokens.'
             '</strong>'
             ),
-        'recipients': ['info@zenodo.org'],
+        'recipients': ['cloud@deic.dk'],
     },
     {
         'key': 'other',
         'title': 'Other',
         'description': (
             'Questions which do not fit into any other category.'),
-        'recipients': ['info@zenodo.org'],
+        'recipients': ['cloud@deic.dk'],
     },
 ]
 
 #: Email address of sender.
-SUPPORT_SENDER_EMAIL = 'info@zenodo.org'
+SUPPORT_SENDER_EMAIL = 'cloud@deic.dk'
 
 #: Name of the sender
 SUPPORT_SENDER_NAME = 'Zenodo'
 
 #: Email address for support.
-SUPPORT_SUPPORT_EMAIL = ['info@zenodo.org']
+SUPPORT_SUPPORT_EMAIL = ['cloud@deic.dk']
