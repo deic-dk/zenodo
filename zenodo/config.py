@@ -385,8 +385,10 @@ GITHUB_RECORD_SERIALIZER = 'zenodo.modules.records.serializers.githubjson_v1'
 GITHUB_REFRESH_TIMEDELTA = timedelta(hours=3)
 #: GitHub webhook url override
 GITHUB_WEBHOOK_RECEIVER_URL = \
-    'http://localhost:5000' \
+    'http://zenodo.sciencedata.dk:5000' \
     '/api/hooks/receivers/github/events/?access_token={token}'
+#APP_ALLOWED_HOSTS = ['zenodo.sciencedata.dk', 'zenodo.dk', 'localhost', 'lb', 'frontend']
+APP_ALLOWED_HOSTS = ['zenodo.sciencedata.dk', 'zenodo.dk']
 #: Set Zenodo deposit class
 GITHUB_RELEASE_CLASS = 'zenodo.modules.github.api:ZenodoGitHubRelease'
 #: Set Zenodo deposit class
@@ -511,14 +513,14 @@ OAUTHCLIENT_TEMPLATE_KEY = None
 
 #: Credentials for GitHub (must be changed to work).
 GITHUB_APP_CREDENTIALS = dict(
-    consumer_key="CHANGE_ME",
-    consumer_secret="CHANGE_ME",
+    consumer_key="",
+    consumer_secret="",
 )
 
 #: Credentials for ORCID (must be changed to work).
 ORCID_APP_CREDENTIALS = dict(
-    consumer_key="CHANGE_ME",
-    consumer_secret="CHANGE_ME",
+    consumer_key="",
+    consumer_secret="",
 )
 
 # OpenAIRE
