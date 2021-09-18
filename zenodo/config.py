@@ -385,7 +385,7 @@ GITHUB_RECORD_SERIALIZER = 'zenodo.modules.records.serializers.githubjson_v1'
 GITHUB_REFRESH_TIMEDELTA = timedelta(hours=3)
 #: GitHub webhook url override
 GITHUB_WEBHOOK_RECEIVER_URL = \
-    'http://zenodo.sciencedata.dk:5000' \
+    'http://zenodo.dk:5000' \
     '/api/hooks/receivers/github/events/?access_token={token}'
 #APP_ALLOWED_HOSTS = ['zenodo.sciencedata.dk', 'zenodo.dk', 'localhost', 'lb', 'frontend']
 APP_ALLOWED_HOSTS = ['zenodo.sciencedata.dk', 'zenodo.dk']
@@ -1297,7 +1297,8 @@ OAISERVER_XSL_URL = '/static/xsl/oai2.xsl'
 # REST
 # ====
 #: Enable CORS support.
-REST_ENABLE_CORS = True
+#REST_ENABLE_CORS = True
+REST_ENABLE_CORS = False
 
 # OAuth2 Server
 # =============
@@ -1386,7 +1387,7 @@ COMMUNITIES_REQUEST_EMAIL_SENDER = SUPPORT_EMAIL
 # Theme
 # =====
 #: Default site name.
-THEME_SITENAME = _("Zenodo")
+THEME_SITENAME = _("ScienceRepository")
 #: Default site URL (used only when not in a context - e.g. like celery tasks).
 THEME_SITEURL = "http://localhost:5000"
 #: Endpoint for breadcrumb root.
@@ -1394,7 +1395,8 @@ THEME_BREADCRUMB_ROOT_ENDPOINT = 'zenodo_frontpage.index'
 #: Twitter handle.
 THEME_TWITTERHANDLE = "@zenodo_org"
 #: Path to logo file.
-THEME_LOGO = "img/zenodo.svg"
+#THEME_LOGO = "img/zenodo.svg"
+THEME_LOGO = "img/ScienceRepository.png"
 #: Google Site Verification ids.
 THEME_GOOGLE_SITE_VERIFICATION = [
     "5fPGCLllnWrvFxH9QWI0l1TadV7byeEvfPcyK2VkS_s",

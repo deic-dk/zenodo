@@ -43,6 +43,9 @@
   font-weight: $brand-font-weight;
   font-size: $brand-font-size;
   padding: ($navbar-brand-padding-vertical)-4 $navbar-padding-horizontal+10 $navbar-brand-padding-vertical+4 $navbar-padding-horizontal;
+  height: 76px;
+  margin-top: 13px;
+  margin-right: 28px;
 }
 
 .navbar-default {
