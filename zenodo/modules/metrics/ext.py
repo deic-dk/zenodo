@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Zenodo.
-# Copyright (C) 2021 CERN.
+# Copyright (C) 2017-2021 CERN.
 #
 # Zenodo is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -22,27 +22,35 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Receivers for Zenodo Communities."""
+"""ZenodoMetrics module."""
 
 from __future__ import absolute_import, print_function
 
-from .tasks import dispatch_webhook
+from flask import current_app
+from . import config
 
 
-def send_inclusion_request_webhook(sender, request=None, **kwargs):
-    """Signal receiver to send webhooks after a community inclusion request."""
-    dispatch_webhook.delay(
-        community_id=str(request.id_community),
-        record_id=str(request.id_record),
-        event_type='community.records.inclusion',
-    )
+class ZenodoMetrics(object):
+    """Zenodo frontpage extension."""
 
+    def __init__(self, app=None):
+        """Extension initialization."""
+        if app:
+            self.init_app(app)
 
-def send_record_accepted_webhook(
-        sender, record_id=None, community_id=None, **kwargs):
-    """Signal receiver to send webhooks on a record accepted in a community."""
-    dispatch_webhook.delay(
-        community_id=str(community_id),
-        record_id=str(record_id),
-        event_type='community.records.addition',
-    )
+    @staticmethod
+    def init_config(app):
+        """Initialize configuration."""
+        for k in dir(config):
+            if k.startswith('ZENODO_METRICS'):
+                app.config.setdefault(k, getattr(config, k))
+
+    def init_app(self, app):
+        """Flask application initialization."""
+        self.init_config(app)
+        app.extensions['zenodo-metrics'] = self
+
+    @property
+    def metrics_start_date(self):
+        return current_app.config['ZENODO_METRICS_START_DATE']
+

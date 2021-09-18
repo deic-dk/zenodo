@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Zenodo.
-# Copyright (C) 2021 CERN.
+# Copyright (C) 2017-2021 CERN.
 #
 # Zenodo is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -22,27 +22,23 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Receivers for Zenodo Communities."""
+"""Zenodo module that adds support for prometheus metrics."""
 
-from __future__ import absolute_import, print_function
+from flask import Blueprint, Response, current_app
+from . import utils
 
-from .tasks import dispatch_webhook
-
-
-def send_inclusion_request_webhook(sender, request=None, **kwargs):
-    """Signal receiver to send webhooks after a community inclusion request."""
-    dispatch_webhook.delay(
-        community_id=str(request.id_community),
-        record_id=str(request.id_record),
-        event_type='community.records.inclusion',
-    )
+blueprint = Blueprint(
+    'zenodo_metrics',
+    __name__
+)
 
 
-def send_record_accepted_webhook(
-        sender, record_id=None, community_id=None, **kwargs):
-    """Signal receiver to send webhooks on a record accepted in a community."""
-    dispatch_webhook.delay(
-        community_id=str(community_id),
-        record_id=str(record_id),
-        event_type='community.records.addition',
-    )
+@blueprint.route('/metrics/<string:metric_id>')
+def metrics(metric_id):
+    """Metrics endpoint."""
+    if metric_id not in current_app.config['ZENODO_METRICS_DATA']:
+        return Response('Invalid key', status=404, mimetype='text/plain')
+
+    metrics = utils.calculate_metrics(metric_id)
+    response = utils.formatted_response(metrics)
+    return Response(response, mimetype='text/plain')
