@@ -49,18 +49,20 @@
 <div class="col-xs-12 col-md-10 col-md-offset-1">
   {%- block signup_slogan %}
   <h1>{{_('Research. Shared! Sign up today.')}}</h1>
+  <h3>Notice: This service is intended for researchers at Danish institutions (or affiliated therewith).
+  Others are encouraged to use <a href="https://zenodo.org">zenodo.org</a>.</h3>
   {%- endblock signup_slogan %}
   <hr />
   <div class="row">
     <div class="col-sm-6 col-sm-push-6 sign-up">
       {%- block signup_form_header %}
       <div class="social-signup">
-        <a href="{{url_for('invenio_oauthclient.login', remote_app='github')}}" class="btn btn-default btn-lg btn-block"><i class="fa fa-github"></i> {{_('Sign up with GitHub')}}</a>
+        <!-- <a href="{{url_for('invenio_oauthclient.login', remote_app='github')}}" class="btn btn-default btn-lg btn-block"><i class="fa fa-github"></i> {{_('Sign up with GitHub')}}</a> -->
         <a href="{{url_for('invenio_oauthclient.login', remote_app='orcid')}}" class="btn btn-default btn-lg btn-block"><img src="{{ url_for('static', filename='img/orcid.svg')}}" height="18px"> {{_('Sign up with ORCID')}}</a>
         <h3 align="center">— OR —</h3>
       </div>
       {% endblock %}
-      <form action="{%- block signup_form_endpoint %}{{ url_for_security('register') }}{% endblock %}" method="POST" name="register_user_form">
+      <!--  <form action="{%- block signup_form_endpoint %}{{ url_for_security('register') }}{% endblock %}" method="POST" name="register_user_form">
       {{form_errors(form)}}
       {{ form.csrf_token()}}
       {{ render_field(form.email, autofocus=True, errormsg=False) }}
@@ -75,13 +77,13 @@
         <div class="form-group form-group-lg"><div align="center">{{ form.recaptcha() }}</div></div>
       {%- endif %}
       <button type="submit" class="btn btn-warning btn-lg btn-block"><i class="fa fa-edit"></i> {% block signup_button_text %}{{_('Sign Up')}}{% endblock %}</button>
-      </form>
+      </form> -->
       {%- block signup_form_footer %}
       <p align="center">
         {{_('Already have an account?')}} <a href="{{url_for_security('login')}}">{{_('Log In')}}</a>
       </p>
       <p align="center">
-        <small><a href="https://about.zenodo.org/privacy-policy/">{{_('Privacy notice')}}</a></small>
+        <small><a href="https://sciencedata.dk/sites/user/DataPublishing/zenodo_privacy_policy">{{_('Privacy notice')}}</a></small>
       {%- endblock %}
       </p>
     </div>
@@ -91,9 +93,11 @@
       <p>{{_('Uploads get a Digital Object Identifier (DOI) to make them easily and uniquely citeable.')}}</p>
       <h4>{{_('Communities')}}</h4>
       <p>{{_('Accept or reject uploads to your own community (e.g workshops, EU projects, institutions or entire disciplines).')}}</p>
+      <h4>{{_('Proven software')}}</h4>
+      <p>{{_('This repository is powered by the software powering the established Pan-European data repository, zenodo.org, operated by CERN.')}}</p>
+      <h4>{{_('solid infrastucture')}}</h4>
+      <p>{{_('Data resides in DTU data centres on the same infrastructure as that behind the established Danish storage service, sciencedata.dk.')}}</p>
       {%- endblock signup_benefits %}
-      <h4>{{_('Trusted Research Data Management')}}</h4>
-      <p>{{_('Built on top of CERN\'s expertise in managing 100s of petabytes of research data from the Large Hadron Collider.')}}</p>
     </div>
   </div>
 </div>
@@ -103,9 +107,11 @@
 <footer>
 <div>
   <ul class="list-inline">
-    <li><a href="https://www.openaire.eu"><img src="{{ url_for('static', filename='img/openaire.png') }}" width="80"></a></li>
-    <li><a href="https://home.cern"><img src="{{ url_for('static', filename='img/cern.svg') }}" width="80"></a></li>
-    <li><a href="https://ec.europa.eu/programmes/horizon2020/"><img src="{{ url_for('static', filename='img/eu.png') }}"></a></li>
+    <li><a href="https://cs3mesh4eosc.eu"><img src="{{ url_for('static', filename='img/cs3mesh4eosc.png') }}" width="110px" /></a></li>
+    <li><a href="https://www.openaire.eu"><img src="{{ url_for('static', filename='img/openaire.png') }}" width="80" /></a></li>
+    <li><a href="https://ec.europa.eu/programmes/horizon2020/"><img src="{{ url_for('static', filename='img/eu.png') }}" width="88" /></a></li>
+    <li><a href="https://home.cern"><img src="{{ url_for('static', filename='img/cern.png') }}" width="60" /></a></li>
+    <li><a href="http://dtu.dk"><img src="{{ url_for('static', filename='img/dtu.png') }}" width="110px" /></a></li>
   </ul>
 </div>
 </footer>
