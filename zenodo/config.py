@@ -183,7 +183,8 @@ I18N_LANGUAGES = []
 # Celery
 # ======
 #: Default broker (RabbitMQ on locahost).
-CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
+#CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
+CELERY_BROKER_URL = "amqp://guest:guest@mq:5672//"
 #: Default Celery result backend.
 #CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
 CELERY_RESULT_BACKEND = "redis://cache:6379/1"
@@ -329,7 +330,8 @@ CACHE_REDIS_URL = "redis://{0}:{1}/{2}".format(
 #: Default cache type.
 CACHE_TYPE = "redis"
 #: Default cache URL for sessions.
-ACCOUNTS_SESSION_REDIS_URL = "redis://localhost:6379/2"
+#ACCOUNTS_SESSION_REDIS_URL = "redis://localhost:6379/2"
+ACCOUNTS_SESSION_REDIS_URL = "redis://cache:6379/2"
 #: Cache for storing access restrictions
 ACCESS_CACHE = 'invenio_cache:current_cache'
 #: Disable JSON Web Tokens
@@ -385,10 +387,10 @@ GITHUB_RECORD_SERIALIZER = 'zenodo.modules.records.serializers.githubjson_v1'
 GITHUB_REFRESH_TIMEDELTA = timedelta(hours=3)
 #: GitHub webhook url override
 GITHUB_WEBHOOK_RECEIVER_URL = \
-    'http://zenodo.dk:5000' \
+    'http://sciencerepository.dk:5000' \
     '/api/hooks/receivers/github/events/?access_token={token}'
-#APP_ALLOWED_HOSTS = ['zenodo.sciencedata.dk', 'zenodo.dk', 'localhost', 'lb', 'frontend']
-APP_ALLOWED_HOSTS = ['zenodo.sciencedata.dk', 'zenodo.dk']
+#APP_ALLOWED_HOSTS = ['sciencerepository.sciencedata.dk', 'sciencerepository.dk', 'localhost', 'lb', 'frontend']
+APP_ALLOWED_HOSTS = ['sciencerepository.dk', 'sciencerepository.sciencedata.dk', 'repository.sciencedata.dk']
 #: Set Zenodo deposit class
 GITHUB_RELEASE_CLASS = 'zenodo.modules.github.api:ZenodoGitHubRelease'
 #: Set Zenodo deposit class
@@ -513,14 +515,14 @@ OAUTHCLIENT_TEMPLATE_KEY = None
 
 #: Credentials for GitHub (must be changed to work).
 GITHUB_APP_CREDENTIALS = dict(
-    consumer_key="",
-    consumer_secret="",
+    consumer_key="63b7cfe34d3947bf0dad",
+    consumer_secret="685f9595f17cdc3dcb7ad3d6ed09866f2b491529",
 )
 
 #: Credentials for ORCID (must be changed to work).
 ORCID_APP_CREDENTIALS = dict(
-    consumer_key="",
-    consumer_secret="",
+    consumer_key="APP-YBAOI6ZRWD240QJ7",
+    consumer_secret="cdce6f8d-de60-4005-a41d-0d5df92a8141",
 )
 
 # OpenAIRE
@@ -1389,14 +1391,15 @@ COMMUNITIES_REQUEST_EMAIL_SENDER = SUPPORT_EMAIL
 #: Default site name.
 THEME_SITENAME = _("ScienceRepository")
 #: Default site URL (used only when not in a context - e.g. like celery tasks).
-THEME_SITEURL = "http://localhost:5000"
+#THEME_SITEURL = "http://localhost:5000"
+THEME_SITEURL = "http://sciencerepository.dk:5000"
 #: Endpoint for breadcrumb root.
 THEME_BREADCRUMB_ROOT_ENDPOINT = 'zenodo_frontpage.index'
 #: Twitter handle.
 THEME_TWITTERHANDLE = "@zenodo_org"
 #: Path to logo file.
 #THEME_LOGO = "img/zenodo.svg"
-THEME_LOGO = "img/ScienceRepository.png"
+THEME_LOGO = "img/science_repository.png"
 #: Google Site Verification ids.
 THEME_GOOGLE_SITE_VERIFICATION = [
     "5fPGCLllnWrvFxH9QWI0l1TadV7byeEvfPcyK2VkS_s",
