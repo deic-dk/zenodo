@@ -71,12 +71,32 @@ ng\:form {
 .btn-warning {
 	background: #006b93;
 	background-color: #006b93;
-	border-color: #17323c;
+	border-color: #006b93;
+	border-radius: 0px;
 }
-.btn-warning:hover {
-	opacity: 0.8;
-	background: #006b93;
-	background-color: #006b93;
+.btn {
+	border-radius: 0px;
+}
+.btn-warning.hover, .btn-warning.active, .btn-warning.focus, .btn-warning:hover, .btn-warning:active, .btn-warning:focus {
+	background: #02678c;
+	background-color: #02678c;
 	border-color: #17323c;
 }
 
+.btn-warning.active.focus,
+.btn-warning.active:focus,
+.btn-warning.active:hover,
+.btn-warning:active.focus,
+.btn-warning:active:focus,
+.btn-warning:active:hover,
+.open>.btn-warning.dropdown-toggle.focus,
+.open>.btn-warning.dropdown-toggle:focus,
+.open>.btn-warning.dropdown-toggle:hover {
+	background: #02678c;
+	background-color: #02678c;
+	border-color: #17323c;
+}
+
+div.well {
+	background-color: #f0f4f0;
+}
