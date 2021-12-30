@@ -517,7 +517,7 @@ OAUTHCLIENT_TEMPLATE_KEY = None
 #: Credentials for GitHub (must be changed to work).
 GITHUB_APP_CREDENTIALS = dict(
     consumer_key="63b7cfe34d3947bf0dad",
-    consumer_secret="685f9595f17cdc3dcb7ad3d6ed09866f2b491529",
+    consumer_secret="a56e1eda870baab7e7116d9e762d204821d1c70d",
 )
 
 #: Credentials for ORCID (must be changed to work).
