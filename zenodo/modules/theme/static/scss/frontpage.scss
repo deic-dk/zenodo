@@ -43,3 +43,15 @@
   letter-spacing: -1px;
 }
 
+#popout img {
+  filter: invert(100%);
+  width: 15px;
+}
+
+#popout {
+  margin-top: 37px;
+  position: absolute;
+  margin-left: 24px;
+}
+
+
