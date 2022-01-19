@@ -76,4 +76,24 @@
       </div>
     </div>
   </div>
+  <!-- Fix login, signup links to break out of iframe and point to sciencerepository.dk instead of staying  on repository.sciencedata.dk -->
+  <script type="text/javascript">
+  window.onload=function() {
+    var links = document.querySelectorAll("a[href^='/']");
+    for (var i=0, n=links.length;i<n;i++) {
+      var oldhref = links[i].getAttribute('href');
+      if(oldhref.startsWith('/support') || oldhref.startsWith('/communities') ||
+      	  oldhref.startsWith('/record') || oldhref.startsWith('/search')){
+        continue;
+      }
+      links[i].href="https://sciencerepository.dk"+oldhref;
+      links[i].setAttribute('target', '_top');
+    }
+    if(window.location!==window.parent.location){
+    	var html = '<a id="popout" href="https://sciencerepository.dk/" target="_top" class="popout"><img title="Pop out" src="/static/img/fullscreen.svg"/></a>'
+    	navbar = document.querySelectorAll("#navbar")[0]
+    	navbar.innerHTML += html
+    }
+  }
+  </script>
 </footer>
