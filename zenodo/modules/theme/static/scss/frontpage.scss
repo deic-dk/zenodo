@@ -51,7 +51,13 @@
 #popout {
   margin-top: 37px;
   position: absolute;
-  margin-left: 24px;
+  right: 12px;
+}
+
+@media(max-width: 768px) and (max-height: 1024px), (max-height: 768px) and (max-width: 1024px){
+  #popout {
+    right: 92px;
+  }
 }
 
 
