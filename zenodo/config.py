@@ -128,18 +128,21 @@ APP_DEFAULT_SECURE_HEADERS['content_security_policy'] = {}
 # DataCite
 # ========
 #: DOI prefixes considered as local prefixes.
-ZENODO_LOCAL_DOI_PREFIXES = ["10.5072", "10.5281"]
+#ZENODO_LOCAL_DOI_PREFIXES = ["10.5072", "10.5281"]
+ZENODO_LOCAL_DOI_PREFIXES = ["10.82163"]
 
 #: DataCite API - URL endpoint.
 PIDSTORE_DATACITE_URL = "https://mds.datacite.org"
 #: DataCite API - Disable test mode (we however use the test prefix).
 PIDSTORE_DATACITE_TESTMODE = False
 #: DataCite API - Prefix for minting DOIs in (10.5072 is a test prefix).
-PIDSTORE_DATACITE_DOI_PREFIX = "10.5072"
+PIDSTORE_DATACITE_DOI_PREFIX = "10.82163"
+#: DataCite API - Suffix for minting DOIs in (10.5072 is a test prefix).
+PIDSTORE_DATACITE_DOI_SUFFIX = "sciencerepository"
 #: DataCite MDS username.
-PIDSTORE_DATACITE_USERNAME = "CERN.ZENODO"
+PIDSTORE_DATACITE_USERNAME = "AUJA.LYHINP"
 #: DataCite MDS password.
-PIDSTORE_DATACITE_PASSWORD = "CHANGE_ME"
+PIDSTORE_DATACITE_PASSWORD = "sunshine"
 #: DataCite updating rate.
 DATACITE_UPDATING_RATE_PER_HOUR = 1000
 #: DataCite max description length
@@ -388,7 +391,7 @@ GITHUB_RECORD_SERIALIZER = 'zenodo.modules.records.serializers.githubjson_v1'
 GITHUB_REFRESH_TIMEDELTA = timedelta(hours=3)
 #: GitHub webhook url override
 GITHUB_WEBHOOK_RECEIVER_URL = \
-    'http://sciencerepository.dk:5000' \
+    'https://sciencerepository.dk' \
     '/api/hooks/receivers/github/events/?access_token={token}'
 #APP_ALLOWED_HOSTS = ['sciencerepository.sciencedata.dk', 'sciencerepository.dk', 'localhost', 'lb', 'frontend']
 APP_ALLOWED_HOSTS = ['sciencerepository.dk', 'sciencerepository.sciencedata.dk', 'repository.sciencedata.dk']
@@ -1421,7 +1424,7 @@ COMMUNITIES_REQUEST_EMAIL_SENDER = SUPPORT_EMAIL
 THEME_SITENAME = _("ScienceRepository")
 #: Default site URL (used only when not in a context - e.g. like celery tasks).
 #THEME_SITEURL = "http://localhost:5000"
-THEME_SITEURL = "http://sciencerepository.dk:5000"
+THEME_SITEURL = "https://sciencerepository.dk"
 #: Endpoint for breadcrumb root.
 THEME_BREADCRUMB_ROOT_ENDPOINT = 'zenodo_frontpage.index'
 #: Twitter handle.
@@ -1431,8 +1434,8 @@ THEME_TWITTERHANDLE = "@zenodo_org"
 THEME_LOGO = "img/science_repository.png"
 #: Google Site Verification ids.
 THEME_GOOGLE_SITE_VERIFICATION = [
-    "5fPGCLllnWrvFxH9QWI0l1TadV7byeEvfPcyK2VkS_s",
-    "Rp5zp04IKW-s1IbpTOGB7Z6XY60oloZD5C3kTM-AiY4"
+    #"5fPGCLllnWrvFxH9QWI0l1TadV7byeEvfPcyK2VkS_s",
+    #"Rp5zp04IKW-s1IbpTOGB7Z6XY60oloZD5C3kTM-AiY4"
 ]
 #: Piwik site id.
 THEME_PIWIK_ID = None

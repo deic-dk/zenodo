@@ -1,11 +1,11 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Frequently asked questions 📃
-    url: https://help.zenodo.org
+  - name: Documentation 📃
+    url: https://sciencedata.dk/sites/sciencerepository/
     about: Questions regarding Zenodo? Take a look at our FAQs
   - name: Developer documentation 💻
-    url: https://developers.zenodo.org/
+    url: https://sciencedata.dk/sites/sciencerepository/api
     about: Other type of issue? Ask for support
   - name: Support questions 💬
-    url: https://zenodo.org/support
+    url: https://sciencerepository.dk/support
     about: Other type of issue? Ask for support
