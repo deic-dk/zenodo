@@ -33,6 +33,6 @@ def test_doi_generator(app):
     """Test doi_generator."""
     p = app.config['PIDSTORE_DATACITE_DOI_PREFIX']
     # Check normal generation.
-    assert doi_generator(1234) == '{prefix}/zenodo.1234'.format(prefix=p)
+    assert doi_generator(1234, 'zenodo') == '{prefix}/zenodo.1234'.format(prefix=p)
     # Check doi id for recid mapping
-    assert doi_generator(7468) == '{prefix}/zenodo.7448'.format(prefix=p)
+    assert doi_generator(7468, 'zenodo') == '{prefix}/zenodo.7448'.format(prefix=p)

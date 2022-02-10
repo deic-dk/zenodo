@@ -51,10 +51,11 @@
 #popout {
   margin-top: 37px;
   position: absolute;
-  right: 12px;
+  margin-left: 450px;
+  z-index: -10;
 }
 
-@media(max-width: 768px) and (max-height: 1024px), (max-height: 768px) and (max-width: 1024px){
+@media(max-width: 768px){
   #popout {
     right: 92px;
   }

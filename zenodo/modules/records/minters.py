@@ -37,11 +37,12 @@ from invenio_pidstore.providers.recordid import RecordIdProvider
 from zenodo.modules.deposit.minters import zenodo_concept_recid_minter
 
 
-def doi_generator(recid, prefix=None):
+def doi_generator(recid, prefix=None, suffix=None):
     """Generate a DOI."""
     recid = current_app.config['ZENODO_DOIID4RECID'].get(recid, recid)
-    return '{prefix}/zenodo.{recid}'.format(
+    return '{prefix}/{suffix}.{recid}'.format(
         prefix=prefix or current_app.config['PIDSTORE_DATACITE_DOI_PREFIX'],
+        suffix=suffix or current_app.config['PIDSTORE_DATACITE_DOI_SUFFIX'],
         recid=recid
     )
 
