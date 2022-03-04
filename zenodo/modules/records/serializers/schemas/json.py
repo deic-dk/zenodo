@@ -26,6 +26,8 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+from flask import current_app
+
 from flask_babelex import lazy_gettext as _
 from invenio_pidrelations.serializers.utils import serialize_relations
 from invenio_pidstore.models import PersistentIdentifier
@@ -152,6 +154,7 @@ class GrantSchemaV1(StrictKeysSchema):
     links = fields.Method('get_grant_url', dump_only=True)
 
     def get_grant_url(self, obj):
+        current_app.logger.warn(obj.dumps)
         """Get grant url."""
         return dict(self=common.api_link_for('grant', id=obj['internal_id']))
 

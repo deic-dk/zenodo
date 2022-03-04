@@ -55,6 +55,14 @@
   z-index: -10;
 }
 
+.site-wrapper .sign-up .dark-link a, .site-wrapper .sign-up a:active, .site-wrapper .sign-up a.dark-link:hover {
+  color: #194155;
+}
+
+.metadata tr.info td:first-child {
+  width: 68%;
+}
+
 @media(max-width: 768px){
   #popout {
     right: 92px;

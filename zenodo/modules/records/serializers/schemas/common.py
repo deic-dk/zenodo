@@ -29,6 +29,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import arrow
 import idutils
 import jsonref
+#import json
 import pycountry
 from flask import current_app, has_request_context
 from flask_babelex import lazy_gettext as _
@@ -141,7 +142,11 @@ class RefResolverMixin(object):
             return True
 
         try:
-            Record(value).replace_refs().dumps()
+            #current_app.logger.warn(Record(value).dumps())
+            #current_app.logger.warn(json.dumps(Record(value).replace_refs()))
+            #Record(value).replace_refs().dumps()
+            Record(value).dumps()
+            Record(value).replace_refs()
             return True
         except jsonref.JsonRefError:
             return False
