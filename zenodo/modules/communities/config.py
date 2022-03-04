@@ -26,13 +26,15 @@
 
 from __future__ import absolute_import, print_function
 
-ZENODO_COMMUNITIES_NOTIFY_DISABLED = ['zenodo', ]
+#ZENODO_COMMUNITIES_NOTIFY_DISABLED = ['zenodo', ]
+ZENODO_COMMUNITIES_NOTIFY_DISABLED = ['science_repository_dk', ]
 """Communities with disabled email notification on requests."""
 
 ZENODO_COMMUNITIES_AUTO_ENABLED = True
 """Automatically add and request to communities upon publishing."""
 
-ZENODO_COMMUNITIES_AUTO_REQUEST = ['zenodo', ]
+#ZENODO_COMMUNITIES_AUTO_REQUEST = ['zenodo', ]
+ZENODO_COMMUNITIES_AUTO_REQUEST = ['science_repository_dk', ]
 """Communities which are to be auto-requested upon first publishing."""
 
 ZENODO_COMMUNITIES_REQUEST_IF_GRANTS = ['ecfunded', ]

@@ -72,16 +72,11 @@ ZENODO_TYPE_SUBTYPE_LEGACY = {
 
 #: External redirect URLs
 REDIRECTOR_EXTERNAL_REDIRECTS = [
-    ['/dev', 'dev', 'http://developers.zenodo.org'],
-    ['/faq', 'faq', 'http://help.zenodo.org'],
-    ['/features', 'features', 'http://help.zenodo.org/features/'],
-    ['/whatsnew', 'whatsnew', 'http://help.zenodo.org/whatsnew/'],
-    ['/about', 'about', 'http://about.zenodo.org'],
-    ['/contact', 'contact', 'http://about.zenodo.org/contact/'],
-    ['/policies', 'policies', 'http://about.zenodo.org/policies/'],
-    ['/privacy-policy', 'privacy-policy',
-     'http://about.zenodo.org/privacy-policy/'],
-    ['/terms', 'terms', 'http://about.zenodo.org/terms/'],
-    ['/donate', 'donate',
-     'https://donate.cernandsocietyfoundation.cern/zenodo/~my-donation?_cv=1'],
+    ['/dev', 'dev', 'https://sciencedata.dk/sites/sciencerepository/#features'],
+    ['/features', 'features', 'https://sciencedata.dk/sites/sciencerepository/#features'],
+    ['/about', 'about', 'https://sciencedata.dk/sites/sciencerepository'],
+    ['/contact', 'contact', 'https://sciencerepository.dk/support'],
+    ['/policies', 'policies', 'https://sciencedata.dk/sites/sciencerepository/#policies'],
+    ['/privacy-policy', 'privacy-policy', 'https://sciencedata.dk/sites/sciencerepository/#privacy_policy'],
+    ['/terms', 'terms', 'https://sciencedata.dk/sites/sciencerepository/terms_of_use'],
 ]

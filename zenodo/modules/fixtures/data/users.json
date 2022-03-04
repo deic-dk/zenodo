@@ -1,6 +1,8 @@
 [
     {
-        "email": "info@zenodo.org",
+        "email": "cloud@deic.dk",
+        "username": "sciencerepository",
+        "full_name": "ScienceRepository Admin",
         "password": "123456",
         "access": [
             ["allow", "admin-access"],

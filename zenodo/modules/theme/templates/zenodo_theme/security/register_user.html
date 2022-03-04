@@ -63,11 +63,12 @@
         <h3 align="center">— OR —</h3>
       </div>
       {% endblock %}
-      <!--  <form action="{%- block signup_form_endpoint %}{{ url_for_security('register') }}{% endblock %}" method="POST" name="register_user_form">
+      <form {% block hide_signup_form %}class="hidden"{% endblock %} action="{%- block signup_form_endpoint %}{{ url_for_security('register') }}{% endblock %}" method="POST" name="register_user_form">
       {{form_errors(form)}}
       {{ form.csrf_token()}}
       {{ render_field(form.email, autofocus=True, errormsg=False) }}
       {{ render_field(form.profile.username, errormsg=False) }}
+      {{ render_field(form.profile.full_name, value=request.args.get('full_name'), errormsg=False) }}
       {%- if form.password %}
         {{ render_field(form.password, errormsg=False) }}
       {%- endif %}
@@ -78,7 +79,7 @@
         <div class="form-group form-group-lg"><div align="center">{{ form.recaptcha() }}</div></div>
       {%- endif %}
       <button type="submit" class="btn btn-warning btn-lg btn-block"><i class="fa fa-edit"></i> {% block signup_button_text %}{{_('Sign Up')}}{% endblock %}</button>
-      </form> -->
+      </form>
       {%- block signup_form_footer %}
       <p align="center">
         {{_('Already have an account?')}} <a href="{{url_for_security('login')}}">{{_('Log In')}}</a>

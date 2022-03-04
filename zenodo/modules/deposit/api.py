@@ -47,6 +47,8 @@ from invenio_sipstore.archivers import BagItArchiver
 from invenio_sipstore.models import SIP as SIPModel
 from invenio_sipstore.models import RecordSIP as RecordSIPModel
 
+from invenio_communities.errors import InclusionRequestObsoleteError
+
 from zenodo.modules.communities.api import ZenodoCommunity
 from zenodo.modules.communities.signals import record_accepted
 from zenodo.modules.records.api import ZenodoFileObject, ZenodoFilesIterator, \
@@ -61,6 +63,8 @@ from .errors import MissingCommunityError, MissingFilesError, \
     OngoingMultipartUploadError, VersioningFilesError
 from .fetchers import zenodo_deposit_fetcher
 from .minters import zenodo_deposit_minter
+
+import json
 
 PRESERVE_FIELDS = (
     '_deposit',
@@ -165,13 +169,19 @@ class ZenodoDeposit(Deposit, ZenodoFilesMixin):
         for comm_id in comms:
             comm_api = ZenodoCommunity(comm_id)
             # Check if InclusionRequest exists for any version already
+            current_app.logger.warn(json.dumps(record))
+            current_app.logger.warn(json.dumps(comm_id))
             pending_irs = comm_api.get_comm_irs(record)
             if pending_irs.count() == 0 and not comm_api.has_record(record):
                 comm = Community.get(comm_id)
-
+                current_app.logger.warn(comm)
                 notify = comm_id not in \
                     current_app.config['ZENODO_COMMUNITIES_NOTIFY_DISABLED']
-                InclusionRequest.create(comm, record, notify=notify)
+                # FO: Fix for inclusion request already created
+                try:
+                    InclusionRequest.create(comm, record, notify=notify)
+                except InclusionRequestObsoleteError as e:
+                    current_app.logger.exception(e.message)
 
     @staticmethod
     def _remove_obsolete_irs(comms, record):

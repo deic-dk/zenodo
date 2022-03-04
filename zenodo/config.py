@@ -131,18 +131,18 @@ APP_DEFAULT_SECURE_HEADERS['content_security_policy'] = {}
 #ZENODO_LOCAL_DOI_PREFIXES = ["10.5072", "10.5281"]
 ZENODO_LOCAL_DOI_PREFIXES = ["10.82163"]
 
-#: DataCite API - URL endpoint.
-PIDSTORE_DATACITE_URL = "https://mds.datacite.org"
+#: DataCite API - URL endpoint. Remove "test" once in production.
+PIDSTORE_DATACITE_URL = "https://mds.test.datacite.org"
 #: DataCite API - Disable test mode (we however use the test prefix).
 PIDSTORE_DATACITE_TESTMODE = False
-#: DataCite API - Prefix for minting DOIs in (10.5072 is a test prefix).
+#: DataCite API - Prefix for minting DOIs (10.5072 is a test prefix).
 PIDSTORE_DATACITE_DOI_PREFIX = "10.82163"
-#: DataCite API - Suffix for minting DOIs in (10.5072 is a test prefix).
+#: DataCite API - Suffix for minting DOIs.
 PIDSTORE_DATACITE_DOI_SUFFIX = "sciencerepository"
 #: DataCite MDS username.
-PIDSTORE_DATACITE_USERNAME = "AUJA.LYHINP"
+PIDSTORE_DATACITE_USERNAME = ""
 #: DataCite MDS password.
-PIDSTORE_DATACITE_PASSWORD = "sunshine"
+PIDSTORE_DATACITE_PASSWORD = ""
 #: DataCite updating rate.
 DATACITE_UPDATING_RATE_PER_HOUR = 1000
 #: DataCite max description length
@@ -160,7 +160,7 @@ PIDRELATIONS_RELATION_TYPES = [
 ]
 
 #: Enable the DataCite minding of DOIs after Deposit publishing
-DEPOSIT_DATACITE_MINTING_ENABLED = False
+DEPOSIT_DATACITE_MINTING_ENABLED = True
 
 # Debug
 # =====
@@ -519,14 +519,14 @@ OAUTHCLIENT_TEMPLATE_KEY = None
 
 #: Credentials for GitHub (must be changed to work).
 GITHUB_APP_CREDENTIALS = dict(
-    consumer_key="63b7cfe34d3947bf0dad",
-    consumer_secret="a56e1eda870baab7e7116d9e762d204821d1c70d",
+    consumer_key="",
+    consumer_secret="",
 )
 
 #: Credentials for ORCID (must be changed to work).
 ORCID_APP_CREDENTIALS = dict(
-    consumer_key="APP-YBAOI6ZRWD240QJ7",
-    consumer_secret="cdce6f8d-de60-4005-a41d-0d5df92a8141",
+    consumer_key="",
+    consumer_secret="",
 )
 
 # OpenAIRE
@@ -534,7 +534,8 @@ ORCID_APP_CREDENTIALS = dict(
 #: Hostname for JSON Schemas in OpenAIRE.
 OPENAIRE_SCHEMAS_HOST = 'zenodo.org'
 #: Hostname for OpenAIRE's grant resolver.
-OPENAIRE_JSONRESOLVER_GRANTS_HOST = 'dx.zenodo.org'
+#OPENAIRE_JSONRESOLVER_GRANTS_HOST = 'dx.zenodo.org'
+OPENAIRE_JSONRESOLVER_GRANTS_HOST = 'zenodo.org'
 #: OpenAIRE data source IDs for Zenodo.
 OPENAIRE_ZENODO_IDS = {
     'publication': 'opendoar____::2659',
@@ -568,7 +569,8 @@ OPENAIRE_DIRECT_INDEXING_ENABLED = False
 #: Hostname for JSON Schemas in OpenAIRE.
 OPENDEFINITION_SCHEMAS_HOST = 'zenodo.org'
 #: Hostname for OpenAIRE's grant resolver.
-OPENDEFINITION_JSONRESOLVER_HOST = 'dx.zenodo.org'
+#OPENDEFINITION_JSONRESOLVER_HOST = 'dx.zenodo.org'
+OPENDEFINITION_JSONRESOLVER_HOST = 'zenodo.org'
 
 # JSON Schemas
 # ============
@@ -911,7 +913,8 @@ RECORDS_UI_DEFAULT_PERMISSION_FACTORY = \
 #: Default tombstone template.
 RECORDS_UI_TOMBSTONE_TEMPLATE = "zenodo_records/tombstone.html"
 
-ZENODO_RECORDS_UI_LINKS_FORMAT = "https://zenodo.org/record/{recid}"
+#ZENODO_RECORDS_UI_LINKS_FORMAT = "https://zenodo.org/record/{recid}"
+ZENODO_RECORDS_UI_LINKS_FORMAT = "https://sciencerepository.dk/record/{recid}"
 
 #: Files REST permission factory
 FILES_REST_PERMISSION_FACTORY = \
@@ -1222,7 +1225,7 @@ PREVIEWER_PREFERENCE = [
     # 'xml_prismjs',
     'mistune',
     'pdfjs',
-    # 'ipynb',
+    'ipynb',
     'zip',
 ]
 
@@ -1254,7 +1257,8 @@ CACHED_THUMBNAILS = {
 #: Index to use for the OAI-PMH server.
 OAISERVER_RECORD_INDEX = 'records'
 #: OAI identifier prefix
-OAISERVER_ID_PREFIX = 'oai:zenodo.org:'
+#OAISERVER_ID_PREFIX = 'oai:zenodo.org:'
+OAISERVER_ID_PREFIX = 'oai:sciencerepository.dk:'
 #: Managed OAI identifier prefixes
 OAISERVER_MANAGED_ID_PREFIXES = [OAISERVER_ID_PREFIX,
                                  'oai:openaire.cern.ch:', ]
@@ -1354,13 +1358,13 @@ SECURITY_REGISTER_USER_TEMPLATE = \
 SECURITY_LOGIN_USER_TEMPLATE = \
     "zenodo_theme/security/login_user.html"
 
-SECURITY_CONFIRM_SALT = "CHANGE_ME"
+SECURITY_CONFIRM_SALT = "CHANGE_ME123"
 SECURITY_EMAIL_SENDER = SUPPORT_EMAIL
-SECURITY_EMAIL_SUBJECT_REGISTER = _("Welcome to Zenodo!")
-SECURITY_LOGIN_SALT = "CHANGE_ME"
-SECURITY_PASSWORD_SALT = "CHANGE_ME"
-SECURITY_REMEMBER_SALT = "CHANGE_ME"
-SECURITY_RESET_SALT = "CHANGE_ME"
+SECURITY_EMAIL_SUBJECT_REGISTER = _("Welcome to ScienceRepository!")
+SECURITY_LOGIN_SALT = "CHANGE_ME456"
+SECURITY_PASSWORD_SALT = "CHANGE_ME789"
+SECURITY_REMEMBER_SALT = "CHANGE_ME321"
+SECURITY_RESET_SALT = "CHANGE_ME654"
 SECURITY_PASSWORD_HASH = "pbkdf2_sha512"
 SECURITY_PASSWORD_SCHEMES = [
     'pbkdf2_sha512', 'sha512_crypt', 'invenio_aes_encrypted_email']
@@ -1466,11 +1470,13 @@ USERPROFILES_EXTEND_SECURITY_FORMS = True
 #: Default database host.
 SQLALCHEMY_DATABASE_URI = os.environ.get(
     "SQLALCHEMY_DATABASE_URI",
-    "postgresql+psycopg2://zenodo:zenodo@localhost/zenodo")
+    "postgresql+psycopg2://zenodo:zenodo@db/zenodo")
 #: Do not print SQL queries to console.
 SQLALCHEMY_ECHO = False
 #: Track modifications to objects.
 SQLALCHEMY_TRACK_MODIFICATIONS = True
+SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True, "keepalives": 1,
+    "keepalives_idle": 30, "keepalives_interval": 10, "keepalives_count": 5}
 
 # StatsD
 # ======
@@ -1766,6 +1772,7 @@ SESSION_COOKIE_SECURE = False
 # Configuration for limiter.
 RATELIMIT_STORAGE_URL = CACHE_REDIS_URL
 
+# Rate limits for blueprint endpoints - look for `Blueprint(...)`
 RATELIMIT_PER_ENDPOINT = {
     'zenodo_frontpage.index': '10 per second',
     'security.login': '10 per second',
@@ -1777,7 +1784,12 @@ RATELIMIT_PER_ENDPOINT = {
     'invenio_github_badge.index': '10 per second',
     'invenio_github_badge.index_old': '10 per second',
     'invenio_formatter_badges.badge': '10 per second',
+    # sciencerepository
+    'invenio_oaiserver':'120 per minute'
 }
+
+RATELIMIT_AUTHENTICATED_USER = '5000 per hour;100 per minute'
+RATELIMIT_GUEST_USER = '1000 per hour;60 per minute'
 
 RATELIMIT_KEY_FUNC = useragent_and_ip_limit_key
 

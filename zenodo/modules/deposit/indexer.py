@@ -68,7 +68,8 @@ def indexer_receiver(sender, json=None, record=None, index=None,
         # Temporarily set to draft mode to ensure that `clear` can be called
         json['_deposit']['status'] = 'draft'
         json.clear()
-        json.update(copy.deepcopy(pub_record.replace_refs()))
+        #json.update(copy.deepcopy(pub_record.replace_refs()))
+        json.update(pub_record.dumps())
 
         # Set back to published mode and restore schema.
         json['_deposit']['status'] = 'published'

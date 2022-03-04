@@ -35,15 +35,31 @@
 {%- endblock %}
 
 {%- block signup_slogan %}
+{%- if app_title == 'ORCID' %}
   <h1>{{_('Sign up with %(app_title)s', app_title=app_title)}} - {{_('Almost there...')}}</h1>
+{%- else %}
+  <h1>{{_('Signing up with %(app_title)s', app_title=app_title)}} - {{_('Not allowed...')}}</h1>
+{%- endif %}
 {%- endblock signup_slogan %}
 
 {%- block signup_form_endpoint %}{% endblock %}
 
 {%- block signup_form_header %}
-<div class="alert alert-info alert-dismissible text-left" role="alert">
+<div class="alert alert-info alert-dismissible text-left dark-link" role="alert">
+{%- if app_title == 'ORCID' %}
 {{ _('Fill in your details to complete your registration. You only have to do this once.') }}
+{%- else %}
+{{ _('No linked account found. Please first <a href="/oauth/login/orcid/">sign up with ORCID</a>,
+then link with %(app_title)s.', app_title=app_title)}}
+{%- endif %}
 </div>
 {%- endblock %}
 
 {%- block signup_button_text %}{{_('Sign up with %(app_title)s', app_title=app_title)}}{% endblock %}
+
+{%- block hide_signup_form %}
+{%- if app_title != 'ORCID' %}
+class="hidden"
+{%- endif %}
+{% endblock %}
+

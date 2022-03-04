@@ -148,16 +148,42 @@
   {%- if resolved_record.grants %}
     <dt>{{_('Grants')}}:</dt>
     <dd>
-      {%- for group in resolved_record.grants|groupby('funder.name') %}
+      <!--{%- for group in resolved_record.grants %}
         <u>{{group.grouper}}:</u><br />
         <ul>
         {%- for grant in group.list %}
-          <li>{% if grant.url or grant.identifiers.purl %}<a href="{{grant.url or grant.identifiers.purl}}">{% endif %}
-          {% if grant.acronym %}{{grant.acronym}} - {% endif %}{{grant.title}}{% if grant.code %} ({{grant.code}}){% endif %} {% if not loop.last %}<br />{% endif %}
-          {% if grant.url or grant.identifiers.purl %}</a>{% endif %}</li>
+          <li>
+          {% if grant.metadata.url or grant.metadata.identifiers.purl %}
+            <a href="{{grant.metadata.url or grant.identifiers.purl}}">
+          {% endif %}
+          {% if grant.metadata.acronym %}{{grant.metadata.acronym}} - {% endif %}{{grant.metadata.title}}
+          {% if grant.metadata.code %} ({{grant.metadata.code}}){% endif %} {% if not loop.last %}
+          <br />{% endif %}
+          {% if grant.metadata.url or grant.metadata.identifiers.purl %}
+            </a>
+          {% endif %}
+          </li>
         {%- endfor %}
         </ul>
-      {%- endfor %}
+      {%- endfor %}-->
+        <ul>
+        {%- for grant in resolved_record.grants %}
+          <li>
+          {% if grant.metadata.url or grant.metadata.identifiers.purl %}
+            <a href="{{grant.metadata.url or grant.identifiers.purl}}">
+          {% endif %}
+          {% if grant.metadata.acronym %}{{grant.metadata.acronym}} - {% endif %}
+          {{grant.metadata.title}}
+          {% if grant.metadata.code %} ({{grant.metadata.code}}){% endif %}
+          {% if not loop.last %}
+            <br />
+          {% endif %}
+          {% if grant.metadata.url or grant.metadata.identifiers.purl %}
+            </a>
+          {% endif %}
+          </li>
+        {%- endfor %}
+        </ul>
     </dd>
   {%- endif %}
 
@@ -313,7 +339,7 @@
 
   {%- if resolved_record.license %}
     <dt>{{_('License (for files)')}}:</dt>
-    <dd><a rel="license" href="{{resolved_record.license.url}}"><i class="fa fa-external-link"></i> {{resolved_record.license.title}}</a></dd>
+    <dd><a rel="license" href="{{resolved_record.license.metadata.url}}"><i class="fa fa-external-link"></i> {{resolved_record.license.metadata.title}}</a></dd>
   {%- endif %}
 
   {%- set userprofile = record.owner.id|userprofile if record.owner and record.owner.id else None %}

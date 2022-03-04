@@ -169,17 +169,32 @@ class LegacyMetadataSchemaV1(common.CommonMetadataSchemaV1):
         else:
             raise ValidationError(_('License must be a string or dictionary.'))
 
-        return {'$ref': 'https://dx.zenodo.org/licenses/{0}'.format(license)}
+        #return {'$ref': 'https://dx.zenodo.org/licenses/{0}'.format(license)}
+        return {'$ref': 'https://zenodo.org/api/licenses/{0}'.format(license)}
 
     def dump_grants(self, obj):
         """Get grants."""
         res = []
         for g in obj.get('grants', []):
+            current_app.logger.warn(g)
             if g.get('program', {}) == 'FP7' and \
                     g.get('funder', {}).get('doi') == '10.13039/501100000780':
-                res.append(dict(id=g['code']))
+                # FO: fix for loading grants from zenodo.org
+                if 'code' in g:
+                    res.append(dict(id=g['code']))
+                elif 'metadata' in g:
+                    res.append(dict(id=g['metadata']['code']))
+                #elif '$ref' in g:
+                #    res.append(dict(id=g['$ref']))
             else:
-                res.append(dict(id=g['internal_id']))
+                # FO: fix for loading grants from zenodo.org
+                if 'internal_id' in g:
+                    res.append(dict(id=g['internal_id']))
+                elif 'metadata' in g:
+                    res.append(dict(id=g['metadata']['internal_id']))
+                elif '$ref' in g:
+                    res.append(dict(id=(g['$ref'].replace('https://zenodo.org/api/grants/', ''))))
+        current_app.logger.warn(res)
         return res or missing
 
     def load_grants(self, data):
@@ -200,15 +215,17 @@ class LegacyMetadataSchemaV1(common.CommonMetadataSchemaV1):
             # Check that the PID exists
             grant_pid = PersistentIdentifier.query.filter_by(
                 pid_type='grant', pid_value=g).one_or_none()
-            if not grant_pid or grant_pid.status != PIDStatus.REGISTERED:
-                errors.add(g)
-                continue
+            #if not grant_pid or grant_pid.status != PIDStatus.REGISTERED:
+                # Disable check with local DB
+                #errors.add(g)
+                #continue
             result.add(g)
         if errors:
             raise ValidationError(
                 'Invalid grant ID(s): {0}'.format(', '.join(errors)),
                 field_names='grants')
-        return [{'$ref': 'https://dx.zenodo.org/grants/{0}'.format(grant_id)}
+        #return [{'$ref': 'https://dx.zenodo.org/grants/{0}'.format(grant_id)}
+        return [{'$ref': 'https://zenodo.org/api/grants/{0}'.format(grant_id)}
                 for grant_id in result] or missing
 
     def dump_communities(self, obj):

@@ -52,6 +52,7 @@ def datacite_register(pid_value, record_uuid):
     """
     try:
         record = Record.get_record(record_uuid)
+        current_app.logger.warn('Minting. '+pid_value+':'+record_uuid+':'+record['doi'])
         # Bail out if not a Zenodo DOI.
         if not is_local_doi(record['doi']):
             return
@@ -61,6 +62,7 @@ def datacite_register(pid_value, record_uuid):
 
         url = current_app.config['ZENODO_RECORDS_UI_LINKS_FORMAT'].format(
             recid=pid_value)
+        current_app.logger.warn(dcp.pid.status)
         if dcp.pid.status == PIDStatus.REGISTERED:
             dcp.update(url, doc)
         else:
@@ -85,6 +87,7 @@ def datacite_register(pid_value, record_uuid):
 
         db.session.commit()
     except Exception as exc:
+        current_app.logger.exception('Minting failed')
         datacite_register.retry(exc=exc)
 
 

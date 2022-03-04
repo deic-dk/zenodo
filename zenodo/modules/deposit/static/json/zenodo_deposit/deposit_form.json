@@ -2,7 +2,7 @@
   {
     "type": "fieldset",
     "title": "Communities",
-    "helptext": "Any user can create a community collection on Zenodo. You can do that by clicking on 'Communities' in the header menu and then 'New'",
+    "helptext": "Any user can create a community collection on ScienceRepository. You can do that by clicking on 'Communities' in the header menu and then 'New'",
     "description": "Specify communities which you wish your upload to appear in. The owner of the community will be notified, and can either accept or reject your request.Please make sure your record complies with the content policy of the communities you add; reported abuse will be followed by account inactivation.",
     "fieldhint": "recommended",
     "items": [
@@ -213,7 +213,7 @@
         "type": "text",
         "key": "doi",
         "title": "Digital Object Identifier",
-        "description": "Optional. Did your publisher already assign a DOI to your upload? If not, leave the field empty and we will register a new DOI for you. A DOI allows others to easily and unambiguously cite your upload. Please note that it is NOT possible to edit a Zenodo DOI once it has been registered by us, while it is always possible to edit a custom DOI.",
+        "description": "Optional. Did your publisher already assign a DOI to your upload? If not, leave the field empty and we will register a new DOI for you. A DOI allows others to easily and unambiguously cite your upload. Please note that it is NOT possible to edit a ScienceRepository DOI once it has been registered by us, while it is always possible to edit a custom DOI.",
         "placeholder": "e.g. 10.1234/foo.bar",
         "fa_cls": "fa-barcode"
       },
@@ -394,7 +394,7 @@
         "type": "radios",
         "key": "access_right",
         "title": "Access right",
-        "description": "Required. Open access uploads have considerably higher visibility on Zenodo.",
+        "description": "Required. Open access uploads have considerably higher visibility on ScienceRepository.",
         "required": true,
         "titleMap": [
           {
@@ -452,7 +452,7 @@
         },
         "required": true,
         "fa_cls": "fa-pencil",
-        "description": "Specify the conditions under which you grant users access to the files in your upload. User requesting access will be asked to justify how they fulfil the conditions. Based on the justification, you decide who to grant/deny access. You are not allowed to charge users for granting access to data hosted on Zenodo.",
+        "description": "Specify the conditions under which you grant users access to the files in your upload. User requesting access will be asked to justify how they fulfil the conditions. Based on the justification, you decide who to grant/deny access. You are not allowed to charge users for granting access to data hosted on ScienceRepository.",
         "condition": "model.access_right == 'restricted'"
       },
       {
@@ -469,7 +469,7 @@
             "required": true,
             "options": {
               "asyncCallback": "autocompleteSuggest",
-              "url": "/api/licenses/_suggest",
+              "url": "https://zenodo.org/api/licenses/_suggest",
               "urlParameters": {
                 "text": "value",
                 "size": 10
@@ -492,7 +492,7 @@
   {
     "type": "fieldset",
     "title": "Funding",
-    "description": "Zenodo is integrated into reporting lines for research funded by the European Commission via <a target='_blank' rel='noopener noreferrer' href='http://www.openaire.eu'><i class='fa fa-external-link'></i> OpenAIRE</a>. Specify grants which have funded your research, and we will let your funding agency know!",
+    "description": "Specify here which grants which have funded your research.",
     "fieldhint": "recommended",
     "items": [
       {
@@ -500,7 +500,7 @@
         "key": "grants",
         "title": "Grants",
         "fa_cls": "fa-money",
-        "description": "Optional. OpenAIRE-supported projects only. For other funding acknowledgements, please use the <i>Additional Notes</i> field.<br>Note: a human Zenodo curator will need to validate your upload - you may experience a delay before it is available in OpenAIRE.",
+        "description": "Optional. OpenAIRE-supported projects only. For other funding acknowledgements, please use the <i>Additional Notes</i> field.",
         "sortOptions": {
           "disabled": true
         },
@@ -520,7 +520,7 @@
                 "placeholder": "Start typing a grant number, name or abbreviation...",
                 "options": {
                   "asyncCallback": "autocompleteGrants",
-                  "url": "/api/grants/_suggest",
+                  "url": "https://zenodo.org/api/grants/_suggest",
                   "urlParameters": {
                     "text": "value",
                     "funder": "'10.13039/501100000780'",

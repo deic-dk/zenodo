@@ -11,6 +11,9 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN bash -c "debconf-set-selections <<< \"postfix postfix/mailname string sciencedata.dk\""
 RUN bash -c "debconf-set-selections <<< \"postfix postfix/main_mailer_type string 'Internet Site'\""
 
+# See https://github.com/zenodo/zenodo/issues/2123#issuecomment-1050851252
+# if problems with node versions arise
+
 RUN apt-get update \
     && apt-get -qy upgrade --fix-missing --no-install-recommends \
     && apt-get -qy install --fix-missing --no-install-recommends \
@@ -34,6 +37,8 @@ RUN echo "export PATH=${PATH}:/usr/local/bin >> ~/.bashrc"
 RUN pip install --upgrade pip setuptools ipython wheel uwsgi pipdeptree
 
 USER root
+
+echo "export VIRTUAL_ENV=/usr/local" >> /home/zenodo/.bashrc
 
 # NPM
 COPY ./scripts/setup-npm.sh /tmp

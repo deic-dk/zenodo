@@ -88,8 +88,13 @@ class ZenodoCommunity(object):
 
         :rtype: BaseQuery
         """
+        # FO: fix for empty community
+        if not self.community:
+            community_id = None
+        else:
+            community_id = self.community.id
         return ZenodoCommunity.get_irs(
-            record, community_id=self.community.id, pid=pid)
+            record, community_id=community_id, pid=pid)
 
     def has_record(self, record, pid=None, scope='any'):
         """Check if record is in a community.
@@ -105,9 +110,12 @@ class ZenodoCommunity(object):
             pid = PersistentIdentifier.get('recid', record['recid'])
 
         pv = PIDVersioning(child=pid)
+        # FO: fix for no community
+        if not hasattr(self, 'community'):
+            return False
         if scope == 'this':
             return self.community.has_record(record)
-        q = (self.community.has_record(
+        q = (not hasattr(self, 'community') and self.community.has_record(
                 ZenodoRecord.get_record(p.get_assigned_object()))
              for p in pv.children)
         if scope == 'all':
