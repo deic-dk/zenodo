@@ -96,7 +96,10 @@ RUN mkdir -p /usr/local/var/data && \
 
 #COPY ./docker/docker-entrypoint.sh /
 
+<<<<<<< HEAD
 RUN cd /code/zenodo && python setup.py install
+=======
+>>>>>>> branch 'master' of https://github.com/deic-dk/zenodo.git
 RUN sed -i "s|'force_https': True|'force_https': False|" /usr/local/lib/python2.7/site-packages/invenio_app/config.py
 
 USER zenodo
