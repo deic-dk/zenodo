@@ -32,12 +32,10 @@ RUN apt-get update \
     && rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/* \
     && find /usr/share/doc -depth -type f ! -name copyright -delete
 
-
 # Basic Python tools
 RUN pip install --upgrade pip setuptools ipython wheel uwsgi pipdeptree
 
 USER root
-
 
 # NPM
 COPY ./scripts/setup-npm.sh /tmp
