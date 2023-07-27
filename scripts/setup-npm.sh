@@ -38,6 +38,6 @@ elif [[ ! $node_version = *v7* ]] && [[ ! $node_version = *v6* ]]
 then
     echo >&2 "Sorry, you are using node version $node_version, which is incompatible. Please install node 7.4.0"; #exit 1;
 fi
-
+git config --global url."https://".insteadOf git://
 npm update && npm install --silent -g node-sass@3.8.0 clean-css@3.4.19 uglify-js@2.7.3 requirejs@2.2.0
 exit 0

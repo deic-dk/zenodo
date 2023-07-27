@@ -50,7 +50,7 @@ This is an automated confirmation of your request, please do not reply to this\
  email.
 
 Zenodo Support
-https://zenodo.sciencedata.dk
+https://sciencerepository.dk
 """
 
 #: Support confirmation email title.
@@ -83,7 +83,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'Otherwise, state that to the best of your knowledge the DOI has '
             'not been used anywhere.</li>'
             '<li>Specify the record(s) you want to update <u>by the Zenodo'
-            ' URL</u>, e.g.: "https://zenodo.sciencedata.dk/record/8428".<br />'
+            ' URL</u>, e.g.: "https://sciencerepository.dk/record/8428".<br />'
             "<u>Providing only the record's title, publication date or a "
             "screenshot with search result is not explicit enough</u>.</li>"
             '<li>If you want to delete or update a file, specify it '
@@ -98,7 +98,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'since our support staff will have to reply back with a request '
             'for missing information.'
         ),
-        'recipients': ['cloud@deic.dk'],
+        'recipients': ['support@sciencerepository.dk'],
     },
     {
         'key': 'upload-quota',
@@ -119,7 +119,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'journal or conference.</li>'
             '</ol>'
         ),
-        'recipients': ['cloud@deic.dk'],
+        'recipients': ['support@sciencerepository.dk'],
     },
     {
         'key': 'record-inactivation',
@@ -129,7 +129,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'owner or a third party. Please specify the record(s) in question '
             'by the URL(s), and reason for the inactivation.'
         ),
-        'recipients': ['cloud@deic.dk'],
+        'recipients': ['support@sciencerepository.dk'],
     },
 #    {
 #        'key': 'openaire',
@@ -143,7 +143,7 @@ SUPPORT_ISSUE_CATEGORIES = [
 #            '<a href="https://www.openaire.eu/support/helpdesk">'
 #            'helpdesk</a> directly.'
 #        ),
-#        'recipients': ['info@zenodo.org'],
+#        'recipients': ['support@sciencerepository.dk'],
 #    },
     {
         'key': 'partnership',
@@ -156,7 +156,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'interested in using zenodo.sciencedata.dk as archive for your papers, software '
             'or data, please provide details for your usecase.'
             ),
-        'recipients': ['cloud@deic.dk'],
+        'recipients': ['support@sciencerepository.dk'],
     },
     {
         'key': 'tech-support',
@@ -173,22 +173,22 @@ SUPPORT_ISSUE_CATEGORIES = [
             '<strong>Do not disclose your password or REST API access tokens.'
             '</strong>'
             ),
-        'recipients': ['cloud@deic.dk'],
+        'recipients': ['support@sciencerepository.dk'],
     },
     {
         'key': 'other',
         'title': 'Other',
         'description': (
             'Questions which do not fit into any other category.'),
-        'recipients': ['cloud@deic.dk'],
+        'recipients': ['support@sciencerepository.dk'],
     },
 ]
 
 #: Email address of sender.
-SUPPORT_SENDER_EMAIL = 'cloud@deic.dk'
+SUPPORT_SENDER_EMAIL = 'support@sciencerepository.dk'
 
 #: Name of the sender
 SUPPORT_SENDER_NAME = 'Zenodo'
 
 #: Email address for support.
-SUPPORT_SUPPORT_EMAIL = ['cloud@deic.dk']
+SUPPORT_SUPPORT_EMAIL = ['support@sciencerepository.dk']

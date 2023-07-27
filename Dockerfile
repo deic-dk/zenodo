@@ -32,15 +32,10 @@ RUN apt-get update \
     && rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/* \
     && find /usr/share/doc -depth -type f ! -name copyright -delete
 
-# Include /usr/local/bin in path.
-RUN echo "export PATH=${PATH}:/usr/local/bin >> ~/.bashrc"
-
 # Basic Python tools
 RUN pip install --upgrade pip setuptools ipython wheel uwsgi pipdeptree
 
 USER root
-
-echo "export VIRTUAL_ENV=/usr/local" >> /home/zenodo/.bashrc
 
 # NPM
 COPY ./scripts/setup-npm.sh /tmp
@@ -70,40 +65,46 @@ RUN pip install -e .[postgresql,elasticsearch2,all] \
     && python -O -m compileall .
 
 # Install npm dependencies and build assets.
-RUN npm install npm@latest -g
-RUN zenodo npm --pinned-file /code/zenodo/package.pinned.json \
-    && cd ${INVENIO_INSTANCE_PATH}/static \
-    && npm install \
-    && cd /code/zenodo \
-    && zenodo collect -v && zenodo assets build
+#RUN npm install npm@6.14.17 -g
+#RUN npm install strip-ansi --save
+RUN zenodo npm --pinned-file /code/zenodo/package.pinned.json
+# Replace "git" with "git+https" protocol for git dependencies
+RUN sed -i 's/git\:\/\/github\.com/git+https\:\/\/github\.com/g' /code/zenodo/package.pinned.json && \
+sed -i 's|git://github.com/|https://github.com/|' ${INVENIO_INSTANCE_PATH}/static/package.json
 
-#USER root
+RUN git config --global url."https://".insteadOf git://
+
+RUN cd ${INVENIO_INSTANCE_PATH}/static \
+    && npm install
+RUN cd /code/zenodo \
+    && zenodo collect -v && zenodo assets build
 
 RUN sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers && \
     sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers && \
-    adduser --uid 1000 --disabled-password --gecos '' zenodo && \
-    chown -R zenodo:zenodo /code ${INVENIO_INSTANCE_PATH}
+    adduser --uid 80 --disabled-password --gecos '' www && \
+    chown -R www:www /code ${INVENIO_INSTANCE_PATH}
 
-RUN echo "zenodo:secret" | chpasswd
-RUN echo "zenodo ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/zenodo && chmod 0440 /etc/sudoers.d/zenodo
+# Include /usr/local/bin in path.
+RUN echo "export PATH=${PATH}:/usr/local/bin" >> /home/www/.bashrc && \
+echo "export VIRTUAL_ENV=/usr/local" >> /home/www/.bashrc
+
+RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
+    
+RUN echo "www:secret" | chpasswd
+RUN echo "www ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/www && chmod 0440 /etc/sudoers.d/www
 
 RUN mkdir -p /usr/local/var/data && \
-    chown zenodo:zenodo /usr/local/var/data -R && \
+    chown www:www /usr/local/var/data -R && \
     mkdir -p /usr/local/var/run && \
-    chown zenodo:zenodo /usr/local/var/run -R && \
+    chown www:www /usr/local/var/run -R && \
     mkdir -p /var/log/zenodo && \
-    chown zenodo:zenodo /var/log/zenodo -R
+    chown www:www /var/log/zenodo -R
 
-#COPY ./docker/docker-entrypoint.sh /
-
-<<<<<<< HEAD
-RUN cd /code/zenodo && python setup.py install
-=======
->>>>>>> branch 'master' of https://github.com/deic-dk/zenodo.git
 RUN sed -i "s|'force_https': True|'force_https': False|" /usr/local/lib/python2.7/site-packages/invenio_app/config.py
 
-USER zenodo
-VOLUME ["/code/zenodo"]
+USER www
+#VOLUME ["/code/zenodo"]
 #ENTRYPOINT ["/docker-entrypoint.sh"]
 ENTRYPOINT ["/code/zenodo/docker/docker-entrypoint.sh"]
-CMD ["zenodo", "run", "-h", "0.0.0.0"]
+#CMD ["zenodo", "run", "-h", "0.0.0.0"]
+

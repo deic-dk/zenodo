@@ -52,7 +52,7 @@ def datacite_register(pid_value, record_uuid):
     """
     try:
         record = Record.get_record(record_uuid)
-        current_app.logger.warn('Minting. '+pid_value+':'+record_uuid+':'+record['doi'])
+        current_app.logger.warn('Minting. '+str(pid_value)+':'+str(record_uuid)+':'+str(record['doi']))
         # Bail out if not a Zenodo DOI.
         if not is_local_doi(record['doi']):
             return

@@ -90,12 +90,12 @@ def _(x):
 
 
 #: System sender email address
-ZENODO_SYSTEM_SENDER_EMAIL = 'cloud@deic.dk'
+ZENODO_SYSTEM_SENDER_EMAIL = 'support@sciencedata.dk'
 #: Email address of admins
-ZENODO_ADMIN_EMAIL = 'cloud@deic.dk'
+ZENODO_ADMIN_EMAIL = 'support@sciencedata.dk'
 
 #: Email address for support.
-SUPPORT_EMAIL = "cloud@deic.dk"
+SUPPORT_EMAIL = "support@sciencedata.dk"
 MAIL_SUPPRESS_SEND = False
 
 #SECURITY_CONFIRM_URL = '/confirm'
@@ -105,13 +105,13 @@ MAIL_SUPPRESS_SEND = False
 FIXTURES_FILES_LOCATION = '/usr/local/var/instance/data'
 FIXTURES_ARCHIVE_LOCATION = '/usr/local/var/instance/archive'
 
-MAIL_SERVER = '127.0.0.1'
-MAIL_PORT = 25
-MAIL_USERNAME = 'zenodo'
-MAIL_PASSWORD = ''
-MAIL_USE_TLS = False
+MAIL_SERVER = "mailhotel.i2.dk"
+MAIL_PORT = 587
+MAIL_USERNAME = "no-reply@sciencedata.dk"
+MAIL_PASSWORD = ""
+MAIL_USE_TLS = True
 MAIL_USE_SSL = False
-MAIL_DEFAULT_SENDER = 'cloud@deic.dk'
+MAIL_DEFAULT_SENDER = "no-reply@sciencerepository.dk"
 
 #with open('/tmp/test.txt', 'w') as f:
 #    f.write(current_app.config['FIXTURES_FILES_LOCATION'])
@@ -121,7 +121,7 @@ MAIL_DEFAULT_SENDER = 'cloud@deic.dk'
 #: Disable Content Security Policy headers.
 APP_DEFAULT_SECURE_HEADERS['content_security_policy'] = {}
 # NOTE: These should be set explicitly inside ``invenio.cfg`` for development,
-# if one wants to run wihtout ``FLASK_DEBUG`` enabled.
+# if one wants to run without ``FLASK_DEBUG`` enabled.
 # APP_DEFAULT_SECURE_HEADERS['force_https'] = False
 # APP_DEFAULT_SECURE_HEADERS['session_cookie_secure'] = False
 
@@ -164,12 +164,12 @@ DEPOSIT_DATACITE_MINTING_ENABLED = True
 
 # Debug
 # =====
-#: Do not allow DebugToolbar to redirects redirects.
+#: Do not allow DebugToolbar to redirect redirects.
 DEBUG_TB_INTERCEPT_REDIRECTS = False
 
 # Assets
 # ======
-#: Switch of assets debug.
+#: Switch of assets debug. - FO: Don't swith this on. Things crash...
 ASSETS_DEBUG = False
 #: Switch of automatic building.
 ASSETS_AUTO_BUILD = False
@@ -538,17 +538,17 @@ OPENAIRE_SCHEMAS_HOST = 'zenodo.org'
 OPENAIRE_JSONRESOLVER_GRANTS_HOST = 'zenodo.org'
 #: OpenAIRE data source IDs for Zenodo.
 OPENAIRE_ZENODO_IDS = {
-    'publication': 'opendoar____::2659',
-    'dataset': 'opendoar____::2659',
-    'software': 'opendoar____::2659',
-    'other': 'opendoar____::2659'
+    'publication': 're3data_____::r3d100013759',#'opendoar____::2659',
+    'dataset': 're3data_____::r3d100013759',
+    'software': 're3data_____::r3d100013759',
+    'other': 're3data_____::r3d100013759'
 }
 #: OpenAIRE ID namespace prefixes for Zenodo.
 OPENAIRE_NAMESPACE_PREFIXES = {
-    'publication': 'od______2659',
-    'dataset': 'od______2659',
-    'software': 'od______2659',
-    'other': 'od______2659'
+    'publication': 'r37b0ad08687',#'od______2659',
+    'dataset': 'r37b0ad08687',
+    'software': 'r37b0ad08687',
+    'other': 'r37b0ad08687'
 }
 #: OpenAIRE API endpoint.
 OPENAIRE_API_URL = 'http://dev.openaire.research-infrastructures.eu/is/mvc/api/results'
@@ -1334,7 +1334,7 @@ OAISERVER_XSL_URL = '/static/xsl/oai2.xsl'
 # REST
 # ====
 #: Enable CORS support.
-REST_ENABLE_CORS = True
+REST_ENABLE_CORS = False # True
 #: Enable specifying export format via querystring
 REST_MIMETYPE_QUERY_ARG_NAME = 'format'
 
