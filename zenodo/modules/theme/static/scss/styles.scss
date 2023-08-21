@@ -44,6 +44,7 @@ $fa-font-path: "/static/node_modules/font-awesome/fonts";
 @import "communities";
 @import "deposit";
 @import "github/github";
+@import "sciencedata/sciencedata";
 
 // CSS code to allow `ng-csp="no-inline-css"`
 [ng\:cloak],
@@ -99,4 +100,59 @@ ng\:form {
 
 div.well {
 	background-color: #f0f4f0;
+}
+
+// ScienceData icon
+
+@font-face {
+    font-family: 'sciencedata';
+    src: url('/static/css/sciencedata/fonts/sciencedata.eot');
+    src: url('/static/css/sciencedata/fonts/sciencedata.eot?#iefix') format('embedded-opentype'),
+         url('/static/css/sciencedata/fonts/sciencedata.woff') format('woff'),
+         url('/static/css/sciencedata/fonts/sciencedata.ttf') format('truetype'),
+         url('/static/css/sciencedata/fonts/sciencedata.svg#sciencedata') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+.icon-sd:before, .icon-sciencedata:before, .fa-sciencedata:before, .fa-sd:before {
+    display: inline-block;
+    font-family: 'sciencedata';
+    font-style: normal;
+    font-weight: bold;
+    line-height: 1;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+    color: #555;
+    position: relative;
+    top: 4px;
+    right: 2px;
+    font-size: 18px;
+}
+
+h1 .icon-sd:before, h1 .icon-sciencedata:before, h1 .fa-sciencedata:before, h1 .fa-sd:before {
+    top: 22px;
+    font-size: 68px;
+    font-weight: 800;
+    margin-right: 4px;
+}
+
+h1 .icon-sd:before, button.btn  .icon-sciencedata:before, button.btn  .fa-sciencedata:before, button.btn  .fa-sd:before {
+    top: 3px;
+    right: 3px;
+    margin-left: 3px;
+}
+
+.icon-sd:before{content:'\0042';}
+.fa-sciencedata:before{content:'\0042';}
+.icon-sciencedata:before{content:'\0042';}
+
+.panel-heading button.btn {
+  bottom: 4px;
+  position: relative;
+  left: 7px;
+}
+
+.sd_button {
+  bottom: 2px;
+  position: relative;
 }

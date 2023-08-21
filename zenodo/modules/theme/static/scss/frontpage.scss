@@ -63,10 +63,43 @@
   width: 68%;
 }
 
+.footer .footer-menu .col-xs-12>.row {
+	padding-top: 6px;
+}
+
 @media(max-width: 768px){
   #popout {
     right: 92px;
   }
+  .footer-menu .col-xs-2 {
+		width: auto;
+	}
+	.footer .row {
+		padding-top: 12px;
+	}
+	.navbar-search input.search {
+		width: 100%;
+	}
+	.communities .dropdown-menu {
+		min-width: 100px;
+		top: 10px;
+	}
+	.communities .dropdown-toggle {
+		bottom: 24px;
+	}
+	#invenio-search .col-md-8 {
+		padding-right: 11px;
+		width: auto;
+	}
+	#invenio-search .col-md-offset-2 {
+		width: auto;
+	}
+	.deposit-panel .panel-heading {
+		overflow-x: auto;
+	}
+	.footer .footer-menu .col-xs-12>.row {
+		padding-top: 12px;
+	}
 }
 
 

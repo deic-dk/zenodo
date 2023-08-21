@@ -1,0 +1,118 @@
+.ui-widget-header {
+    background: #395058;
+    border: 1px solid #395058;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+ul.jqueryFileTree {
+	font-family: Verdana, sans-serif;
+	font-size: 11px;
+	line-height: 19px;
+	padding: 0px;
+	margin: 0px;
+}
+
+ul.jqueryFileTree LI {
+	list-style: none;
+	padding: 0px;
+	padding-left: 20px;
+	margin: 0px;
+	white-space: nowrap;
+}
+
+ul.jqueryFileTree A {
+	color: #333;
+	text-decoration: none;
+	display: block;
+	padding: 0px 2px;
+}
+
+ul.jqueryFileTree A:hover {
+	background: #BDF;
+}
+
+ul.jqueryFileTree .chosen {
+	font-weight: bold;
+}
+
+.icon-angle-right::before {
+    content: '\e8a8';
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+    position: absolute;
+    right: .3em;
+    top: 50%;
+    width: 21px;
+    margin: -10px 0 0 0;
+    padding: 1px;
+    height: 20px;
+}
+
+/* Core Styles */
+.jqueryFileTree li.directory { background: url(../../img/jqueryFileTreedirectory.png) left top no-repeat; }
+.jqueryFileTree li.expanded { background: url(../../img/jqueryFileTreefolder_open.png) left top no-repeat; }
+.jqueryFileTree li.file { background: url(../../img/jqueryFileTreefile.png) left top no-repeat; }
+.jqueryFileTree li.wait { background: url(../../img/jqueryFileTreespinner.png) left top no-repeat; }
+/* File Extensions*/
+.jqueryFileTree li.ext_3gp { background: url(../../img/jqueryFileTreefilm.png) left top no-repeat; }
+.jqueryFileTree li.ext_afp { background: url(../../img/jqueryFileTreecode.png) left top no-repeat; }
+.jqueryFileTree li.ext_afpa { background: url(../../img/jqueryFileTreecode.png) left top no-repeat; }
+.jqueryFileTree li.ext_asp { background: url(../../img/jqueryFileTreecode.png) left top no-repeat; }
+.jqueryFileTree li.ext_aspx { background: url(../../img/jqueryFileTreecode.png) left top no-repeat; }
+.jqueryFileTree li.ext_avi { background: url(../../img/jqueryFileTreefilm.png) left top no-repeat; }
+.jqueryFileTree li.ext_bat { background: url(../../img/jqueryFileTreeapplication.png) left top no-repeat; }
+.jqueryFileTree li.ext_bmp { background: url(../../img/jqueryFileTreepicture.png) left top no-repeat; }
+.jqueryFileTree li.ext_c { background: url(../../img/jqueryFileTreecode.png) left top no-repeat; }
+.jqueryFileTree li.ext_cfm { background: url(../../img/jqueryFileTreecode.png) left top no-repeat; }
+.jqueryFileTree li.ext_cgi { background: url(../../img/jqueryFileTreecode.png) left top no-repeat; }
+.jqueryFileTree li.ext_com { background: url(../../img/jqueryFileTreeapplication.png) left top no-repeat; }
+.jqueryFileTree li.ext_cpp { background: url(../../img/jqueryFileTreecode.png) left top no-repeat; }
+.jqueryFileTree li.ext_css { background: url(../../img/jqueryFileTreecss.png) left top no-repeat; }
+.jqueryFileTree li.ext_doc { background: url(../../img/jqueryFileTreedoc.png) left top no-repeat; }
+.jqueryFileTree li.ext_exe { background: url(../../img/jqueryFileTreeapplication.png) left top no-repeat; }
+.jqueryFileTree li.ext_gif { background: url(../../img/jqueryFileTreepicture.png) left top no-repeat; }
+.jqueryFileTree li.ext_fla { background: url(../../img/jqueryFileTreeflash.png) left top no-repeat; }
+.jqueryFileTree li.ext_h { background: url(../../img/jqueryFileTreecode.png) left top no-repeat; }
+.jqueryFileTree li.ext_htm { background: url(../../img/jqueryFileTreehtml.png) left top no-repeat; }
+.jqueryFileTree li.ext_html { background: url(../../img/jqueryFileTreehtml.png) left top no-repeat; }
+.jqueryFileTree li.ext_jar { background: url(../../img/jqueryFileTreejava.png) left top no-repeat; }
+.jqueryFileTree li.ext_jpg { background: url(../../img/jqueryFileTreepicture.png) left top no-repeat; }
+.jqueryFileTree li.ext_jpeg { background: url(../../img/jqueryFileTreepicture.png) left top no-repeat; }
+.jqueryFileTree li.ext_js { background: url(../../img/jqueryFileTreescript.png) left top no-repeat; }
+.jqueryFileTree li.ext_lasso { background: url(../../img/jqueryFileTreecode.png) left top no-repeat; }
+.jqueryFileTree li.ext_log { background: url(../../img/jqueryFileTreetxt.png) left top no-repeat; }
+.jqueryFileTree li.ext_m4p { background: url(../../img/jqueryFileTreemusic.png) left top no-repeat; }
+.jqueryFileTree li.ext_mov { background: url(../../img/jqueryFileTreefilm.png) left top no-repeat; }
+.jqueryFileTree li.ext_mp3 { background: url(../../img/jqueryFileTreemusic.png) left top no-repeat; }
+.jqueryFileTree li.ext_mp4 { background: url(../../img/jqueryFileTreefilm.png) left top no-repeat; }
+.jqueryFileTree li.ext_mpg { background: url(../../img/jqueryFileTreefilm.png) left top no-repeat; }
+.jqueryFileTree li.ext_mpeg { background: url(../../img/jqueryFileTreefilm.png) left top no-repeat; }
+.jqueryFileTree li.ext_ogg { background: url(../../img/jqueryFileTreemusic.png) left top no-repeat; }
+.jqueryFileTree li.ext_pcx { background: url(../../img/jqueryFileTreepicture.png) left top no-repeat; }
+.jqueryFileTree li.ext_pdf { background: url(../../img/jqueryFileTreepdf.png) left top no-repeat; }
+.jqueryFileTree li.ext_php { background: url(../../img/jqueryFileTreephp.png) left top no-repeat; }
+.jqueryFileTree li.ext_png { background: url(../../img/jqueryFileTreepicture.png) left top no-repeat; }
+.jqueryFileTree li.ext_ppt { background: url(../../img/jqueryFileTreeppt.png) left top no-repeat; }
+.jqueryFileTree li.ext_psd { background: url(../../img/jqueryFileTreepsd.png) left top no-repeat; }
+.jqueryFileTree li.ext_pl { background: url(../../img/jqueryFileTreescript.png) left top no-repeat; }
+.jqueryFileTree li.ext_py { background: url(../../img/jqueryFileTreescript.png) left top no-repeat; }
+.jqueryFileTree li.ext_rb { background: url(../../img/jqueryFileTreeruby.png) left top no-repeat; }
+.jqueryFileTree li.ext_rbx { background: url(../../img/jqueryFileTreeruby.png) left top no-repeat; }
+.jqueryFileTree li.ext_rhtml { background: url(../../img/jqueryFileTreeruby.png) left top no-repeat; }
+.jqueryFileTree li.ext_rpm { background: url(../../img/jqueryFileTreelinux.png) left top no-repeat; }
+.jqueryFileTree li.ext_deb { background: url(../../img/jqueryFileTreelinux.png) left top no-repeat; }
+.jqueryFileTree li.ext_ruby { background: url(../../img/jqueryFileTreeruby.png) left top no-repeat; }
+.jqueryFileTree li.ext_sql { background: url(../../img/jqueryFileTreedb.png) left top no-repeat; }
+.jqueryFileTree li.ext_swf { background: url(../../img/jqueryFileTreeflash.png) left top no-repeat; }
+.jqueryFileTree li.ext_tif { background: url(../../img/jqueryFileTreepicture.png) left top no-repeat; }
+.jqueryFileTree li.ext_tiff { background: url(../../img/jqueryFileTreepicture.png) left top no-repeat; }
+.jqueryFileTree li.ext_txt { background: url(../../img/jqueryFileTreetxt.png) left top no-repeat; }
+.jqueryFileTree li.ext_vb { background: url(../../img/jqueryFileTreecode.png) left top no-repeat; }
+.jqueryFileTree li.ext_wav { background: url(../../img/jqueryFileTreemusic.png) left top no-repeat; }
+.jqueryFileTree li.ext_wmv { background: url(../../img/jqueryFileTreefilm.png) left top no-repeat; }
+.jqueryFileTree li.ext_xls { background: url(../../img/jqueryFileTreexls.png) left top no-repeat; }
+.jqueryFileTree li.ext_xml { background: url(../../img/jqueryFileTreecode.png) left top no-repeat; }
+.jqueryFileTree li.ext_zip { background: url(../../img/jqueryFileTreezip.png) left top no-repeat; }
+.jqueryFileTree li.ext_gz { background: url(../../img/jqueryFileTreezip.png) left top no-repeat; }

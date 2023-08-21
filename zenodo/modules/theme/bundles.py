@@ -67,6 +67,7 @@ js = NpmBundle(
         'js/zenodo/*.js',
         'js/zenodo/filters/*.js',
         'js/github/*.js',
+        'js/sciencedata/*.js',
         'node_modules/angular-loading-bar/build/*.js',
         'node_modules/typeahead.js/dist/*.js',
         'node_modules/invenio-csl-js/dist/*.js',

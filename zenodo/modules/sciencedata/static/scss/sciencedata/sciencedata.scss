@@ -1,0 +1,89 @@
+$sciencedata-received-color: #edde3f;
+$sciencedata-received-color-text: darken($sciencedata-received-color, 17%);
+$sciencedata-processing-color: $sciencedata-received-color;
+$sciencedata-processing-color-text: darken($sciencedata-processing-color, 17%);
+$sciencedata-failed-color: #db4545;
+$sciencedata-failed-color-text: darken($sciencedata-failed-color, 17%);
+$sciencedata-deleted-color: #db4545;
+$sciencedata-deleted-color-text: darken($sciencedata-deleted-color, 17%);
+$sciencedata-published-color: #39aa56;
+$sciencedata-published-color-text: darken($sciencedata-published-color, 17%);
+
+@mixin status-border($color) {
+    background: linear-gradient(
+        to right,
+        $color 0,
+        $color 10px,
+        #fff 10px,
+        #fff 100%
+    ) no-repeat;
+}
+
+@mixin status-styling($color) {
+    h5 {
+        color: $color;
+        a {
+            color: $color;
+        }
+    }
+}
+
+.sciencedata-panels {
+
+    /* Release page */
+    .jumbotron {
+        background-color: transparent;
+
+        .row.buttons {
+            margin-top: 40px;
+        }
+    }
+
+    h1, h5 {
+        margin-top: 0;
+    }
+
+    hr {
+        margin-top: 0px;
+        margin-bottom: 2px;
+    }
+
+    .switch {
+        margin-top: 7px;
+    }
+
+    .release {
+        padding-left: 20px;
+    }
+    .release.received {
+      @include status-border($sciencedata-received-color);
+    }
+    .release.processing {
+      @include status-border($sciencedata-processing-color);
+    }
+    .release.published {
+      @include status-border($sciencedata-published-color);
+    }
+    .release.failed {
+      @include status-border($sciencedata-failed-color);
+    }
+    .release.deleted {
+      @include status-border($sciencedata-deleted-color);
+    }
+
+    .received {
+      @include status-styling($sciencedata-received-color-text);
+    }
+    .processing {
+      @include status-styling($sciencedata-processing-color-text);
+    }
+    .published {
+      @include status-styling($sciencedata-published-color-text);
+    }
+    .failed {
+      @include status-styling($sciencedata-failed-color-text);
+    }
+    .deleted {
+      @include status-styling($sciencedata-deleted-color-text);
+    }
+}

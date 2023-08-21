@@ -33,6 +33,7 @@ require([
   "js/zenodo/module",
   "js/zenodo/functions",
   "js/github/view",
+  "js/sciencedata/view",
   ], function($, Clipboard, recordCommunityCurate) {
     // On document ready bootstrap angular
     new Clipboard('.btn.clip-button');

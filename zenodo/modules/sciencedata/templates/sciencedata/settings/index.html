@@ -1,0 +1,120 @@
+{%- import "sciencedata/settings/helpers.html" as helpers with context %}
+
+{%- if not request.is_xhr and not xhr %}
+{%- extends config.SCIENCEDATA_SETTINGS_TEMPLATE %}
+{%- block css -%}
+{{ super() }}
+{% include "zenodo_theme/css.html" %}
+<link href="/static/css/jqueryFileTree/jqueryFileTree.css" rel="stylesheet">
+<link href="/static/css/jqueryFileTree/jquery-ui-1.10.0.custom.css" rel="stylesheet">
+{%- endblock css -%}
+
+{%- block javascript %}
+{{ super() }}
+{% include "zenodo_theme/javascript.html" %}
+<script type="text/javascript" src="/static/js/sciencedata/jquery-ui-1.10.0.custom.js"></script>
+<script type="text/javascript" src="/static/js/sciencedata/jqueryFileTree.js"></script>
+<script type="text/javascript">
+require(['jquery', 'js/sciencedata/view'], function($, view) {
+  $(document).ready(function(){
+    /* These variables are accessed by view.js as e.g. $(config.sciencedata_view) */
+    view({
+      proxy_url: "{{url_for('sciencedata.sciencedata_proxy', path=path)}}",
+      sciencedata_button: "button[name='browse-sciencedata']", // Well, this button is, independently of this, created by helpers.panel_start... See below.
+      index_url: "{{url_for('sciencedata.index')}}",
+      add_sciencedata_object_url: "{{url_for('sciencedata.add_sciencedata_object_url')}}",
+      sciencedata_view: ".sciencedata-panels",
+      sciencedata_deposits: "#sciencedata-deposits"
+    });
+  });
+});
+</script>
+{%- endblock %}
+{%- endif %}
+
+{%- block settings_content %}
+<div class="sciencedata-panels">
+{%- if sciencedata_user %}
+{{ helpers.panel_start(_('ScienceData'),
+  with_body=False,
+  icon="",
+  btn='Browse',
+  btn_icon='fa fa-sciencedata',
+  btn_name='browse-sciencedata',
+  btn_text=_('Choose file or folder '),
+  id="sciencedata-view",
+) }}
+{%- endif %}
+<div class="panel-body">
+  <h1 align="center"><i class="fa fa-sciencedata"></i> Get started</h1>
+  <div class="row">
+  {%- if sciencedata_user %}
+    <div class="col-md-4">
+      <h2><strong>1</strong> <small>Select what to preserve</small></h2>
+      <hr />
+      Click "Browse", select the object (file or directory)
+      you want to preserve and name your deposit.
+    </div>
+    <div class="col-md-4">
+      <h2><strong>2</strong> <small>Describe your data</small></h2>
+      <hr />
+      Click "New version" and fill in the metadata form. The form will be
+      pre-filled with metadata from ScienceData - if present. If not present,
+      only basic information will be pre-filled for the first version.
+    </div>
+    <div class="col-md-4">
+      <h2><strong>3</strong> <small>Get the badge</small></h2>
+      <hr />
+      Click publish and return here. For each deposit, below, a DOI badge will appear - which you can copy-paste on other web pages.
+    </div>
+  {%- else %}
+    <div>
+      <h2>Connect with ScienceData</h2>
+      {%- if message %}
+        <strong>{{ message }}</strong>
+        <hr />
+      {%- endif %}
+      To connect with ScienceData, you need to <a href="https://sciencedata.dk/index.php/settings/personal#panel-userapps">go to ScienceData and enable ORCID</a>.
+    </div>
+  {%- endif %}
+  </div>
+  {%- if sciencedata_user %}
+  <div class="row">
+    <div class="col-md-4" align="center">
+      <br/>
+    </div>
+    <div class="col-md-4">
+      <br/>
+    </div>
+    <div class="col-md-4" align="center">
+      <a href="https://doi.org/10.82163/sciencerepository.8475"><img src="{{ url_for('invenio_formatter_badges.badge', title='doi', value='10.82163/sciencerepository.8475', ext='svg') }}" alt="10.82163/sciencerepository.8475"></a><br><small class="text-muted">(example)</small>
+    </div>
+  </div>
+  {%- endif %}
+</div>
+{{ helpers.panel_end(with_body=False) }}
+
+{{ helpers.panel_start(_('Assets'), with_body=False, id="sciencedata-deposits") }}
+{%- if sd_objects %}
+  {%- for id, sd_object in sd_objects if sd_object.instance %}
+    {%- if loop.first %}
+    {%- endif %}
+    {% include "sciencedata/settings/index_item.html" with context %}
+    {%- if loop.last %}
+    {%- endif %}
+  {%- endfor %}
+{% endif %}
+{{ helpers.panel_end(with_body=False) }}
+
+<!-- This will be copied into the chooser dialog -->
+{%- if sd_groups %}
+  <select id="group_folder" style="position: absolute;right: 16px; display: none">
+    <option value="" selected="selected">Home</option>
+  {%- for group in sd_groups %}
+    <option value="{{ group }}">{{ group }}</option>
+  {%- endfor %}
+  </select>
+{% endif %}
+
+</div>
+{%- endblock %}
