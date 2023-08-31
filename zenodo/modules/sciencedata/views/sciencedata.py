@@ -13,7 +13,7 @@ import humanize
 import pytz
 from dateutil.parser import parse
 from flask import Blueprint, abort, current_app, render_template, \
-    request, Response
+    request, Response, redirect, url_for
 from flask_babelex import gettext as _
 from flask_breadcrumbs import register_breadcrumb
 from flask_login import current_user, login_required
@@ -33,6 +33,7 @@ from ..models import Release, ScienceDataObject
 from ..errors import AccessError, NoORCIDError, MultipleORCIDAccountsError, NoORCIDAccountError
 from ..proxies import current_sciencedata
 
+
 blueprint = Blueprint(
     'sciencedata',
     __name__,
@@ -48,7 +49,8 @@ def getPreservedObjects():
     db_sciencedata_objects = ScienceDataObject.query.filter_by().all()
     for sd_object in db_sciencedata_objects:
         current_app.logger.warn('getting '+format(sd_object))
-        sd_objects[str(sd_object.id)] = {'instance': sd_object, 'latest': ScienceDataRelease(sd_object.latest_release())}
+        sd_objects[str(sd_object.id)] = {'instance': sd_object,
+                                         'latest': ScienceDataRelease(sd_object, sd_object.latest_release())}
     return sd_objects.items()
 
 def getScienceDataUser():
@@ -57,7 +59,7 @@ def getScienceDataUser():
     orcid = sciencedata.orcid
     if orcid == "":
         raise NoORCIDError()
-    sciencedata_user = sciencedata.getScienceDataUser
+    sciencedata_user = sciencedata.scienceDataUser
     if sciencedata_user == False:
         raise MultipleORCIDAccountsError(orcid=orcid)
     if not sciencedata_user or sciencedata_user == "":
@@ -87,11 +89,11 @@ def prettyjson(val):
     """Get pretty-printed json."""
     return json.dumps(json.loads(val), indent=4)
 
-
 @blueprint.app_template_filter('release_pid')
 def release_pid(release):
     """Get PID of Release record."""
-    return ScienceDataRelease(release).pid
+    sd_object = ScienceDataObject.get(release.sciencedata_object_id)
+    return ScienceDataRelease(sd_object, release).pid
 
 @blueprint.app_template_filter('basename')
 def basename(path):
@@ -148,20 +150,16 @@ def sciencedataobject(path):
     group = request.args['group']
     user_id = current_user.id
     sd_objects = getPreservedObjects()
-
     sd_object = next((sd_object for sd_object_id, sd_object in sd_objects
                   if sd_object['instance'].user_id == user_id and sd_object['instance'].path == '/'+path and sd_object['instance'].group == group), {})
     if not sd_object:
         sdo = next(sd_object for sd_object_id, sd_object in sd_objects)
         current_app.logger.warn('not found '+format(sdo['instance'].user_id)+':'+path+':'+format(sdo['instance'].path)+':'+group+':'+format(sdo['instance'].group))
         abort(404)
-
     sd_object_instance = sd_object['instance']
     current_app.logger.warn('found '+format(sd_object_instance.user_id)+':'+path+':'+format(sd_object_instance.path)+':'+group+':'+format(sd_object_instance.group))
-
-
     releases = [
-        current_sciencedata.release_api_class(r) for r in (
+        ScienceDataRelease(sd_object['instance'], r) for r in (
             sd_object_instance.releases.order_by(db.desc(Release.created)).all()
             if sd_object_instance.id else []
         )
@@ -171,13 +169,48 @@ def sciencedataobject(path):
         sd_object=sd_object_instance,
         sd_object_info=sd_object,
         releases=releases,
+        user_id=int(user_id),
+        path=path,
+        group=group,
+        serializer=current_sciencedata.record_serializer,
+    )
+
+@blueprint.route('/sciencedataobject_by_id/<string:sciencedata_object_id>', methods=["GET", 'POST'])
+@login_required
+@register_breadcrumb(blueprint, 'breadcrumbs.settings.sciencedata.sd_object',
+                     _('Asset'))
+def sciencedataobject_by_id(sciencedata_object_id):
+    """Display selected preserved object."""
+    user_id = current_user.id
+    sd_objects = getPreservedObjects()
+    sd_object = next((sd_object for sd_object_id, sd_object in sd_objects
+                  if sd_object['instance'].user_id == user_id and sd_object_id == sciencedata_object_id), {})
+    if not sd_object:
+        sdo = next(sd_object for sd_object_id, sd_object in sd_objects)
+        current_app.logger.warn('not found '+':'+format(sdo['instance'].id)+':'+sciencedata_object_id+':')
+        abort(404)
+    sd_object_instance = sd_object['instance']
+    releases = [
+        ScienceDataRelease(sd_object['instance'], r) for r in (
+            sd_object_instance.releases.order_by(db.desc(Release.created)).all()
+            if sd_object_instance.id else []
+        )
+    ]
+    return render_template(
+        current_app.config['SCIENCEDATA_TEMPLATE_VIEW'],
+        sd_object=sd_object_instance,
+        sd_object_info=sd_object,
+        releases=releases,
+        user_id=int(user_id),
+        path=sd_object['instance'].path,
+        group=sd_object['instance'].group,
         serializer=current_sciencedata.record_serializer,
     )
 
 @blueprint.route('/add', methods=["GET", "POST"])
 @login_required
 def add_sciencedata_object_url():
-    """Creates entry for path in DB."""
+    """Create entry for path in DB."""
     path = request.args['path']
     name = request.args['name']
     kind = request.args['kind']
@@ -196,21 +229,49 @@ def add_sciencedata_object_url():
 @blueprint.route('/create_version', methods=["GET", "POST"])
 @login_required
 def create_version():
-    """Creates new deposit or new version of deposit."""
+    """Create new deposit or new version of deposit."""
     path = request.args['path']
-    name = request.args['name']
-    kind = request.args['kind']
     group = request.args['group']
-    current_app.logger.warn('creating '+request.method+' '+format(current_user.id)+':'+format(path)+':'+format(name)+':'+format(kind)+':'+format(group))
-    sd_object = ScienceDataObject.enable(current_user.id, path, name, kind, group)
+    user_id = current_user.id
+    sd_objects = getPreservedObjects()
+    sd_object = next((sd_object for sd_object_id, sd_object in sd_objects
+                  if sd_object['instance'].user_id == user_id and sd_object['instance'].path == '/'+path and sd_object['instance'].group == group), {})
+    new_version = 1
+    if sd_object['latest'] is not None:
+        latest_version = int(sd_object['latest'].version)
+        if latest_version:
+            new_version = latest_version+1
+    current_app.logger.warn('creating '+request.method+' '+format(user_id)+':'+format(path)+':'+format(group)+':'+format(new_version))
+    sd_release = Release.create(sd_object['instance'], str(new_version))
+    sciencedata_release = ScienceDataRelease(sd_object['instance'], sd_release)
+    sciencedata_release.publish()
     db.session.commit()
-    return render_template(
-        current_app.config['SCIENCEDATA_TEMPLATE_VIEW'],
-        sd_object=sd_object,
-        xhr=True,
-        releases=[],
-        serializer=current_sciencedata.record_serializer,
-    )
+    return ""
+
+@blueprint.route('/remove_object', methods=["GET", "POST"])
+@login_required
+def remove_object():
+    """"Remove entry for path in DB."""
+    sciencedata_object_id = request.args['sciencedata_object_id']
+    user_id = current_user.id
+    sd_objects = getPreservedObjects()
+    sd_object = next((sd_object for sd_object_id, sd_object in sd_objects
+                  if sd_object['instance'].user_id == user_id and sd_object_id == sciencedata_object_id), {})
+    if not sd_object:
+        sdo = next(sd_object for sd_object_id, sd_object in sd_objects)
+        current_app.logger.warn('not found '+':'+format(sdo['instance'].id)+':'+sciencedata_object_id+':')
+        abort(404)
+    releases = [
+        r for r in (
+            sd_object['instance'].releases.order_by(db.desc(Release.created)).all()
+            if sd_object['instance'].id else []
+        )
+    ]
+    for r in releases:
+        Release.delete(r)
+    ScienceDataObject.delete(sd_object['instance'])
+    db.session.commit()
+    return ""
 
 sciencedata_username = ""
 
@@ -240,3 +301,23 @@ def sciencedata_proxy(path="/"):
     current_app.logger.debug('got '+format(ret_content))
     out = Response(ret_content)
     return out
+
+
+#
+# Badge views
+#
+@blueprint.route('/badge/<path:doi>.svg')
+def badge(doi, ext='svg'):
+    """Generate a badge for a ScienceData file or folder."""
+    #pid = get_pid_of_latest_release_or_404(user_id=user_id, path=path, group=group)
+    doi = doi.replace('-', '/')
+    url = url_for('invenio_formatter_badges.badge', title='doi', value=doi, ext=ext)
+    return redirect(url)
+
+@blueprint.route('/doi/<path:doi>')
+def doi(pid):
+    """Redirect to the newest record version."""
+    #pid = get_pid_of_latest_release_or_404(user_id=user_id, path=path, group=group)
+    doi = doi.replace('-', '/')
+    return redirect('https://doi.org/{doi}'.format(doi=pid))
+
