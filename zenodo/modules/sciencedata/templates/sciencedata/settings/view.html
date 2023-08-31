@@ -9,12 +9,10 @@
 require(['jquery', 'js/sciencedata/view'], function($, view) {
   $(document).ready(function(){
     view({
-      proxy_url: "{{url_for('sciencedata.sciencedata_proxy', path=path)}}",
-      create_version_button: "button[name='create-version']",
       index_url: "{{url_for('sciencedata.index')}}",
-      add_sciencedata_object_url: "{{url_for('sciencedata.add_sciencedata_object_url')}}",
+      create_version_button: "button[name='create-version']",
+      create_version_url: "{{url_for('sciencedata.create_version')}}?path={{path}}&group={{group}}",
       sciencedata_view: ".sciencedata-panels",
-      sciencedata_deposits: "#sciencedata-deposits"
     });
   });
 });
@@ -31,14 +29,11 @@ require(['jquery', 'js/sciencedata/view'], function($, view) {
 <div class="sciencedata-panels">
   <h1><i class="fa fa-sciencedata"></i>&nbsp;{{ sd_object.name }}</h1>
   {%- if latest_success_pid %}
-  <p>{{ doi_badge(latest_success_pid.pid_value,
-                  user_id=user_id,
-                  path=request.args.get('path'),
-                  group=request.args.get('group')) }}</p>
+  <p>{{ doi_badge(doi=latest_success_pid.pid_value) }}</p>
   {%- endif %}
 
   {{ helpers.panel_start(
-    _('Published versions'),
+    _('Versions'),
     with_body=False,
     btn='New version',
     btn_icon='fa fa-sciencedata',
@@ -47,7 +42,7 @@ require(['jquery', 'js/sciencedata/view'], function($, view) {
     id="sciencedata-create-version",
   ) }}
 
-    {%- block repo_releases scoped %}
+    {%- block sd_object_releases scoped %}
     {%- for release in releases %}
     <div class="panel-body release {{release.model.status.title|lower}}">
       {%- block release_header scoped %}
@@ -56,22 +51,34 @@ require(['jquery', 'js/sciencedata/view'], function($, view) {
             {%- block release_title scoped %}
             <h5>
               <i class="fa fa-tag fa-fw"></i>
-              <a href="#" data-toggle="collapse" data-target="#{{ release.model.id }}">
-                {{ release.model.version }} {{ release.title }}
+              <a href="#" data-target="#{{ release.model.id }}">
+              {%- if release.title %}
+                {{release.title}}
+              {%- else %}
+                {{release.sciencedata_object.name}}-v{{release.version}}
+              {%- endif %}
               </a>
             </h5>
-            {%- if release.pid %}
             <p>
+            {%- if release.pid %}
               <a href="https://doi.org/{{release.pid.pid_value}}" class="text-muted">
                 <i class="fa fa-fw fa-barcode"></i>
                 DOI: {{release.pid.pid_value}}
               </a>
-            </p>
+            {%- elif release.model.record_id %}
+              <a href="/record/{{release.model.record_id}}" class="text-muted">
+                <i class="fa fa-fw fa-barcode"></i>
+                ID: {{release.model.record_id}}
+              </a>
             {%- endif %}
+            </p>
             <p>
-              <a href="{{'https://sciencedata.dk/index.php/files?dir={0}'.format(sd_object.path | dirname)}}" class="text-muted">
+              <a href="{{'https://sciencedata.dk/index.php/apps/files?dir={0}&group={1}'.format(sd_object.path | dirname, sd_object.group)}}" class="text-muted" data-toggle="tooltip" title="{{ _('Go to ScienceData: ') }} {{ sd_object.path }}">
                 <i class="fa fa-fw fa-sciencedata"></i>
-                {{release.model.version}}
+                {{release.sciencedata_object.path}}
+                {%- if release.sciencedata_object.group %}
+                   - group: {{release.sciencedata_object.group}}
+                {%- endif %}
               </a>
             </p>
             {%- endblock release_title %}
@@ -80,7 +87,7 @@ require(['jquery', 'js/sciencedata/view'], function($, view) {
           {%- block release_status scoped %}
           <h5>
             <i class="fa {{ release.model.status.icon }}"></i>
-            <a href="#" data-toggle="collapse" data-target="#{{ release.model.id }}">
+            <a href="#" data-target="#{{ release.model.id }}">
             {{release.model.status.title}}
             </a>
           </h5>
@@ -90,50 +97,6 @@ require(['jquery', 'js/sciencedata/view'], function($, view) {
       </div>
     </div>
     {%- endblock release_header %}
-    {%- block release_body scoped %}
-    <div id="{{ release.model.id }}" class="panel-body release {{release.model.status.title|lower}} collapse">
-      <ul class="nav nav-tabs" role="tablist">
-        {%- if release.status == 'D' %}
-        <li>
-          <a href="#{{ release.model.id }}-metadata" data-toggle="tab">{{ _('Metadata') }}</a>
-        </li>
-        {%- endif %}
-        {%- if release.model.errors %}
-        <li>
-          <a href="#{{ release.model.id }}-errors" data-toggle="tab">{{ _('Errors') }}</a>
-        </li>
-        {%- endif %}
-      </ul>
-      <div class="tab-content">
-        {%- if release.status == 'D' %}
-        {%- block releasetab_metadata scoped %}
-        <div role="tabpanel" class="tab-pane" id="{{ release.model.id }}-metadata">
-          <h4>{{_('JSON Export')}}</h4>
-          <p>
-          <small class="text-muted">
-            {{config.THEME_SITENAME | default('Invenio')}} automatically
-            retrieves metadata from ScienceData if present, i.e. if, on ScienceData,
-            you have tagged your object with the 'Zenodo' tag and filled out the schema fields.
-            If not, title, creator name and affiliation have been filled in with
-            your details, and default values have been filled in for the remaining
-            fields. You can (and should) complete the entries as with any other deposit.
-          </small>
-          </p>
-          <pre>{{ serializer.serialize(release.pid, release.record)|prettyjson }}</pre>
-        </div>
-        {%- endblock releasetab_metadata %}
-        {%- endif %}
-        {%- if release.model.errors %}
-        {%- block releasetab_errors scoped %}
-        <div role="tabpanel" class="tab-pane" id="{{ release.model.id }}-errors">
-          <h4>{{ _('Errors') }}</h4>
-          <pre>{{ release.model.errors|tojson|prettyjson }}</pre>
-        </div>
-        {%- endblock releasetab_errors %}
-        {%- endif %}
-      </div>
-    </div>
-    {%- endblock release_body %}
     {%- set is_last = loop.last %}
     {%- block release_footer scoped %}
     {%- if not is_last %}
@@ -141,7 +104,7 @@ require(['jquery', 'js/sciencedata/view'], function($, view) {
     {%- endif %}
     {%- endblock release_footer %}
     {%- endfor %}
-    {%- endblock repo_releases %}
+    {%- endblock sd_object_releases %}
   {{ helpers.panel_end() }}
   </div>
 {%- endblock %}

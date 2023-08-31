@@ -1,10 +1,10 @@
 {# -*- coding: utf-8 -*-
 #}
-{%- macro doi_badge(doi, user_id, path, modal_name='') %}
+{%- macro doi_badge(doi, modal_name='') %}
 {%- block doi_badge scoped %}
-  {% set doi_url = url_for('sciencedata_badge.latest_doi', user_id=user_id, path=path, _external=True) %}
-  {% set image_url = url_for('sciencedata_badge.index', user_id=user_id, path=path, _external=True) %}
-  {% set modal_name = modal_name or (doi | replace('/', '-')) %}
+  {% set doi_url = url_for('sciencedata.doi', doi=(doi | replace('/', '-')), _external=True) %}
+  {% set image_url = url_for('sciencedata.badge', doi=(doi | replace('/', '-')), _external=True) %}
+  {% set modal_name = modal_name or pid %}
   <span class="get-badge" data-toggle="tooltip" data-placement="bottom" title="Get the DOI badge!">
     <img data-toggle="modal" data-target="[data-modal='{{ modal_name }}']" src="{{ image_url }}" alt="{{ doi }}"/>
   </span>
@@ -18,6 +18,7 @@
               This badge points to the latest released version of your preserved object. If you want a DOI badge for a specific release, please follow the DOI link for one of the specific releases and grab badge from the archived record.
             </small>
           </p>
+          <!--  doi_url:{{ doi_url }},image_url:{{ image_url }} -->
           {% from "invenio_formatter/macros/badges.html" import badges_formats_list %}
           {{ badges_formats_list(image_url, doi_url)}}
         </div>

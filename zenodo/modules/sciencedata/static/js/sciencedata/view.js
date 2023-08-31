@@ -6,15 +6,16 @@ define(function(require, exports, module) {
 
   function initUI(config){
     init_chooserButton(config);
-    init_createVersionButton
+    init_removeObjectButtons(config);
+    init_createVersionButton(config);
     $('[data-toggle="tooltip"]').tooltip();
     $('i.error').tooltip({
       trigger: 'hover',
       animation: true,
       placement: 'top',
     });
-  }
-  
+  };
+
   return function(config) {
     initUI(config);
   };
@@ -36,17 +37,20 @@ function addScienceDataObject(config, path, name, kind, group){
         data: {path: path, name: name, kind: kind, group: group}
     })
     .done(function(data) {
-      $(config.sciencedata_deposits).html(data);
-      initUI();
+      //$(config.sciencedata_deposits).html(data);
+      $(config.sciencedata_view).html(data);
+      initUI(config);
       var text = $("button[name='create-version'] ").text()
       $("button[name='create-version']").html('<i class="fa fa-sciencedata"></i><span class="sd_button">'+text+'</span>');
     });
 }
 
 function stopSDSpin(){
-  var chooserButton = $("button[name='browse-sciencedata']");
-  var sciencedataIcon =  $("button[name='browse-sciencedata'] i.fa-sciencedata");
-  sciencedataIcon.removeClass('fa-spin');
+  $("button[name='browse-sciencedata'] i.fa-sciencedata").removeClass('fa-spin');
+}
+
+function startSDSpin(){
+  $("button[name='browse-sciencedata'] i.fa-sciencedata").addClass('fa-spin');
 }
 
 function createBrowser(chooseAction, config) {
@@ -79,9 +83,10 @@ function createBrowser(chooseAction, config) {
 }
 
 function loadFileTree(config){
-	var sciencedataIcon =  $("button[name='browse-sciencedata'] i.fa-sciencedata");
-  sciencedataIcon.addClass('fa-spin');
-	var group = $('#group_folder').val();
+  var sciencedataIcon =  $("button[name='browse-sciencedata'] i.fa-sciencedata");
+  $('button[title="close"]').click(function(ev){$("button[name='browse-sciencedata'] i.fa-sciencedata").removeClass('fa-spin');})
+  startSDSpin();
+  var group = $('#group_folder').val();
   $("#sciencedata_browser_div").fileTree({
     //root: '/',
     script: '/account/settings/sciencedata/sciencedata_proxy/apps/chooser/jqueryFileTree.php',
@@ -99,7 +104,7 @@ function loadFileTree(config){
   // double-click
   function(file) {
       var kind = $('#sciencedata_browser_div .chosen').attr('rel').endsWith('/')?'dir':'file';
-      var name = $('#sciencedata_object_name').val();;
+      var name = $('#sciencedata_object_name').val();
       var group = $('select#group_folder').val();
       addScienceDataObject(config, file, name, kind, group);
       stopSDSpin();
@@ -108,23 +113,52 @@ function loadFileTree(config){
 }
 
 function init_createVersionButton(config){
-  var text = $("button[name='create-version'] ").text()
-  $("button[name='create-version']").html('<i class="fa fa-sciencedata"></i><span class="sd_button">'+text+'</span>');
   var createVersionButton = $(config.create_version_button);
+  var text = createVersionButton.text();
+  createVersionButton.html('<i class="fa fa-sciencedata"></i><span class="sd_button">'+text+'</span>');
   createVersionButton.on('click', function(ev) {
-    
+    startSDSpin();
+    $.ajax({
+      url: config.create_version_url,
+      type: 'GET'
+    })
+    .done(function(data) {
+      stopSDSpin();
+      location.reload();
+    });
   });
 }
 
+function init_removeObjectButtons(config){
+ $('.release').each(function(el){
+    var removeObjectButton = $(this).find(config.remove_object_button).first();
+    var sciencedata_object_id = $(this).attr('id');
+    removeObjectButton.on('click', function(ev) {
+      if(confirm("This will remove the connection of this deposit to ScienceData. New versions of the ScienceData object will have to be published manually or with a new DOI.")){
+        $.ajax({
+          url: config.remove_object_url,
+          data: {sciencedata_object_id: sciencedata_object_id},
+          type: 'GET'
+        })
+        .done(function(data) {
+          location.reload();
+        });
+      }
+    });
+ });
+}
+
 function init_chooserButton(config){
-    if($('.ScienceData').length){
+  // ScienceData is the class name of the chooser dialog
+  // If config.create_version_button is set, we're in the view.html template
+    if($('.ScienceData').length || config.create_version_button){
         return;
     }
     var chooserButton = $(config.sciencedata_button);
     chooserButton.after('<div id="sciencedata_browser_div"></div>');
-    var text = $("button[name='browse-sciencedata'] ").text()
-    $("button[name='browse-sciencedata']").html('<i class="fa fa-sciencedata"></i><span class="sd_button">'+text+'</span>');
-     chooserDialog = createBrowser(addScienceDataObject, config);
+    var text = chooserButton.text()
+    chooserButton.html('<i class="fa fa-sciencedata"></i><span class="sd_button">'+text+'</span>');
+    chooserDialog = createBrowser(addScienceDataObject, config);
     $('.ui-dialog-titlebar').after('<div><span>Name: </span><input id="sciencedata_object_name" value=""></div>');
     $('#sciencedata_object_name').after($('#group_folder'));
     $('#group_folder').show();
@@ -134,9 +168,8 @@ function init_chooserButton(config){
         loadFileTree(config);
     });
     $('#group_folder').on('change', function(ev) {
-      loadFileTree(config);
+     loadFileTree(config);
     });
-
 }
 
 });

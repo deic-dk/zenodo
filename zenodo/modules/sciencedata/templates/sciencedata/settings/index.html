@@ -23,6 +23,8 @@ require(['jquery', 'js/sciencedata/view'], function($, view) {
       sciencedata_button: "button[name='browse-sciencedata']", // Well, this button is, independently of this, created by helpers.panel_start... See below.
       index_url: "{{url_for('sciencedata.index')}}",
       add_sciencedata_object_url: "{{url_for('sciencedata.add_sciencedata_object_url')}}",
+      remove_object_button: "button[name='remove-sciencedata-object']",
+      remove_object_url: "{{url_for('sciencedata.remove_object')}}",
       sciencedata_view: ".sciencedata-panels",
       sciencedata_deposits: "#sciencedata-deposits"
     });

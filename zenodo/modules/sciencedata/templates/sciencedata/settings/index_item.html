@@ -1,22 +1,32 @@
 {%- from "sciencedata/helpers.html" import doi_badge with context -%}
 {%- set doi_url = None %}
-{%- set release = sd_object.get('latest') %}
-{%- set instance = sd_object.get('instance') %}
-<div class="panel-body release {{release.model.status.title|lower if release.model else ''}}">
-  <div class="row">
+{%- set release = sd_object.latest %}
+{%- set instance = sd_object.instance %}
+<div class="panel-body release {{release.model.status.title|lower if release.model else ''}}" id="{{sd_object.instance.id}}">
+  <div class="row align-center">
     <div class="col-md-9">
       <h4>
-        <a href="https://sciencedata.dk/index.php/apps/files?dir={{sd_object.instance.path | dirname}}&group={{ sd_object.instance.group }}" data-toggle="tooltip" title="{{ _('Go to ScienceData.') }}">
+        <a href="https://sciencedata.dk/index.php/apps/files?dir={{sd_object.instance.path | dirname}}&group={{ sd_object.instance.group }}" data-toggle="tooltip" title="{{ _('Go to ScienceData: ') }} {{ sd_object['instance'].path }}">
           <i class="fa fa-sciencedata text-muted"></i>
         </a>
-        <a href="{{ url_for('sciencedata.sciencedataobject', path=(sd_object.instance.path | stripslashes), group=sd_object.instance.group) }}">{{ sd_object.instance.name }}</a>
+        <!--  <a href="{{ url_for('sciencedata.sciencedataobject', path=(sd_object.instance.path | stripslashes)) }}?group={{ sd_object.instance.group }}" data-toggle="tooltip" title="{{ _('Show details and versions') }}">{{ sd_object.instance.name }}</a> -->
+        <a href="{{ url_for('sciencedata.sciencedataobject_by_id', sciencedata_object_id=sd_object.instance.id) }}" data-toggle="tooltip" title="{{ _('Show details and versions') }}">{{ sd_object.instance.name }}</a>
       </h4>
       {%- if release.pid %}
       <p>
-        {{ doi_badge(release.pid.pid_value, path=sd_object.instance.path, group=sd_object.instance.group,
-        user_id=sd_object.user_id) }}
+        <!-- {{ release.pid.pid_value }} --- 
+         path: {{ sd_object['instance'].path }},
+         group: {{ sd_object['instance'].group }},
+         user_id: {{ sd_object['instance'].user_id }} -->
+
+         {{ doi_badge(doi=release.pid.pid_value) }}
       </p>
       {%- endif %}
+    </div>
+    <div class="col-md-3">
+      <span class="pull-right">
+        <button name="remove-sciencedata-object" class="btn btn-xs btn-default" title="Remove from view"><i class="fa fa-trash"></i><span class="sd_remove_button">Remove</span></button>
+      </span>
     </div>
   </div>
 </div>

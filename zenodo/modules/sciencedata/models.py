@@ -114,7 +114,7 @@ class ScienceDataObject(db.Model, Timestamp):
 
     kind = db.Column(db.String(255))
     """'file' or 'folder'."""
-    
+
     group  = db.Column(db.String(255))
     """Possible ScienceData group."""
 
@@ -138,11 +138,11 @@ class ScienceDataObject(db.Model, Timestamp):
         return sdObject
 
     @classmethod
-    def disable(cls, user_id, path, group=None):
-        """Disable object.
+    def delete(cls, sd_object):
+        """Delete object.
         """
-        sdObject = cls.get(user_id=user_id, path=path, group=group)
-        sdObject.delete()
+        with db.session.begin_nested():
+            return db.session.delete(sd_object)
 
     @classmethod
     def create(cls, user_id, path=None, name=None, kind=None, group=None, **kwargs):
@@ -154,7 +154,7 @@ class ScienceDataObject(db.Model, Timestamp):
         return obj
 
     @classmethod
-    def get(cls, user_id, path=None, group=None):
+    def get(cls, user_id, path, group):
         """Return a ScienceData object.
 
         :param integer user_id: User identifier.
@@ -198,9 +198,6 @@ class Release(db.Model, Timestamp):
     )
     """Release identifier."""
 
-    release_id = db.Column(db.String(255), unique=True, nullable=True)
-    """Unique release identifier."""
-
     version = db.Column(db.String(255))
     """Release version."""
 
@@ -233,6 +230,40 @@ class Release(db.Model, Timestamp):
 
     record_metadata = db.relationship(RecordMetadata, backref='sciencedata_releases')
 
+    @classmethod
+    def create(cls, sciencedata_object, version):
+        """Create a new Release model."""
+        with db.session.begin_nested():
+            release = cls(
+                sciencedata_object=sciencedata_object,
+                # This goes right into the db table
+                status=ReleaseStatus.RECEIVED,
+                version=version
+            )
+            db.session.add(release)
+        return release
+
+    @classmethod
+    def delete(cls, release_object):
+        """Delete object.
+        """
+        with db.session.begin_nested():
+            return db.session.delete(release_object)
+
+    @classmethod
+    def update(cls, vals):
+        """Update model.
+        """
+        sdObject.update(vals)
+        return sdObject
+
+    @classmethod
+    def get(cls, object_id):
+        """Return a Release model.
+        """
+        release_object = cls.query.filter(Release.id == object_id).one()
+        return release_object
+
     @property
     def record(self):
         """Get Record object."""
@@ -251,5 +282,5 @@ class Release(db.Model, Timestamp):
 
     def __repr__(self):
         """Get release representation."""
-        return (u'<Release {self.version}:{self.release_id} ({self.status.title})>'
+        return (u'<Release {self.record_id}:{self.version} ({self.status.title})>'
                 .format(self=self))

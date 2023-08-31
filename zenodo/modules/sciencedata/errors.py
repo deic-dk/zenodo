@@ -51,3 +51,13 @@ class AccessError(ScienceDataError):
         self.sciencedata_object = sciencedata_object
 
 
+class ScienceDataObjectDisabledError(ScienceDataError):
+    """ScienceDataObject disabled."""
+
+    message = u'This object is not enabled.'
+
+    def __init__(self, message=None):
+        """Constructor."""
+        super(ScienceDataObjectDisabledError, self).__init__(message or self.message)
+
+

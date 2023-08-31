@@ -86,4 +86,19 @@ $sciencedata-published-color-text: darken($sciencedata-published-color, 17%);
     .deleted {
       @include status-styling($sciencedata-deleted-color-text);
     }
+
+    span.sd_remove_button {
+      position: relative;
+      top: 0.8px;
+      margin-left:4px;
+    }
+
+    button[name="remove-sciencedata-object"] {
+      padding: 2px 6px;
+    }
+
+    .align-center {
+      display: flex;
+      align-items: center;
+    }
 }
