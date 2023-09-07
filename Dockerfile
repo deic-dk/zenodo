@@ -18,7 +18,7 @@ RUN apt-get update \
     && apt-get -qy upgrade --fix-missing --no-install-recommends \
     && apt-get -qy install --fix-missing --no-install-recommends \
         apt-utils curl libcairo2-dev fonts-dejavu libfreetype6-dev \
-        uwsgi-plugin-python vim rsyslog postfix\
+        uwsgi-plugin-python vim less rsyslog postfix\
     # Got things working with new nodejs version.
     # Another approach is https://github.com/zenodo/zenodo/issues/2123
     # Node.js

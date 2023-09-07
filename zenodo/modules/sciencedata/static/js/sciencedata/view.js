@@ -8,7 +8,11 @@ define(function(require, exports, module) {
     init_chooserButton(config);
     init_removeObjectButtons(config);
     init_createVersionButton(config);
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip({
+      trigger: 'hover',
+      animation: true,
+      placement: 'top',
+    });
     $('i.error').tooltip({
       trigger: 'hover',
       animation: true,
@@ -37,20 +41,19 @@ function addScienceDataObject(config, path, name, kind, group){
         data: {path: path, name: name, kind: kind, group: group}
     })
     .done(function(data) {
-      //$(config.sciencedata_deposits).html(data);
-      $(config.sciencedata_view).html(data);
-      initUI(config);
-      var text = $("button[name='create-version'] ").text()
-      $("button[name='create-version']").html('<i class="fa fa-sciencedata"></i><span class="sd_button">'+text+'</span>');
+      //$(config.sciencedata_view).html(data);
+      //init_createVersionButton(config);
+     // We want a breadcrumb
+      location.replace("sciencedataobject"+path+"?group="+group);
     });
 }
 
 function stopSDSpin(){
-  $("button[name='browse-sciencedata'] i.fa-sciencedata").removeClass('fa-spin');
+  $("button i.fa-sciencedata").removeClass('fa-spin');
 }
 
 function startSDSpin(){
-  $("button[name='browse-sciencedata'] i.fa-sciencedata").addClass('fa-spin');
+  $("button i.fa-sciencedata").addClass('fa-spin');
 }
 
 function createBrowser(chooseAction, config) {
@@ -117,14 +120,25 @@ function init_createVersionButton(config){
   var text = createVersionButton.text();
   createVersionButton.html('<i class="fa fa-sciencedata"></i><span class="sd_button">'+text+'</span>');
   createVersionButton.on('click', function(ev) {
-    startSDSpin();
-    $.ajax({
-      url: config.create_version_url,
-      type: 'GET'
-    })
-    .done(function(data) {
-      stopSDSpin();
-      location.reload();
+     startSDSpin();
+     $.ajax({
+       url: config.create_version_url,
+       type: 'GET',
+        /*statusCode: {
+          400: function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus+": "+errorThrown+": "+errorThrown);
+          }
+        }*/
+       dataType:'json',
+       success: function(s){
+         stopSDSpin();
+         location.reload();
+       },
+       error: function(xhr, status, error) {
+         stopSDSpin();
+         var responseJson = $.parseJSON(xhr.responseText);
+         alert(responseJson.message+' '+JSON.stringify(responseJson.errors));
+      }
     });
   });
 }

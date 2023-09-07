@@ -18,9 +18,10 @@ from flask_babelex import gettext as _
 from flask_breadcrumbs import register_breadcrumb
 from flask_login import current_user, login_required
 from flask_menu import register_menu
+from flask import jsonify
 from invenio_db import db
 from sqlalchemy.orm.exc import NoResultFound
-
+import urllib
 try:
     from urllib.parse import urlparse
 except ImportError:
@@ -110,6 +111,17 @@ def stripslashes(path):
     """Strip slashes from beginning and end of path."""
     return path.strip('/')
 
+@blueprint.app_template_filter('escapequotes')
+def escapequotes(text):
+    """escape single quotes."""
+    return text.replace("'", "\\'")
+
+
+@blueprint.app_template_filter('urlencode')
+def urlencode(text):
+    """URL encode str."""
+    return urllib.quote_plus(text)
+
 
 #
 # Views
@@ -151,7 +163,7 @@ def sciencedataobject(path):
     user_id = current_user.id
     sd_objects = getPreservedObjects()
     sd_object = next((sd_object for sd_object_id, sd_object in sd_objects
-                  if sd_object['instance'].user_id == user_id and sd_object['instance'].path == '/'+path and sd_object['instance'].group == group), {})
+                  if sd_object['instance'].user_id == user_id and sd_object['instance'].path == '/'+path.lstrip('/') and sd_object['instance'].group == group), {})
     if not sd_object:
         sdo = next(sd_object for sd_object_id, sd_object in sd_objects)
         current_app.logger.warn('not found '+format(sdo['instance'].user_id)+':'+path+':'+format(sdo['instance'].path)+':'+group+':'+format(sdo['instance'].group))
@@ -170,7 +182,7 @@ def sciencedataobject(path):
         sd_object_info=sd_object,
         releases=releases,
         user_id=int(user_id),
-        path=path,
+        path='/'+path.lstrip('/'),
         group=group,
         serializer=current_sciencedata.record_serializer,
     )
@@ -234,19 +246,23 @@ def create_version():
     group = request.args['group']
     user_id = current_user.id
     sd_objects = getPreservedObjects()
-    sd_object = next((sd_object for sd_object_id, sd_object in sd_objects
-                  if sd_object['instance'].user_id == user_id and sd_object['instance'].path == '/'+path and sd_object['instance'].group == group), {})
+    sdo = next((sd_object for sd_object_id, sd_object in sd_objects
+                  if sd_object['instance'].user_id == user_id and sd_object['instance'].path == path and sd_object['instance'].group == group), {})
+    if not sdo:
+        sdo = next(sd_object for sd_object_id, sd_object in sd_objects)
+        current_app.logger.warn('not found '+':'+format(sdo['instance'].path)+':'+format(path)+':'+format(sdo['instance'].group)+':'+format(group)+':'+format(sdo['instance'].user_id)+':'+format(user_id))
+        abort(404)
     new_version = 1
-    if sd_object['latest'] is not None:
-        latest_version = int(sd_object['latest'].version)
+    if sdo['latest'] is not None:
+        latest_version = int(sdo['latest'].version)
         if latest_version:
             new_version = latest_version+1
     current_app.logger.warn('creating '+request.method+' '+format(user_id)+':'+format(path)+':'+format(group)+':'+format(new_version))
-    sd_release = Release.create(sd_object['instance'], str(new_version))
-    sciencedata_release = ScienceDataRelease(sd_object['instance'], sd_release)
+    sd_release = Release.create(sdo['instance'], str(new_version))
+    sciencedata_release = ScienceDataRelease(sdo['instance'], sd_release)
     sciencedata_release.publish()
     db.session.commit()
-    return ""
+    return jsonify({"status": "success"})
 
 @blueprint.route('/remove_object', methods=["GET", "POST"])
 @login_required

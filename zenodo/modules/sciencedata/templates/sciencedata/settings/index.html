@@ -43,7 +43,7 @@ require(['jquery', 'js/sciencedata/view'], function($, view) {
   btn='Browse',
   btn_icon='fa fa-sciencedata',
   btn_name='browse-sciencedata',
-  btn_text=_('Choose file or folder '),
+  btn_text=_('Choose file or folder'),
   id="sciencedata-view",
 ) }}
 {%- endif %}
@@ -54,20 +54,21 @@ require(['jquery', 'js/sciencedata/view'], function($, view) {
     <div class="col-md-4">
       <h2><strong>1</strong> <small>Select what to preserve</small></h2>
       <hr />
-      Click "Browse", select the object (file or directory)
-      you want to preserve and name your deposit.
+      Click "Browse", select the file or directory on ScienceData you want
+      to preserve, and name your deposit.
     </div>
     <div class="col-md-4">
-      <h2><strong>2</strong> <small>Describe your data</small></h2>
+      <h2><strong>2</strong> <small>Publish your data</small></h2>
       <hr />
-      Click "New version" and fill in the metadata form. The form will be
-      pre-filled with metadata from ScienceData - if present. If not present,
-      only basic information will be pre-filled for the first version.
+      Click "New version" to fetch your data from ScienceData and publish it.
+      For the first version, metadata will be fetched from ScienceData - if present,
+      otherwise defaults will be used.
     </div>
     <div class="col-md-4">
       <h2><strong>3</strong> <small>Get the badge</small></h2>
       <hr />
-      Click publish and return here. For each deposit, below, a DOI badge will appear - which you can copy-paste on other web pages.
+      For each published asset, a DOI badge will appear below - which you can copy-paste on other web pages.
+      The DOI will point to the latest published version.
     </div>
   {%- else %}
     <div>

@@ -6,10 +6,15 @@
   <div class="row align-center">
     <div class="col-md-9">
       <h4>
-        <a href="https://sciencedata.dk/index.php/apps/files?dir={{sd_object.instance.path | dirname}}&group={{ sd_object.instance.group }}" data-toggle="tooltip" title="{{ _('Go to ScienceData: ') }} {{ sd_object['instance'].path }}">
+      {%- if sd_object['instance'].group %}
+        <a href="{{'https://sciencedata.dk/index.php/apps/files?dir={0}&view=user-groups_{1}'.format(sd_object['instance'].path | dirname | urlencode, sd_object['instance'].group | escapequotes | urlencode)}}" data-toggle="tooltip" title="{{ _('Go to ScienceData: ') }} {{ sd_object['instance'].path }}">
           <i class="fa fa-sciencedata text-muted"></i>
         </a>
-        <!--  <a href="{{ url_for('sciencedata.sciencedataobject', path=(sd_object.instance.path | stripslashes)) }}?group={{ sd_object.instance.group }}" data-toggle="tooltip" title="{{ _('Show details and versions') }}">{{ sd_object.instance.name }}</a> -->
+      {%- else %}
+        <a href="{{'https://sciencedata.dk/index.php/apps/files?dir={0}'.format(sd_object['instance'].path | dirname | urlencode)}}" data-toggle="tooltip" title="{{ _('Go to ScienceData: ') }} {{ sd_object['instance'].path }}">
+          <i class="fa fa-sciencedata text-muted"></i>
+        </a>
+      {%- endif %}
         <a href="{{ url_for('sciencedata.sciencedataobject_by_id', sciencedata_object_id=sd_object.instance.id) }}" data-toggle="tooltip" title="{{ _('Show details and versions') }}">{{ sd_object.instance.name }}</a>
       </h4>
       {%- if release.pid %}
@@ -25,7 +30,7 @@
     </div>
     <div class="col-md-3">
       <span class="pull-right">
-        <button name="remove-sciencedata-object" class="btn btn-xs btn-default" title="Remove from view"><i class="fa fa-trash"></i><span class="sd_remove_button">Remove</span></button>
+        <button name="remove-sciencedata-object" data-toggle="tooltip" class="btn btn-xs btn-default" title="Remove from view"><i class="fa fa-trash"></i><span class="sd_remove_button">Remove</span></button>
       </span>
     </div>
   </div>

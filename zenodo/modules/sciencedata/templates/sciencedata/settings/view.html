@@ -11,7 +11,7 @@ require(['jquery', 'js/sciencedata/view'], function($, view) {
     view({
       index_url: "{{url_for('sciencedata.index')}}",
       create_version_button: "button[name='create-version']",
-      create_version_url: "{{url_for('sciencedata.create_version')}}?path={{path}}&group={{group}}",
+      create_version_url: "{{url_for('sciencedata.create_version')}}?path={{path | urlencode}}&group={{group | urlencode}}",
       sciencedata_view: ".sciencedata-panels",
     });
   });
@@ -38,7 +38,7 @@ require(['jquery', 'js/sciencedata/view'], function($, view) {
     btn='New version',
     btn_icon='fa fa-sciencedata',
     btn_name='create-version',
-    btn_text=_('Fetch and publish new version of deposit'),
+    btn_text=_('Fetch and publish your data'),
     id="sciencedata-create-version",
   ) }}
 
@@ -51,29 +51,33 @@ require(['jquery', 'js/sciencedata/view'], function($, view) {
             {%- block release_title scoped %}
             <h5>
               <i class="fa fa-tag fa-fw"></i>
-              <a href="#" data-target="#{{ release.model.id }}">
+              <!--  <a href="#" data-target="#{{ release.model.id }}"> -->
               {%- if release.title %}
                 {{release.title}}
               {%- else %}
-                {{release.sciencedata_object.name}}-v{{release.version}}
+                {{release.sciencedata_object.name}} - v{{release.version}}
               {%- endif %}
-              </a>
+              <!-- </a> -->
             </h5>
             <p>
             {%- if release.pid %}
-              <a href="https://doi.org/{{release.pid.pid_value}}" class="text-muted">
+              <a href="https://doi.org/{{release.pid.pid_value}}" class="text-muted" data-toggle="tooltip" title="Go to deposit">
                 <i class="fa fa-fw fa-barcode"></i>
                 DOI: {{release.pid.pid_value}}
               </a>
             {%- elif release.model.record_id %}
-              <a href="/record/{{release.model.record_id}}" class="text-muted">
+              <a href="/record/{{release.model.record_id}}" class="text-muted" data-toggle="tooltip" title="Go to deposit">
                 <i class="fa fa-fw fa-barcode"></i>
                 ID: {{release.model.record_id}}
               </a>
             {%- endif %}
             </p>
             <p>
-              <a href="{{'https://sciencedata.dk/index.php/apps/files?dir={0}&group={1}'.format(sd_object.path | dirname, sd_object.group)}}" class="text-muted" data-toggle="tooltip" title="{{ _('Go to ScienceData: ') }} {{ sd_object.path }}">
+              {%- if group %}
+                <a href="{{'https://sciencedata.dk/index.php/apps/files?dir={0}&view=user-groups_{1}'.format(sd_object.path | dirname, sd_object.group | escapequotes | urlencode)}}" class="text-muted" data-toggle="tooltip" title="{{ _('Go to ScienceData: ') }} {{ sd_object.path }}">
+              {%- else %}
+                <a href="{{'https://sciencedata.dk/index.php/apps/files?dir={0}'.format(sd_object.path | dirname)}}" class="text-muted" data-toggle="tooltip" title="{{ _('Go to ScienceData: ') }} {{ sd_object.path }}">
+              {%- endif %}
                 <i class="fa fa-fw fa-sciencedata"></i>
                 {{release.sciencedata_object.path}}
                 {%- if release.sciencedata_object.group %}
@@ -87,9 +91,9 @@ require(['jquery', 'js/sciencedata/view'], function($, view) {
           {%- block release_status scoped %}
           <h5>
             <i class="fa {{ release.model.status.icon }}"></i>
-            <a href="#" data-target="#{{ release.model.id }}">
+            <!-- <a href="#" data-target="#{{ release.model.id }}"> -->
             {{release.model.status.title}}
-            </a>
+            <!-- </a> -->
           </h5>
           <small class="text-muted">{{ release.model.created|naturaltime }}</small>
           {%- endblock release_status %}

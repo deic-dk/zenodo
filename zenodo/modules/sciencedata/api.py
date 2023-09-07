@@ -8,6 +8,7 @@ import datetime
 import re
 import os
 import uuid
+import urllib
 
 from flask import current_app
 from flask_login import current_user
@@ -70,7 +71,7 @@ class ScienceDataAPI(object):
 
     @cached_property
     def getGroups(self):
-        """Get ID string of ScienceData account with ORCID enabled and matching 'orcid'"""
+        """Get groups the current user is member of"""
         sciencedata_userid = self.scienceDataUser
         if not sciencedata_userid:
             return []
@@ -113,11 +114,10 @@ class ScienceDataAPI(object):
 class ScienceDataRelease(object):
     """A ScienceData release object from ScienceDataObject and Release DB objects"""
 
-    def __init__(self, sciencedata_object, sciencedata_relase, use_sciencedata_metadata=False):
+    def __init__(self, sciencedata_object, sciencedata_relase):
         """Constructor."""
         self.sciencedata_object = sciencedata_object
         self.model = sciencedata_relase
-        self.use_sciencedata_metadata = use_sciencedata_metadata
 
     @cached_property
     def sd(self):
@@ -164,26 +164,45 @@ class ScienceDataRelease(object):
     def metadata(self):
         """Return default metadata updated with metadata from previous version or from ScienceData - if available."""
         output = dict(self.defaults)
-        if self.use_sciencedata_metadata:
-            # Fetch metadata from ScienceData, if present
-            headers = {'Accept': 'application/json'}
-            path = self.sciencedata_object['path']
-            sciencedata_username = self.sd.scienceDataUser
-            r = requests.get(current_app.config.get('SCIENCEDATA_PRIVATE_URL')+'/metadata/getmetadata?files='+path+'&tag=zenodo', headers=headers, allow_redirects=True, verify=False, auth=(sciencedata_username, ''))
-            sciencedata_file_metadata = r.json()
-            if sciencedata_file_metadata:
-                output.update(sciencedata_file_metadata)
+        latest_release = self.sciencedata_object.latest_release()
+        # If this is a new version of an already published object, reuse metadata
+        if latest_release.record_id:
+            latest_record = Record.get_record(latest_release.record_id)
+            metadata_json = latest_record['json']
+            metadata = json.loads(metadata_json)
+            if metadata:
+                output.update(metadata)
         else:
-            latest_release = self.sciencedata_object.latest_release()
-            if latest_release.record_id:
-                latest_record = Record.get_record(latest_release.record_id)
-                metadata_json = latest_record['json']
-                metadata = json.loads(metadata_json)
-                if metadata:
-                    output.update(metadata)
+            # Othersise try to fetch metadata from ScienceData
+            headers = {'Accept': 'application/json'}
+            path = self.sciencedata_object.path
+            sciencedata_username = self.sd.scienceDataUser
+            home_server_url = self.sd.scienceDataPrivateHomeURL
+            r = requests.get(home_server_url+'metadata/getmetadata?files=%5B%22'+urllib.quote_plus(path)+'%22%5D&tag=Zenodo', headers=headers, allow_redirects=True, verify=False, auth=(sciencedata_username, ''))
+            if r.status_code >= 400:
+                current_app.logger.error('could not get metadata from sciencedata')
+            else:
+                sciencedata_ret = r.json()
+                if sciencedata_ret:
+                    current_app.logger.warn('got json: '+format(sciencedata_ret))
+                    sd_vals = next(el for el in sciencedata_ret.values())
+                    sd_tag = next(tag for tag in sd_vals['filetags'].values())
+                    if sd_tag['metadata']:
+                        
+                        
+                        
+                        
+                        sd_tag['metadata'].pop('uploaded', None)
+                        sd_tag['metadata'].pop('bucket', None)
+                        sd_tag['metadata'].pop('deposition_id', None)
+                        sd_tag['metadata'].pop('url', None)
+                        output.update(sd_tag['metadata'])
         # Add creators if not specified
-        if ( 'creators' not in output or not output['creators'] ) and self.fullname:
-            output['creators'] = [dict(name=self.fullname, affiliation='')]
+        if ( 'creators' not in output or not output['creators'] ):
+            if self.author:
+                output['creators'] = [self.author]
+            elif self.fullname:
+                output['creators'] = [dict(name=self.fullname, affiliation='')]
         if not output['creators']:
             output['creators'] = [dict(name='Unknown', affiliation='')]
         return legacyjson_v1_translator({'metadata': output})
@@ -192,7 +211,7 @@ class ScienceDataRelease(object):
     def files(self):
         """Get URL of file/archive to download from ScienceData."""
         version = self.version
-        name = self.sciencedata_object.name
+        name = os.path.basename(self.sciencedata_object.path)
         group = self.sciencedata_object.group
         path = self.sciencedata_object.path
         kind = self.sciencedata_object.kind
@@ -246,7 +265,7 @@ class ScienceDataRelease(object):
     def author(self):
         """The available data on the current user."""
         domain = self.email.split('@')[1]
-        return [dict(name=self.fullname, affiliation=domain, orcid=self.sd.orcid, email=self.email)]
+        return dict(name=self.fullname, affiliation=domain, orcid=self.sd.orcid)
 
     @cached_property
     def title(self):
@@ -256,7 +275,8 @@ class ScienceDataRelease(object):
             latest_record = Record.get_record(latest_release.record_id)
             return latest_record.title
         name = self.sciencedata_object.name
-        return u'{0}-v{1}'.format(name, self.version)
+        #return u'{0}-v{1}'.format(name, self.version)
+        return name
 
     @cached_property
     def version(self):
