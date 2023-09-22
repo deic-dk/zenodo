@@ -28,7 +28,7 @@ from __future__ import absolute_import, print_function
 
 import smtplib
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for, current_app
 from flask_babelex import lazy_gettext as _
 from flask_security import current_user
 
@@ -63,21 +63,27 @@ def support():
             }
 
             try:
-                send_support_email(context)
-                send_confirmation_email(context)
+                # Disabling for now - it's being abused...
+                #send_support_email(context)
+                #send_confirmation_email(context)
+                #current_app.logger.warn('not sending mails for now '+format(request.headers)+':'+format(form.data))
+                flash(
+                    _('Hello spammer. Do stop this - your messages are not sent. Your IP will be registered and forwarded. Others: For now, please get in touch by other means.'),
+                    category='danger'
+                )
             except smtplib.SMTPSenderRefused:
                 flash(
                     _('There was an issue sending an email to the provided '
                       'address, please make sure it is correct. '
                       'If this issue persists you can send '
-                      'us an email directly to info@zenodo.org.'),
+                      'us an email directly to support@sciencerepository.dk.'),
                     category='danger'
                 )
             except Exception:
                 flash(
                     _("There was an issue sending the support request."
                       'If this issue persists send '
-                      'us an email directly to info@zenodo.org.'),
+                      'us an email directly to support@sciencerepository.dk.'),
                     category='danger'
                 )
                 raise
@@ -86,7 +92,7 @@ def support():
                     _('Request sent successfully. '
                       'You should receive a confirmation email within several '
                       'minutes - if this does not happen you should retry or '
-                      'send us an email directly to info@zenodo.org.'),
+                      'send us an email directly to support@sciencerepository.dk.'),
                     category='success'
                 )
                 return redirect(url_for('zenodo_frontpage.index'))

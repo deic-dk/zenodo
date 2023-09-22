@@ -90,13 +90,16 @@ def _(x):
 
 
 #: System sender email address
-ZENODO_SYSTEM_SENDER_EMAIL = 'support@sciencedata.dk'
+ZENODO_SYSTEM_SENDER_EMAIL = 'no-reply@sciencerepository.dk'
 #: Email address of admins
 ZENODO_ADMIN_EMAIL = 'support@sciencedata.dk'
 
 #: Email address for support.
-SUPPORT_EMAIL = "support@sciencedata.dk"
+SUPPORT_EMAIL = "support@sciencerepository.dk"
 MAIL_SUPPRESS_SEND = False
+MAIL_DEBUG = True
+LOGGING_FS_LOGFILE = "/tmp/uwsgi.log"
+LOGGING_FS_LEVEL = "DEBUG"
 
 #SECURITY_CONFIRM_URL = '/confirm'
 #SERVER_NAME = 'localhost:5001'
@@ -159,7 +162,7 @@ PIDRELATIONS_RELATION_TYPES = [
                  None),
 ]
 
-#: Enable the DataCite minding of DOIs after Deposit publishing
+#: Enable the DataCite minting of DOIs after Deposit publishing
 DEPOSIT_DATACITE_MINTING_ENABLED = True
 
 # Debug
@@ -187,7 +190,7 @@ I18N_LANGUAGES = []
 
 # Celery
 # ======
-#: Default broker (RabbitMQ on locahost).
+#: Default broker (RabbitMQ on localhost).
 #CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
 CELERY_BROKER_URL = "amqp://guest:guest@mq:5672//"
 #: Default Celery result backend.
@@ -195,6 +198,10 @@ CELERY_BROKER_URL = "amqp://guest:guest@mq:5672//"
 CELERY_RESULT_BACKEND = "redis://cache:6379/1"
 #: Accepted content types for Celery.
 CELERY_ACCEPT_CONTENT = ['json', 'msgpack', 'yaml']
+registry.enable('json')
+registry.enable('yaml')
+registry.enable('application/text')
+registry.enable('application/msgpack')
 #: Custom task routing
 CELERY_TASK_ROUTES = {
     # Low
@@ -206,7 +213,8 @@ CELERY_TASK_ROUTES = {
     'zenodo.modules.spam.tasks.delete_record': {'queue': 'low'},
     'invenio_openaire.tasks.register_grant': {'queue': 'low'},
     # Indexer
-    'invenio_indexer.tasks.process_bulk_queue': {'queue': 'celery-indexer'}
+    #'invenio_indexer.tasks.process_bulk_queue': {'queue': 'celery-indexer'}
+    'invenio_indexer.tasks.process_bulk_queue': {'queue': 'indexer'}
 }
 #: Beat schedule
 CELERY_BEAT_SCHEDULE = {
@@ -818,10 +826,10 @@ ZENODO_REMOVAL_REASONS = [
     ('takedown', 'Record removed on request by third-party.'),
 ]
 
-ZENODO_REANA_HOSTS = ["reana.cern.ch", "reana-qa.cern.ch", "reana-dev.cern.ch"]
-ZENODO_REANA_LAUNCH_URL_BASE = "https://reana.cern.ch/launch"
-ZENODO_REANA_BADGE_IMG_URL = "https://www.reana.io/static/img/badges/launch-on-reana.svg"
-ZENODO_REANA_BADGES_ENABLED = True
+#ZENODO_REANA_HOSTS = ["reana.cern.ch", "reana-qa.cern.ch", "reana-dev.cern.ch"]
+#ZENODO_REANA_LAUNCH_URL_BASE = "https://reana.cern.ch/launch"
+#ZENODO_REANA_BADGE_IMG_URL = "https://www.reana.io/static/img/badges/launch-on-reana.svg"
+#ZENODO_REANA_BADGES_ENABLED = True
 
 #: Mapping of old export formats to new content type.
 ZENODO_RECORDS_EXPORTFORMATS = {
@@ -1427,6 +1435,8 @@ SEARCH_MAPPINGS = [
     'grants',
     'licenses',
     'records',
+    'stats-record-view',
+    'stats-file-download',    
 ]
 #: ElasticSearch index prefix
 SEARCH_INDEX_PREFIX = 'zenodo-dev-'

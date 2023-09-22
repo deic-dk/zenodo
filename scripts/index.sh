@@ -26,3 +26,5 @@ zenodo index destroy --force --yes-i-know
 zenodo index init --force
 zenodo index reindex -t od_lic -t frdoi -t grant -t recid -t depid --yes-i-know
 zenodo index run -c 4 -d
+sleep 10
+zenodo index run

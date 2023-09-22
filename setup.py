@@ -252,6 +252,8 @@ setup(
             'zenodo_sipstore = zenodo.modules.sipstore.tasks',
             'zenodo_sitemap = zenodo.modules.sitemap.tasks',
             'zenodo_exporter = zenodo.modules.exporter.tasks',
+            # Trying this out. FO
+            'invenio_stats = invenio_stats.stats.tasks',
             'zenodo_stats = zenodo.modules.stats.tasks',
             'zenodo_communities = zenodo.modules.communities.tasks',
         ],
@@ -286,6 +288,9 @@ setup(
         'invenio_search.mappings': [
             'records = zenodo.modules.records.mappings',
             'deposits = zenodo.modules.deposit.mappings',
+            # Trying this. FO
+            'stats-record-view = zenodo.modules.stats.mappings',
+            'stats-file-download = zenodo.modules.stats.mappings',
         ],
         'invenio_oauth2server.scopes': [
             ('deposit_extra_formats = '
@@ -296,6 +301,10 @@ setup(
         ],
         'dojson.contrib.to_marc21': [
             'zenodo = zenodo.modules.records.serializers.to_marc21.rules',
+        ],
+        'invenio_stats.events': [
+            'zenodo_stats_queries = zenodo.modules.stats.registrations:register_queries',
+            'zenodo_stats_aggregations = zenodo.modules.stats.registrations:register_aggregations',
         ],
         "invenio_db.alembic": ["zenodo_spam = zenodo.modules.spam:alembic"],
         "invenio_db.models": ["zenodo_spam = zenodo.modules.spam.models"],

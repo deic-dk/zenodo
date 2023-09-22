@@ -42,19 +42,19 @@ SUPPORT_EMAIL_BODY_TEMPLATE = 'zenodo_support/email_body.html'
 SUPPORT_EMAIL_TITLE_TEMPLATE = 'zenodo_support/email_title.html'
 
 #: Support confirmation email body.
-SUPPORT_EMAIL_CONFIRM_BODY = """Thank you for contacting Zenodo support.
+SUPPORT_EMAIL_CONFIRM_BODY = """Thank you for contacting ScienceRepository support.
 
 We have received your message, and we will do our best to get back to you as \
 soon as possible.
 This is an automated confirmation of your request, please do not reply to this\
  email.
 
-Zenodo Support
+ScienceRepository Support
 https://sciencerepository.dk
 """
 
 #: Support confirmation email title.
-SUPPORT_EMAIL_CONFIRM_TITLE = 'Zenodo Support'
+SUPPORT_EMAIL_CONFIRM_TITLE = 'ScienceRepository Support'
 
 'zenodo_support/email_confirm_title.html'
 
