@@ -6,14 +6,14 @@
 }
 
 ul.jqueryFileTree {
-	font-family: Verdana, sans-serif;
+	font-family: Verdana;
 	font-size: 11px;
 	line-height: 19px;
 	padding: 0px;
 	margin: 0px;
 }
 
-ul.jqueryFileTree LI {
+ul.jqueryFileTree li {
 	list-style: none;
 	padding: 0px;
 	padding-left: 20px;
@@ -21,14 +21,14 @@ ul.jqueryFileTree LI {
 	white-space: nowrap;
 }
 
-ul.jqueryFileTree A {
+ul.jqueryFileTree a {
 	color: #333;
 	text-decoration: none;
 	display: block;
 	padding: 0px 2px;
 }
 
-ul.jqueryFileTree A:hover {
+ul.jqueryFileTree a:hover {
 	background: #BDF;
 }
 
