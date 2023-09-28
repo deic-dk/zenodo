@@ -68,11 +68,8 @@ SUPPORT_ISSUE_CATEGORIES = [
             'record(s). This includes new file addition, file removal or '
             'file replacement. '
             'Before sending a request, please consider creating a '
-            '<a href="http://help.zenodo.org/#versioning">new version</a> '
-            'of your upload. Please first consult our '
-            '<a href="http://help.zenodo.org/#general">FAQ</a> to get familiar'
-            ' with the file update conditions, to see if your case is '
-            'eligible.<br /><br />'
+            '<a href="https://sciencedata.dk/sites/sciencerepository/#doi_versioning">new version</a> '
+            'of your upload.<br /><br />'
             'You request has to contain <u>all</u> of the points below:'
             '<ol>'
             '<li>Provide a justification for the file change in the '
@@ -82,7 +79,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'provide links to posts on blogs and social media. '
             'Otherwise, state that to the best of your knowledge the DOI has '
             'not been used anywhere.</li>'
-            '<li>Specify the record(s) you want to update <u>by the Zenodo'
+            '<li>Specify the record(s) you want to update <u>by the ScienceRepository'
             ' URL</u>, e.g.: "https://sciencerepository.dk/record/8428".<br />'
             "<u>Providing only the record's title, publication date or a "
             "screenshot with search result is not explicit enough</u>.</li>"
@@ -131,20 +128,20 @@ SUPPORT_ISSUE_CATEGORIES = [
         ),
         'recipients': ['support@sciencerepository.dk'],
     },
-#    {
-#        'key': 'openaire',
-#        'title': 'OpenAIRE',
-#        'description': (
-#            'All questions related to OpenAIRE reporting and grants. '
-#            'Before sending a request, make sure your problem was not '
-#            'already resolved, see OpenAIRE '
-#            '<a href="https://www.openaire.eu/faqs">FAQ</a>. '
-#            'For questions unrelated to Zenodo, you should contact OpenAIRE '
-#            '<a href="https://www.openaire.eu/support/helpdesk">'
-#            'helpdesk</a> directly.'
-#        ),
-#        'recipients': ['support@sciencerepository.dk'],
-#    },
+   {
+       'key': 'openaire',
+       'title': 'OpenAIRE',
+       'description': (
+           'All questions related to OpenAIRE reporting and grants. '
+           'Before sending a request, make sure your problem was not '
+           'already resolved, see OpenAIRE '
+           '<a href="https://www.openaire.eu/faqs">FAQ</a>. '
+           'For questions unrelated to ScienceRepository, you should contact OpenAIRE '
+           '<a href="https://www.openaire.eu/support/helpdesk">'
+           'helpdesk</a> directly.'
+       ),
+       'recipients': ['support@sciencerepository.dk'],
+   },
     {
         'key': 'partnership',
         'title': 'Partnership, outreach and media',
@@ -153,7 +150,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'invited talks and other official inquiries by media.'
             'If you are a research institution, research group,'
             'journal, organization or conference organizer '
-            'interested in using zenodo.sciencedata.dk as archive for your papers, software '
+            'interested in using sciencerepository.dk as archive for your papers, software '
             'or data, please provide details for your usecase.'
             ),
         'recipients': ['support@sciencerepository.dk'],
@@ -162,7 +159,7 @@ SUPPORT_ISSUE_CATEGORIES = [
         'key': 'tech-support',
         'title': 'Security issue, bug or spam report',
         'description': (
-            'Report a technical issue or a spam content on zenodo.sciencedata.dk.'
+            'Report a technical issue or a spam content on sciencerepository.dk.'
             'Please provide details on how to reproduce the bug. '
             'Upload any screenshots or files which are relevant to the issue '
             'or to means of reproducing it. Include error messages and '
@@ -188,7 +185,7 @@ SUPPORT_ISSUE_CATEGORIES = [
 SUPPORT_SENDER_EMAIL = 'support@sciencerepository.dk'
 
 #: Name of the sender
-SUPPORT_SENDER_NAME = 'Zenodo'
+SUPPORT_SENDER_NAME = 'ScienceRepository'
 
 #: Email address for support.
 SUPPORT_SUPPORT_EMAIL = ['support@sciencerepository.dk']

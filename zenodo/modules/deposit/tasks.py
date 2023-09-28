@@ -123,7 +123,7 @@ def cleanup_indexed_deposits():
          .query('term', **{'_deposit.status': 'draft'})
          .source(['_deposit.id']))
     res = q.scan()
-    failed_depids, es_depids_info = [], []
+    failed_depids, es_depids_info, es_depids = [], [], []
     for d in res:
         try:
             es_depids_info.append((d.to_dict()['_deposit']['id'], d.meta.id,
@@ -131,19 +131,20 @@ def cleanup_indexed_deposits():
             es_depids = {p[0] for p in es_depids_info}
         except Exception:
             failed_depids.append(d.meta.id)
-    db_depids_query = PersistentIdentifier.query.filter(
-        PersistentIdentifier.pid_type == 'depid',
-        PersistentIdentifier.pid_value.in_(es_depids))
-    db_depids = {d.pid_value for d in db_depids_query}
-    missing_db_depids = filter(lambda d: d[0] not in db_depids, es_depids_info)
+    if es_depids:
+        db_depids_query = PersistentIdentifier.query.filter(
+            PersistentIdentifier.pid_type == 'depid',
+            PersistentIdentifier.pid_value.in_(es_depids))
+        db_depids = {d.pid_value for d in db_depids_query}
+        missing_db_depids = filter(lambda d: d[0] not in db_depids, es_depids_info)
 
-    indexer = RecordIndexer()
+        indexer = RecordIndexer()
 
-    for _, deposit_id, index, doc_type in missing_db_depids:
-        indexer.client.delete(
-            id=str(deposit_id),
-            index=index,
-            doc_type=doc_type)
+        for _, deposit_id, index, doc_type in missing_db_depids:
+            indexer.client.delete(
+                id=str(deposit_id),
+                index=index,
+                doc_type=doc_type)
 
     if failed_depids:
         current_app.logger.warning(
