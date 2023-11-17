@@ -469,7 +469,7 @@
             "required": true,
             "options": {
               "asyncCallback": "autocompleteSuggest",
-              "url": "https://zenodo.org/api/licenses/_suggest",
+              "url": "/api/licenses/_suggest",
               "urlParameters": {
                 "text": "value",
                 "size": 10

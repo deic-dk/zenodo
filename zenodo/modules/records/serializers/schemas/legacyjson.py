@@ -170,7 +170,7 @@ class LegacyMetadataSchemaV1(common.CommonMetadataSchemaV1):
             raise ValidationError(_('License must be a string or dictionary.'))
 
         #return {'$ref': 'https://dx.zenodo.org/licenses/{0}'.format(license)}
-        return {'$ref': 'https://zenodo.org/api/licenses/{0}'.format(license)}
+        return {'$ref': 'https://sciencerepository.dk/api/licenses/{0}'.format(license)}
 
     def dump_grants(self, obj):
         """Get grants."""

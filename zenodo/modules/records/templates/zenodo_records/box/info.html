@@ -337,9 +337,11 @@
 
   {%- endif %}
 
-  {%- if resolved_record.license %}
+  {%- if resolved_record.license  and resolved_record.license.metadata %}
     <dt>{{_('License (for files)')}}:</dt>
     <dd><a rel="license" href="{{resolved_record.license.metadata.url}}"><i class="fa fa-external-link"></i> {{resolved_record.license.metadata.title}}</a></dd>
+  {%- else %}
+    ERROR: problem with metadata of license: {{ resolved_record.license }}
   {%- endif %}
 
   {%- set userprofile = record.owner.id|userprofile if record.owner and record.owner.id else None %}
