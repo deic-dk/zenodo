@@ -18,7 +18,7 @@ RUN apt-get update \
     && apt-get -qy upgrade --fix-missing --no-install-recommends \
     && apt-get -qy install --fix-missing --no-install-recommends \
         apt-utils curl libcairo2-dev fonts-dejavu libfreetype6-dev \
-        uwsgi-plugin-python vim less rsyslog postfix\
+        uwsgi-plugin-python vim less rsyslog postfix jq\
     # Got things working with new nodejs version.
     # Another approach is https://github.com/zenodo/zenodo/issues/2123
     # Node.js
@@ -64,6 +64,10 @@ WORKDIR /code/zenodo
 RUN pip install -e .[postgresql,elasticsearch2,all] \
     && python -O -m compileall .
 
+# Address bug/warning in logs
+# https://stackoverflow.com/questions/39829473/cryptography-assertionerror-sorry-but-this-version-only-supports-100-named-gro
+RUN pip install git+https://github.com/eliben/pycparser@release_v2.14
+
 # Install npm dependencies and build assets.
 #RUN npm install npm@6.14.17 -g
 #RUN npm install strip-ansi --save
@@ -73,6 +77,10 @@ RUN sed -i 's/git\:\/\/github\.com/git+https\:\/\/github\.com/g' /code/zenodo/pa
 sed -i 's|git://github.com/|https://github.com/|' ${INVENIO_INSTANCE_PATH}/static/package.json
 
 RUN git config --global url."https://".insteadOf git://
+
+#RUN cd ${INVENIO_INSTANCE_PATH}/static/node_modules && tar -xvzf /code/zenodo/npm/angular-schema-form-ckeditor.tar.gz
+
+RUN sed -i 's|https://github.com/webcanvas/angular-schema-form-ckeditor.git#b213fa934759a18b1436e23bfcbd9f0f730f1296|https://github.com/deic-dk/angular-schema-form-ckeditor.git|' ${INVENIO_INSTANCE_PATH}/static/package.json
 
 RUN cd ${INVENIO_INSTANCE_PATH}/static \
     && npm install
@@ -89,7 +97,7 @@ RUN echo "export PATH=${PATH}:/usr/local/bin" >> /home/www/.bashrc && \
 echo "export VIRTUAL_ENV=/usr/local" >> /home/www/.bashrc
 
 RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
-    
+
 RUN echo "www:secret" | chpasswd
 RUN echo "www ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/www && chmod 0440 /etc/sudoers.d/www
 

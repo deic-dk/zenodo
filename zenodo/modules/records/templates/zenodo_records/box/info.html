@@ -169,17 +169,16 @@
         <ul>
         {%- for grant in resolved_record.grants %}
           <li>
-          {% if grant.metadata.url or grant.metadata.identifiers.purl %}
-            <a href="{{grant.metadata.url or grant.identifiers.purl}}">
+          {% if grant.identifiers %}
+          {%- for identifier in grant.identifiers %}
+          {% if identifier.scheme == 'url' %}
+          <a href="{{identifier.identifier}}">
+          {% if grant.acronym %}{{grant.acronym}} - {% endif %}
+          {% if grant.title and grant.title.en %}{{grant.title.en}}{% endif %}
+          {% if grant.number %} ({{grant.number}}){% endif %}
+          </a>
           {% endif %}
-          {% if grant.metadata.acronym %}{{grant.metadata.acronym}} - {% endif %}
-          {{grant.metadata.title}}
-          {% if grant.metadata.code %} ({{grant.metadata.code}}){% endif %}
-          {% if not loop.last %}
-            <br />
-          {% endif %}
-          {% if grant.metadata.url or grant.metadata.identifiers.purl %}
-            </a>
+          {%- endfor %}
           {% endif %}
           </li>
         {%- endfor %}
@@ -337,7 +336,7 @@
 
   {%- endif %}
 
-  {%- if resolved_record.license  and resolved_record.license.metadata %}
+  {%- if resolved_record.license and resolved_record.license.metadata %}
     <dt>{{_('License (for files)')}}:</dt>
     <dd><a rel="license" href="{{resolved_record.license.metadata.url}}"><i class="fa fa-external-link"></i> {{resolved_record.license.metadata.title}}</a></dd>
   {%- else %}

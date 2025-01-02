@@ -22,9 +22,9 @@
                 <div ng-if="!item.description" class="no-description">
                   <span class="muted"><small><em>No description</em></small></span>
                 </div>
-                <div ng-if="openAIRECommunitiesMapping[item.id]" class="openaire-community">
+                <!--<div ng-if="openAIRECommunitiesMapping[item.id]" class="openaire-community">
                   <span ng-bind-html="('<small>' + 'Indexed in OpenAIRE ' + (openAIRECommunitiesMapping[item.id] | formatOpenAIRECommunities:openAIRECommunities)|limitToEllipsis:150|highlight:$select.search + '</small>')"></span>
-                </div>
+                </div>-->
               </div>
             </div>
           </ui-select-choices>

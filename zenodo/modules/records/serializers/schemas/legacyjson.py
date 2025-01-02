@@ -193,7 +193,8 @@ class LegacyMetadataSchemaV1(common.CommonMetadataSchemaV1):
                 elif 'metadata' in g:
                     res.append(dict(id=g['metadata']['internal_id']))
                 elif '$ref' in g:
-                    res.append(dict(id=(g['$ref'].replace('https://zenodo.org/api/grants/', ''))))
+                    # res.append(dict(id=(g['$ref'].replace('https://zenodo.org/api/grants/', ''))))
+                    res.append(dict(id=(g['$ref'].replace('https://zenodo.org/api/grants/', '').replace('text=', 'q='))))
         current_app.logger.warn(res)
         return res or missing
 
@@ -225,7 +226,8 @@ class LegacyMetadataSchemaV1(common.CommonMetadataSchemaV1):
                 'Invalid grant ID(s): {0}'.format(', '.join(errors)),
                 field_names='grants')
         #return [{'$ref': 'https://dx.zenodo.org/grants/{0}'.format(grant_id)}
-        return [{'$ref': 'https://zenodo.org/api/grants/{0}'.format(grant_id)}
+        #return [{'$ref': 'https://zenodo.org/api/grants/{0}'.format(grant_id)}
+        return [{'$ref': 'https://zenodo.org/api/awards/{0}'.format(grant_id)}
                 for grant_id in result] or missing
 
     def dump_communities(self, obj):

@@ -520,9 +520,9 @@
                 "placeholder": "Start typing a grant number, name or abbreviation...",
                 "options": {
                   "asyncCallback": "autocompleteGrants",
-                  "url": "/api/grants/_suggest",
+                  "url": "https://zenodo.org/api/awards",
                   "urlParameters": {
-                    "text": "value",
+                    "q": "value",
                     "funder": "'10.13039/501100000780'",
                     "size": 15
                   },

@@ -82,6 +82,7 @@ from zenodo.modules.records.permissions import deposit_delete_permission_factory
     record_create_permission_factory
 from zenodo.modules.stats import current_stats_search_client
 from zenodo.modules.theme.ext import useragent_and_ip_limit_key
+from kombu.serialization import registry
 
 
 def _(x):
@@ -193,11 +194,13 @@ I18N_LANGUAGES = []
 #: Default broker (RabbitMQ on localhost).
 #CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
 CELERY_BROKER_URL = "amqp://guest:guest@mq:5672//"
+#CELERY_BROKER_POOL_LIMIT = 0
 #: Default Celery result backend.
 #CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
 CELERY_RESULT_BACKEND = "redis://cache:6379/1"
 #: Accepted content types for Celery.
 CELERY_ACCEPT_CONTENT = ['json', 'msgpack', 'yaml']
+
 registry.enable('json')
 registry.enable('yaml')
 registry.enable('application/text')
@@ -213,8 +216,8 @@ CELERY_TASK_ROUTES = {
     'zenodo.modules.spam.tasks.delete_record': {'queue': 'low'},
     'invenio_openaire.tasks.register_grant': {'queue': 'low'},
     # Indexer
-    #'invenio_indexer.tasks.process_bulk_queue': {'queue': 'celery-indexer'}
-    'invenio_indexer.tasks.process_bulk_queue': {'queue': 'indexer'}
+    #'invenio_indexer.tasks.process_bulk_queue': {'queue': 'celery-indexer'},
+    'invenio_indexer.tasks.process_bulk_queue': {'queue': 'indexer'},
 }
 #: Beat schedule
 CELERY_BEAT_SCHEDULE = {
@@ -322,6 +325,12 @@ CELERY_BEAT_SCHEDULE = {
     'github-tokens-refresh': {
         'task': 'invenio_github.tasks.refresh_accounts',
         'schedule': crontab(minute=0, hour=3),
+        'kwargs': {
+            'expiration_threshold': {
+                # TODO: Remove when invenio-github v1.0.0a19 is released
+                'days': 6 * 30,
+            },
+        }
     }
 }
 
@@ -826,10 +835,10 @@ ZENODO_REMOVAL_REASONS = [
     ('takedown', 'Record removed on request by third-party.'),
 ]
 
-#ZENODO_REANA_HOSTS = ["reana.cern.ch", "reana-qa.cern.ch", "reana-dev.cern.ch"]
-#ZENODO_REANA_LAUNCH_URL_BASE = "https://reana.cern.ch/launch"
-#ZENODO_REANA_BADGE_IMG_URL = "https://www.reana.io/static/img/badges/launch-on-reana.svg"
-#ZENODO_REANA_BADGES_ENABLED = True
+ZENODO_REANA_HOSTS = ["reana.cern.ch", "reana-qa.cern.ch", "reana-dev.cern.ch"]
+ZENODO_REANA_LAUNCH_URL_BASE = "https://reana.cern.ch/launch"
+ZENODO_REANA_BADGE_IMG_URL = "https://www.reana.io/static/img/badges/launch-on-reana.svg"
+ZENODO_REANA_BADGES_ENABLED = True
 
 #: Mapping of old export formats to new content type.
 ZENODO_RECORDS_EXPORTFORMATS = {
@@ -1512,7 +1521,8 @@ SQLALCHEMY_DATABASE_URI = os.environ.get(
 #: Do not print SQL queries to console.
 SQLALCHEMY_ECHO = False
 #: Track modifications to objects.
-SQLALCHEMY_TRACK_MODIFICATIONS = True
+#SQLALCHEMY_TRACK_MODIFICATIONS = True
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 # Doesn't work with sciencerepository-0.2.0
 #SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True, "keepalives": 1,
 #    "keepalives_idle": 30, "keepalives_interval": 10, "keepalives_count": 5}

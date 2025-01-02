@@ -95,6 +95,7 @@ class ZenodoRecords(object):
             vocabularies=app.config.get('ZENODO_CUSTOM_METADATA_VOCABULARIES'),
         )
 
+        app.logger.warn('connecting indexer_receiver to before_record_index, '+format(app))
         before_record_index.connect(indexer_receiver, sender=app)
         app.extensions['zenodo-records'] = self
 

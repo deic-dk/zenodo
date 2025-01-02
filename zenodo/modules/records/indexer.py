@@ -37,11 +37,14 @@ from zenodo.modules.records.utils import build_record_custom_fields
 from zenodo.modules.spam.models import SafelistEntry
 from zenodo.modules.stats.utils import build_record_stats
 
+from flask import current_app
 
 def indexer_receiver(sender, json=None, record=None, index=None,
                      **dummy_kwargs):
+    current_app.logger.warn('indexing '+format(index)+' : '+format(record.get('$schema'))+' : '+format(record))
     """Connect to before_record_index signal to transform record for ES."""
     if not index.startswith('records-') or record.get('$schema') is None:
+        current_app.logger.warn('returning... ')
         return
 
     # Remove files from index if record is not open access.
@@ -79,6 +82,7 @@ def indexer_receiver(sender, json=None, record=None, index=None,
     if '_internal' in json:
         del json['_internal']
 
+    current_app.logger.warn('building record stats for '+format(record['recid']))
     json['_stats'] = build_record_stats(record['recid'],
                                         record.get('conceptrecid'))
 

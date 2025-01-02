@@ -156,3 +156,7 @@ h1 .icon-sd:before, button.btn  .icon-sciencedata:before, button.btn  .fa-scienc
   bottom: 2px;
   position: relative;
 }
+
+.footer .grayicon {
+  filter: grayscale(100%);
+}

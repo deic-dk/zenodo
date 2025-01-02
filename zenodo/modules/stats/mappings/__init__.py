@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
 #
 # This file is part of Zenodo.
 # Copyright (C) 2016 CERN.
@@ -22,34 +22,4 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-# First install all node modules
-CWD=`pwd`
-ZENODO_SOURCE=$(dirname $(dirname $(readlink -f $0)))
-
-zenodo npm --pinned-file ${ZENODO_SOURCE}/package.pinned.json
-# Replace "git" with "git+https" protocol for git dependencies
-sed -i 's/git\:\/\/github\.com/git+https\:\/\/github\.com/g' /usr/local/var/instance/static/package.json
-cd ${VIRTUAL_ENV}/var/instance/static
-npm install
-
-# Symlink to source directories
-cd node_modules
-
-# Make sure they are built
-cd invenio-search-js
-sed -i 's/git\:\/\/github\.com/git+https\:\/\/github\.com/g' package.json
-npm install
-npm run-script build
-cd invenio-records-js
-sed -i 's/git\:\/\/github\.com/git+https\:\/\/github\.com/g' package.json
-npm install
-npm run-script build
-cd invenio-files-js
-sed -i 's/git\:\/\/github\.com/git+https\:\/\/github\.com/g' package.json
-npm install
-npm run-script build
-
-# Build assets
-cd ${CWD}
-zenodo collect -v
-zenodo assets build
+"""Elasticsearch mappings."""

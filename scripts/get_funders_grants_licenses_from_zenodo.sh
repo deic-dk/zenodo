@@ -2,8 +2,9 @@
 
 export VIRTUAL_ENV=/usr/local
 
-curl 'https://zenodo.org/api/funders/?page=1&size=10000' | \
-jq '[.hits.hits[] | .metadata]' > /code/zenodo/zenodo/modules/fixtures/data/funders.json
+# No longer available
+#curl 'https://zenodo.org/api/funders/?page=1&size=10000' | \
+#jq '[.hits.hits[] | .metadata]' > /code/zenodo/zenodo/modules/fixtures/data/funders.json
 
 #echo "[" > /code/zenodo/zenodo/modules/fixtures/data/grants.json
 #cat /code/zenodo/zenodo/modules/fixtures/data/funders.json | jq '.[] | .doi' | while read name; do
@@ -20,8 +21,8 @@ jq '[.hits.hits[] | .metadata]' > /code/zenodo/zenodo/modules/fixtures/data/fund
 #curl "https://zenodo.org/api/grants/?page=1&size=10000" | \
 #  jq '.hits.hits[] | .metadata' > /code/zenodo/zenodo/modules/fixtures/data/grants.json
 
-curl 'https://zenodo.org/api/licenses/?page=1&size=10000' | \
-jq '[.hits.hits[] | .metadata | del(.suggest)]' > /code/zenodo/zenodo/modules/fixtures/data/licenses.json
+curl -L 'https://zenodo.org/api/licenses/?page=1&size=10000' | \
+jq '.hits.hits' > /code/zenodo/zenodo/modules/fixtures/data/licenses.json
 
 cat /code/zenodo/zenodo/modules/fixtures/data/licenses.json | \
 jq 'map(if .legacy_ids[0] == null then (.legacy_ids=[.id]) else . end) | map({(.legacy_ids[0] | ascii_downcase): .id}) | add' > \
