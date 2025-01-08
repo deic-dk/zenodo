@@ -11,20 +11,8 @@
   <i ng-if="form.fa_cls" class="fa fa-fw {{ form.fa_cls }}"></i>&nbsp;{{ form.title }}
 </label>
 
-<!-- Funder selector -->
-<div class="funder-field col-sm-6">
-  <ui-select
-    ng-model="$parent.funder"
-    on-select="$parent.insideModel = undefined; select_model.selected = null">
-    <ui-select-match title="{{ (form.funders_map | filter:{value: $select.selected.value})[0].name }}" placeholder="Select a funder...">{{ (form.funders_map | filter:{value: $select.selected.value})[0].name }}</ui-select-match>
-    <ui-select-choices repeat="item in form.funders_map">
-      <div title="{{item.name}}" ng-bind-html="item.name | highlight: $select.search"></div>
-    </ui-select-choices>
-  </ui-select>
-</div>
-
 <!-- Grant selector -->
-<div class="grant-field col-sm-6">
+<div class="grant-field col-sm-12" style="width: 100%;">
   <ui-select
     class="{{form.options.uiClass}}"
     theme="bootstrap"

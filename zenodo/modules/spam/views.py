@@ -34,7 +34,8 @@ from elasticsearch_dsl import Q
 from flask import Blueprint, abort, current_app, flash, jsonify, redirect, \
     render_template, request, url_for
 from flask_login import login_required
-from flask_menu import current_menu
+#from flask_menu import Menu
+from flask_menu import current_menu, MenuEntryMixin
 from flask_principal import ActionNeed
 from flask_security import current_user
 from invenio_access.permissions import Permission
@@ -65,6 +66,9 @@ blueprint = Blueprint(
 def init_menu():
     """Initialize menu before first request."""
     # Register safelisting menu entry
+    #Menu(current_app)
+    if not 'menu' in current_app.extensions:
+        current_app.extensions['menu'] = MenuEntryMixin('', None)
     item = current_menu.submenu("settings.safelisting")
     item.register(
         "zenodo_spam.safelist_admin",

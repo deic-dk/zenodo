@@ -42,6 +42,8 @@ from ...minters import doi_generator
 from ..fields import DOILink, SanitizedUnicode, SanitizedUrl
 from . import common
 
+import json
+import traceback
 
 class FileSchemaV1(Schema):
     """Schema for files depositions."""
@@ -174,32 +176,61 @@ class LegacyMetadataSchemaV1(common.CommonMetadataSchemaV1):
 
     def dump_grants(self, obj):
         """Get grants."""
+        #current_app.logger.warn('Grants: '+json.dumps(obj))
+        #for line in traceback.format_stack():
+        #    print(line.strip())
         res = []
         for g in obj.get('grants', []):
+            #current_app.logger.warn('GRANT: '+json.dumps(g.__dict__))
             current_app.logger.warn(g)
             if g.get('program', {}) == 'FP7' and \
                     g.get('funder', {}).get('doi') == '10.13039/501100000780':
                 # FO: fix for loading grants from zenodo.org
-                if 'code' in g:
-                    res.append(dict(id=g['code']))
+                if 'id' in g:
+                    url = 'https://zenodo.org/api/awards/'+g['id']
+                    ret = {'id': g['id'], '$ref': url}
+                elif '$ref' in g:
+                    ret = {'id':g['$ref'].replace('https://zenodo.org/api/awards/', ''), '$ref': g['$ref']}
+                elif 'code' in g:
+                    url = 'https://zenodo.org/api/awards/'+g['code']
+                    ret = {'id': g['code'], '$ref': url}
                 elif 'metadata' in g:
-                    res.append(dict(id=g['metadata']['code']))
+                    url = 'https://zenodo.org/api/awards/'+g['metadata']['code']
+                    ret = {'id': g['metadata']['code'], '$ref': url}
                 #elif '$ref' in g:
                 #    res.append(dict(id=g['$ref']))
             else:
                 # FO: fix for loading grants from zenodo.org
-                if 'internal_id' in g:
-                    res.append(dict(id=g['internal_id']))
+                ret = False
+                if 'id' in g:
+                    url = 'https://zenodo.org/api/awards/'+g['id']
+                    ret = {'id': g['id'], '$ref': url}
+                elif 'internal_id' in g:
+                    url = 'https://zenodo.org/api/awards/'+g['internal_id']
+                    ret = {'id': g['internal_id'], '$ref': url}
                 elif 'metadata' in g:
-                    res.append(dict(id=g['metadata']['internal_id']))
+                    url = 'https://zenodo.org/api/awards/'+g['metadata']['internal_id']
+                    ret = {'id': g['metadata']['internal_id'], '$ref': url}
                 elif '$ref' in g:
                     # res.append(dict(id=(g['$ref'].replace('https://zenodo.org/api/grants/', ''))))
-                    res.append(dict(id=(g['$ref'].replace('https://zenodo.org/api/grants/', '').replace('text=', 'q='))))
+                    # res.append(dict(id=(g['$ref'].replace('https://zenodo.org/api/grants/', '').replace('text=', 'q='))))
+                    ret = {'id':g['$ref'].replace('https://zenodo.org/api/awards/', ''), '$ref': g['$ref']}
+            if 'title' in g and 'en' in g['title']:
+                if 'en' in g['title']:
+                    ret['title'] = g['title']['en']
+                else:
+                    ret['title'] = g['title']
+            if ret:
+                res.append(ret)
+        #current_app.logger.warn('RETURNING GRANT: '+json.dumps(res.__dict__))
         current_app.logger.warn(res)
         return res or missing
 
     def load_grants(self, data):
         """Load grants."""
+        #current_app.logger.warn('Data: '+json.dumps(data.__dict__))
+        current_app.logger.warn('Loading grants...'+str(data))
+        #current_app.logger.warn('Data: '+json.dumps(data.__dict__))
         if not isinstance(data, list):
             raise ValidationError(_('Not a list.'))
         result = set()
@@ -216,10 +247,11 @@ class LegacyMetadataSchemaV1(common.CommonMetadataSchemaV1):
             # Check that the PID exists
             grant_pid = PersistentIdentifier.query.filter_by(
                 pid_type='grant', pid_value=g).one_or_none()
-            #if not grant_pid or grant_pid.status != PIDStatus.REGISTERED:
-                # Disable check with local DB
-                #errors.add(g)
-                #continue
+            if not grant_pid or grant_pid.status != PIDStatus.REGISTERED:
+                current_app.logger.warn('Invalid grant id '+json.dumps(g.__dict__))
+            #    # Disable check with local DB
+            #    errors.add(g)
+            #    continue
             result.add(g)
         if errors:
             raise ValidationError(
@@ -227,6 +259,7 @@ class LegacyMetadataSchemaV1(common.CommonMetadataSchemaV1):
                 field_names='grants')
         #return [{'$ref': 'https://dx.zenodo.org/grants/{0}'.format(grant_id)}
         #return [{'$ref': 'https://zenodo.org/api/grants/{0}'.format(grant_id)}
+        current_app.logger.warn('Returning grants')
         return [{'$ref': 'https://zenodo.org/api/awards/{0}'.format(grant_id)}
                 for grant_id in result] or missing
 

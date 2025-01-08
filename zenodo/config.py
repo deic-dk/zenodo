@@ -219,6 +219,9 @@ CELERY_TASK_ROUTES = {
     #'invenio_indexer.tasks.process_bulk_queue': {'queue': 'celery-indexer'},
     'invenio_indexer.tasks.process_bulk_queue': {'queue': 'indexer'},
 }
+#INDEXER_MQ_EXCHANGE = Exchange('celery-indexer', type='direct')
+#INDEXER_MQ_QUEUE = Queue(
+#    'celery-indexer', exchange=INDEXER_MQ_EXCHANGE, routing_key='celery-indexer')
 #: Beat schedule
 CELERY_BEAT_SCHEDULE = {
     'embargo-updater': {
@@ -1039,9 +1042,9 @@ RECORDS_REST_ENDPOINTS = dict(
 )
 
 # Add record serializer aliases for use with the "?format=<mimetype>" parameter
-RECORDS_REST_ENDPOINTS['recid']['record_serializers_aliases'] = {
-    s: s for s in RECORDS_REST_ENDPOINTS['recid']['record_serializers']
-}
+#RECORDS_REST_ENDPOINTS['recid']['record_serializers_aliases'] = {
+#    s: s for s in RECORDS_REST_ENDPOINTS['recid']['record_serializers']
+#}
 
 # Default OpenAIRE API endpoints.
 RECORDS_REST_ENDPOINTS.update(OPENAIRE_REST_ENDPOINTS)
@@ -1115,17 +1118,14 @@ RECORDS_REST_SORT_OPTIONS = dict(
     )
 )
 
-
 def safelist_sort(_):
     """Always show safelisted records first."""
     return {'_safelisted': {'order': 'desc'}}
-
 
 # Apply safelist sorting to all record sorting options
 for k in RECORDS_REST_SORT_OPTIONS['records']:
     # NOTE: We insert in the beginning
     RECORDS_REST_SORT_OPTIONS['records'][k]['fields'].insert(0, safelist_sort)
-
 
 DEPOSIT_REST_SORT_OPTIONS['deposits'].update(
     dict(
@@ -1423,7 +1423,7 @@ ACCOUNTS_USERINFO_HEADERS = True
 # ======
 #: Default API endpoint for search UI.
 SEARCH_UI_SEARCH_API = "/api/records/"
-#: Accept header fro search-js
+#: Accept header for search-js
 SEARCH_UI_SEARCH_MIMETYPE = "application/vnd.zenodo.v1+json"
 #: Default template for search UI.
 SEARCH_UI_SEARCH_TEMPLATE = "zenodo_search_ui/search.html"

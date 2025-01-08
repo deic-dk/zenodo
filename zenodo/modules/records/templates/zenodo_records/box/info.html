@@ -179,6 +179,8 @@
           </a>
           {% endif %}
           {%- endfor %}
+          {% else %}
+          GRANT: {{grant}}
           {% endif %}
           </li>
         {%- endfor %}

@@ -513,7 +513,7 @@
             "description": "",
             "items": [
               {
-                "type": "grantselect",
+                "type": "uiselect",
                 "key": "grants[].id",
                 "htmlClass": "grant-select",
                 "notitle": true,
@@ -523,110 +523,17 @@
                   "url": "https://zenodo.org/api/awards",
                   "urlParameters": {
                     "q": "value",
-                    "funder": "'10.13039/501100000780'",
                     "size": 15
                   },
                   "map": {
-                    "resultSource": "text.0.options",
-                    "valueSource": "_source.legacy_id",
-                    "nameSource": "_source",
+                    "resultSource": "hits.hits",
+                    "valueSource": "id",
+                    "nameSource": "title.en",
                     "valueProperty": "value",
                     "nameProperty": "text"
                   }
-                },
-                "default_funder": "10.13039/501100000780",
-                "funders_map": [
-                  {
-                    "value": "10.13039/501100002341",
-                    "name": "Academy of Finland (FI)"
-                  },
-                  {
-                    "value": "10.13039/501100001665",
-                    "name": "Agence Nationale de la Recherche (FR)"
-                  },
-                  {
-                    "value": "10.13039/100018231",
-                    "name": "Aligning Science Across Parkinson’s (US)"
-                  },
-                  {
-                    "value": "10.13039/501100000923",
-                    "name": "Australian Research Council (AU)"
-                  },
-                  {
-                    "value": "10.13039/501100002428",
-                    "name": "Austrian Science Fund (AT)"
-                  },
-                  {
-                    "value": "10.13039/501100000780",
-                    "name": "European Commission (EU)"
-                  },
-                  {
-                    "value": "10.13039/501100000806",
-                    "name": "European Environment Agency (EU)"
-                  },
-                  {
-                    "value": "10.13039/501100001871",
-                    "name": "Funda\u00e7\u00e3o para a Ci\u00eancia e a Tecnologia (PT)"
-                  },
-                  {
-                    "value": "10.13039/501100004488",
-                    "name": "Hrvatska Zaklada za Znanost (HR)"
-                  },
-                  {
-                    "value": "10.13039/501100004564",
-                    "name": "Ministarstvo Prosvete, Nauke i Tehnolo\u0161kog Razvoja (RS)"
-                  },
-                  {
-                    "value": "10.13039/501100006588",
-                    "name": "Ministarstvo Znanosti, Obrazovanja i Sporta (HR)"
-                  },
-                  {
-                    "value": "10.13039/501100000925",
-                    "name": "National Health and Medical Research Council (AU)"
-                  },
-                  {
-                    "value": "10.13039/100000002",
-                    "name": "National Institutes of Health (US)"
-                  },
-                  {
-                    "value": "10.13039/100000001",
-                    "name": "National Science Foundation (US)"
-                  },
-                  {
-                    "value": "10.13039/501100003246",
-                    "name": "Nederlandse Organisatie voor Wetenschappelijk Onderzoek (NL)"
-                  },
-                  {
-                    "value": "10.13039/501100000690",
-                    "name": "Research Councils (UK)"
-                  },
-                  {
-                    "value": "10.13039/100014013",
-                    "name": "UK Research and Innovation (UK)"
-                  },
-                  {
-                    "value": "10.13039/501100001711",
-                    "name": "Schweizerischer Nationalfonds zur F\u00f6rderung der Wissenschaftlichen Forschung (CH)"
-                  },
-                  {
-                    "value": "10.13039/501100001602",
-                    "name": "Science Foundation Ireland (IE)"
-                  },
-                  {
-                    "value": "10.13039/100001345",
-                    "name": "Social Science Research Council (US)"
-                  },
-                  {
-                    "value": "10.13039/100004440",
-                    "name": "Wellcome Trust (UK)"
-                  },
-                  {
-                    "value": "10.13039/501100004410",
-                    "name": "T\u00fcrkiye Bilimsel ve Teknolojik Ara\u015ftirma Kurumu (TR)"
-                  }
-                ]
+                }
               }
-
             ]
           }
         ]
