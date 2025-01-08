@@ -215,11 +215,11 @@ class LegacyMetadataSchemaV1(common.CommonMetadataSchemaV1):
                     # res.append(dict(id=(g['$ref'].replace('https://zenodo.org/api/grants/', ''))))
                     # res.append(dict(id=(g['$ref'].replace('https://zenodo.org/api/grants/', '').replace('text=', 'q='))))
                     ret = {'id':g['$ref'].replace('https://zenodo.org/api/awards/', ''), '$ref': g['$ref']}
-            if 'title' in g and 'en' in g['title']:
-                if 'en' in g['title']:
-                    ret['title'] = g['title']['en']
-                else:
-                    ret['title'] = g['title']
+            #if 'title' in g and 'en' in g['title']:
+            #    if 'en' in g['title']:
+            #        ret['title'] = g['title']['en']
+            #    else:
+            #        ret['title'] = g['title']
             if ret:
                 res.append(ret)
         #current_app.logger.warn('RETURNING GRANT: '+json.dumps(res.__dict__))
