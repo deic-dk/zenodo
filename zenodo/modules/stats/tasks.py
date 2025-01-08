@@ -45,6 +45,8 @@ def update_record_statistics(start_date=None, end_date=None):
     end_date = dateutil_parse(end_date) if start_date else None
     aggr_configs = {}
 
+    current_app.logger.warn('updating... ')
+
     if not start_date and not end_date:
         start_date = datetime.utcnow()
         end_date = datetime.utcnow()

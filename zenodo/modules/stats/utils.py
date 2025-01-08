@@ -34,6 +34,7 @@ from invenio_search.utils import build_alias_name
 from invenio_stats import current_stats
 
 from zenodo.modules.records.resolvers import record_resolver
+from flask import current_app
 
 try:
     from functools import lru_cache
@@ -105,7 +106,9 @@ def build_record_stats(recid, conceptrecid):
         try:
             query_cfg = current_stats.queries[query_name]
             query = query_cfg.cls(name=query_name, **query_cfg.params)
+            current_app.logger.warn('building record stats, '+format(query_cfg)+':'+format(query_name)+':'+format(query_cfg.params))
             result = query.run(**cfg['params'])
+            current_app.logger.warn('built record stats, '+format(result))
             for dst, src in cfg['fields'].items():
                 stats[dst] = result.get(src)
         except Exception:
@@ -116,11 +119,13 @@ def build_record_stats(recid, conceptrecid):
 def get_record_stats(recordid, throws=True):
     """Fetch record statistics from Elasticsearch."""
     try:
+        current_app.logger.warn('getting '+format(build_alias_name('records'))+':'+format(id))
         res = current_search_client.get(
             index=build_alias_name('records'),
             id=recordid,
             params={'_source_includes': '_stats'},
         )
+        current_app.logger.warn('got '+format(res))
         return res['_source']['_stats']
     except NotFoundError:
         return None
