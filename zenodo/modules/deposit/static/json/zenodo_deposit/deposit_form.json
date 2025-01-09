@@ -537,6 +537,14 @@
             ]
           }
         ]
+      },
+      {
+        "type": "text",
+        "key": "grants[].$ref",
+        "title": "Grant reference",
+        "description": "Link to grant information.",
+        "placeholder": "",
+        "fa_cls": "fa-link"
       }
     ]
   },

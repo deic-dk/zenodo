@@ -755,4 +755,10 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
         data['$schema'] = \
             'https://zenodo.org/schemas/deposits/records/record-v1.0.0.json'
 
+        current_app.logger.warn('Returning data '+str(data))
+        if 'grants' in data:
+            for grant in data['grants']:
+                if 'id' in grant and not '$ref' in grant:
+                    grant['$ref'] = 'https://zenodo.org/api/awards/'+grant['id']
+
         return data
