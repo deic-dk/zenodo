@@ -14,7 +14,10 @@ RUN bash -c "debconf-set-selections <<< \"postfix postfix/main_mailer_type strin
 # See https://github.com/zenodo/zenodo/issues/2123#issuecomment-1050851252
 # if problems with node versions arise
 
-RUN apt-get update \
+RUN sed -i 's|deb\.debian\.org|archive.debian.org|' /etc/apt/sources.list
+RUN sed -i 's|security\.debian\.org|archive.debian.org|' /etc/apt/sources.list
+
+RUN apt clean && apt-get update \
     && apt-get -qy upgrade --fix-missing --no-install-recommends \
     && apt-get -qy install --fix-missing --no-install-recommends \
         apt-utils curl libcairo2-dev fonts-dejavu libfreetype6-dev \

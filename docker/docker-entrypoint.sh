@@ -15,5 +15,7 @@ fi
 sudo sed -i 's|SECLEVEL=2|SECLEVEL=1|' /etc/ssl/openssl.cnf
 sudo sed -i 's|preferred_auths = \[AUTH_CRAM_MD5, AUTH_PLAIN, AUTH_LOGIN\]|preferred_auths = [AUTH_PLAIN, AUTH_LOGIN]|' /usr/lib/python2.7/smtplib.py /usr/local/lib/python2.7/smtplib.py
 
+sudo rm -f /tmp/uwsgi.log
+
 # https://docs.docker.com/engine/reference/builder/#entrypoint
 exec $@
