@@ -4,7 +4,7 @@
       "curation_policy": "See https://sciencedata.dk/sites/sciencerepository/#policies.",
       "id": "science_repository_dk",
       "title": "sciencerepository",
-      "owner_email": "support@sciencerepository.dk",
+      "owner_email": "support@sciencedata.dk",
       "logo": "data/community-logos/science_repository.png"
   },
   {
@@ -12,7 +12,7 @@
       "curation_policy": "Data hosted on or uploaded from sciencedata.dk.",
       "id": "science_data_dk",
       "title": "sciencedata.dk",
-      "owner_email": "support@sciencerepository.dk",
+      "owner_email": "support@sciencedata.dk",
       "logo": "data/community-logos/science-data-logo.png"
   },
   {
@@ -20,7 +20,7 @@
       "curation_policy": "Uploads must have been fully or partially funded by the European Commission.",
       "id": "ecfunded",
       "title": "European Commission Funded Research",
-      "owner_email": "support@sciencerepository.dk",
+      "owner_email": "support@sciencedata.dk",
       "logo": "data/community-logos/european-commission-logo.png"
   }
 ]

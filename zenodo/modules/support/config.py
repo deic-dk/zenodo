@@ -95,7 +95,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'since our support staff will have to reply back with a request '
             'for missing information.'
         ),
-        'recipients': ['support@sciencerepository.dk'],
+        'recipients': ['support@sciencedata.dk'],
     },
     {
         'key': 'upload-quota',
@@ -116,7 +116,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'journal or conference.</li>'
             '</ol>'
         ),
-        'recipients': ['support@sciencerepository.dk'],
+        'recipients': ['support@sciencedata.dk'],
     },
     {
         'key': 'record-inactivation',
@@ -126,7 +126,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'owner or a third party. Please specify the record(s) in question '
             'by the URL(s), and reason for the inactivation.'
         ),
-        'recipients': ['support@sciencerepository.dk'],
+        'recipients': ['support@sciencedata.dk'],
     },
    {
        'key': 'openaire',
@@ -140,7 +140,7 @@ SUPPORT_ISSUE_CATEGORIES = [
            '<a href="https://www.openaire.eu/support/helpdesk">'
            'helpdesk</a> directly.'
        ),
-       'recipients': ['support@sciencerepository.dk'],
+       'recipients': ['support@sciencedata.dk'],
    },
     {
         'key': 'partnership',
@@ -153,7 +153,7 @@ SUPPORT_ISSUE_CATEGORIES = [
             'interested in using sciencerepository.dk as archive for your papers, software '
             'or data, please provide details for your usecase.'
             ),
-        'recipients': ['support@sciencerepository.dk'],
+        'recipients': ['support@sciencedata.dk'],
     },
     {
         'key': 'tech-support',
@@ -170,22 +170,22 @@ SUPPORT_ISSUE_CATEGORIES = [
             '<strong>Do not disclose your password or REST API access tokens.'
             '</strong>'
             ),
-        'recipients': ['support@sciencerepository.dk'],
+        'recipients': ['support@sciencedata.dk'],
     },
     {
         'key': 'other',
         'title': 'Other',
         'description': (
             'Questions which do not fit into any other category.'),
-        'recipients': ['support@sciencerepository.dk'],
+        'recipients': ['support@sciencedata.dk'],
     },
 ]
 
 #: Email address of sender.
-SUPPORT_SENDER_EMAIL = 'support@sciencerepository.dk'
+SUPPORT_SENDER_EMAIL = 'support@sciencedata.dk'
 
 #: Name of the sender
 SUPPORT_SENDER_NAME = 'ScienceRepository'
 
 #: Email address for support.
-SUPPORT_SUPPORT_EMAIL = ['support@sciencerepository.dk']
+SUPPORT_SUPPORT_EMAIL = ['support@sciencedata.dk']

@@ -76,14 +76,14 @@ def support():
                     _('There was an issue sending an email to the provided '
                       'address, please make sure it is correct. '
                       'If this issue persists you can send '
-                      'us an email directly to support@sciencerepository.dk.'),
+                      'us an email directly to support@sciencedata.dk.'),
                     category='danger'
                 )
             except Exception:
                 flash(
                     _("There was an issue sending the support request."
                       'If this issue persists send '
-                      'us an email directly to support@sciencerepository.dk.'),
+                      'us an email directly to support@sciencedata.dk.'),
                     category='danger'
                 )
                 raise
@@ -92,7 +92,7 @@ def support():
                     _('Request sent successfully. '
                       'You should receive a confirmation email within several '
                       'minutes - if this does not happen you should retry or '
-                      'send us an email directly to support@sciencerepository.dk.'),
+                      'send us an email directly to support@sciencedata.dk.'),
                     category='success'
                 )
                 return redirect(url_for('zenodo_frontpage.index'))

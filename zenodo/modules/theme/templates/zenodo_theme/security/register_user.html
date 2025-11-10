@@ -50,8 +50,7 @@
   {%- block signup_slogan %}
   <h1>{{_('Research. Shared! Sign up today.')}}</h1>
   <br />
-  <h4>Notice: This service is intended for staff and students at Danish institutions.
-  Others are encouraged to use <a href="https://zenodo.org">zenodo.org</a>.</h4>
+  <h4>Notice: This service is provided by the ScienceData team to allow users of <a href="https://sciencedata.dk">sciencedata.dk</a> to publish large datasets. Others are encouraged to use <a href="https://zenodo.org">zenodo.org</a>.</h4>
   {%- endblock signup_slogan %}
   <hr />
   <div class="row">
@@ -96,11 +95,11 @@
       <h4>{{_('Citeable. Discoverable.')}}</h4>
       <p>{{_('Uploads get a Digital Object Identifier (DOI) to make them easily and uniquely citeable.')}}</p>
       <h4>{{_('Communities')}}</h4>
-      <p>{{_('Accept or reject uploads to your own community (e.g workshops, EU projects, institutions or entire disciplines).')}}</p>
+      <p>{{_('Accept or reject uploads to your own community (e.g workshops, projects, institutions or entire disciplines).')}}</p>
       <h4>{{_('Proven software')}}</h4>
-      <p>{{_('This repository is powered by the software powering the established pan-European data repository, zenodo.org, operated by CERN.')}}</p>
+      <p>{{_('This repository is powered by the same software powering established repositories, notably <a href="https://zenodo.org">Zenodo</a> (operated by CERN).')}}</p>
       <h4>{{_('Solid infrastucture')}}</h4>
-      <p>{{_('Data resides in DTU data centres on the same infrastructure as that behind the established Danish storage service, sciencedata.dk.')}}</p>
+      <p>{{_('Data resides on the <a href="https://sciencedata.dk">ScienceData</a> ifrastructure and is operated by the ScienceData team.')}}</p>
       {%- endblock signup_benefits %}
     </div>
   </div>
@@ -111,11 +110,11 @@
 <footer>
 <div>
   <ul class="list-inline">
-    <li><a href="https://cs3mesh4eosc.eu"><img src="{{ url_for('static', filename='img/cs3mesh4eosc.png') }}" width="110px" /></a></li>
+    <!--<li><a href="https://cs3mesh4eosc.eu"><img src="{{ url_for('static', filename='img/cs3mesh4eosc.png') }}" width="110px" /></a></li>-->
     <!--<li><a href="https://www.openaire.eu"><img src="{{ url_for('static', filename='img/openaire.png') }}" width="80" /></a></li>-->
-    <li><a href="https://ec.europa.eu/programmes/horizon2020/"><img src="{{ url_for('static', filename='img/eu.png') }}" width="88" /></a></li>
+    <!--<li><a href="https://ec.europa.eu/programmes/horizon2020/"><img src="{{ url_for('static', filename='img/eu.png') }}" width="88" /></a></li>-->
     <!--<li><a href="https://home.cern"><img src="{{ url_for('static', filename='img/cern.png') }}" width="60" /></a></li>-->
-    <li><a href="http://dtu.dk"><img src="{{ url_for('static', filename='img/dtu.png') }}" width="110px" /></a></li>
+    <!--<li><a href="http://dtu.dk"><img src="{{ url_for('static', filename='img/dtu.png') }}" width="110px" /></a></li>-->
   </ul>
 </div>
 </footer>

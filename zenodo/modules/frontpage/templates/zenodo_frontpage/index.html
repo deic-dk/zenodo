@@ -245,24 +245,31 @@
       <div class="well">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-lg-12 ">
+            <h4>Who is this service for?</h4>
+            <p>ScienceRepository is a sister service to <a href="https://sciencedata.dk">ScienceData</a>, allowing to make very large datasets hosted on ScienceData public by providing:</p>
+            <ul>
+              <li>Rich publishing features, including metadata and search</li>
+              <li>Hosting on the GDPR-compliant and scalable ScienceData infrastructure</li>
+              <li>Seamless integration with ScienceData</li>
+            </ul>
             <h4>Need help?</h4>
             <div style="padding-bottom: 10px;">
               <a href="{{ url_for('zenodo_support.support')}}" class="btn btn-block btn-default">Contact us</a>
             </div>
-            <p>The ScienceRepository team can help with:</p>
+            <p>The ScienceData team can help with:</p>
             <ul>
-              <li>Uploading your research data, software, preprints, etc.</li>
-              <li>One-on-one with ScienceRepository supporters.</li>
-              <li>Quota increases beyond our default policy.</li>
-              <li>Scripting automated upload of large datasets.</li>
+              <li>Publishing large datasets, including scripting automated uploads</li>
+              <li>Structuring and enriching your data with metadata</li>
+              <li>API access</li>
+              <li>Quota increases beyond the default</li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="well">
+      <!--<div class="well">
         <h4>Why use {{config.THEME_SITENAME}}?</h4>
         {% include "zenodo_frontpage/benefits.html" %}
-      </div>
+      </div>-->
 
       <!-- Disabled - it's anyway blocked by secure browsers/extensions because it's a known tracker URL-->
      <!-- <div class="hidden-xs">

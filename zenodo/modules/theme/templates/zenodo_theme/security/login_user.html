@@ -62,7 +62,7 @@
 {%- if security.registerable %}
 <div class="panel-footer text-center">
     <h4 class="text-muted">{% trans sitename=config.ACCOUNTS_SITENAME %}New to {{sitename}}?{% endtrans %} <a href="{{url_for('security.register')}}">{{_('Sign Up')}}</a></h4>
-    <a href="https://about.zenodo.org/privacy-policy/">{{_('Privacy notice')}}</a>
+    <a href="https://sciencedata.dk/sites/sciencerepository/#privacy_policy">{{_('Privacy policy')}}</a>
 </div>
 {%- endif %}
 {%- endblock %}

@@ -91,12 +91,12 @@ def _(x):
 
 
 #: System sender email address
-ZENODO_SYSTEM_SENDER_EMAIL = 'no-reply@sciencerepository.dk'
+ZENODO_SYSTEM_SENDER_EMAIL = 'no-reply@sciencedata.dk'
 #: Email address of admins
 ZENODO_ADMIN_EMAIL = 'support@sciencedata.dk'
 
 #: Email address for support.
-SUPPORT_EMAIL = "support@sciencerepository.dk"
+SUPPORT_EMAIL = "support@sciencedata.dk"
 MAIL_SUPPRESS_SEND = False
 MAIL_DEBUG = True
 LOGGING_FS_LOGFILE = "/tmp/uwsgi.log"
@@ -115,7 +115,7 @@ MAIL_USERNAME = "no-reply@sciencedata.dk"
 MAIL_PASSWORD = ""
 MAIL_USE_TLS = True
 MAIL_USE_SSL = False
-MAIL_DEFAULT_SENDER = "no-reply@sciencerepository.dk"
+MAIL_DEFAULT_SENDER = "no-reply@sciencedata.dk"
 
 #with open('/tmp/test.txt', 'w') as f:
 #    f.write(current_app.config['FIXTURES_FILES_LOCATION'])
